@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="co.lateralview.myapp"
+		  xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- BASE APPLICATION -->
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<!-- BASE APPLICATION -->
+
+	<!-- INTERNET STATUS -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<!-- INTERNET STATUS -->
+
+	<!-- PUSH NOTIFICATIONS -->
+	<permission android:name="co.lateralview.myapp.permission.C2D_MESSAGE"
+				android:protectionLevel="signature"/>
+	<uses-permission android:name="co.lateralview.tantan.permission.C2D_MESSAGE"/>
+	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	<!-- PUSH NOTIFICATIONS -->
+
+	<application
+		android:name=".application.MyApp"
+		android:allowBackup="true"
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/app_name"
+		android:supportsRtl="true"
+		android:theme="@style/AppTheme">
+		<activity
+			android:name="co.lateralview.myapp.ui.activity.MainActivity"
+			android:label="@string/app_name"
+			android:theme="@style/AppTheme.NoActionBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+
+		<receiver android:name="co.lateralview.myapp.infraestructure.pushNotification.PushNotificationIntentReceiver"
+				  android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+				<category android:name="co.lateralview.attender"/>
+			</intent-filter>
+		</receiver>
+
+	</application>
+
+</manifest>

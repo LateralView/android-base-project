@@ -1,0 +1,13 @@
+<resources>
+	<string name="app_name">MyApp</string>
+	<string name="action_settings">Settings</string>
+
+	<!-- Date Utils -->
+	<string name="dateUtils_sec">sec</string>
+	<string name="dateUtils_min">min</string>
+	<string name="dateUtils_h">h</string>
+	<string name="dateUtils_days">days</string>
+	<string name="dateUtils_months">months</string>
+	<string name="dateUtils_years">years</string>
+
+</resources>
