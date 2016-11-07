@@ -114,12 +114,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 		}
 	}
 
-	@Override
-	protected void attachBaseContext(Context newBase)
-	{
-		super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-	}
-
 	public void showProgressDialog()
 	{
 		if (mProgressDialog == null)

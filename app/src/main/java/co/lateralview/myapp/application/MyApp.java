@@ -43,11 +43,6 @@ public class MyApp extends Application
 				// list of modules that are part of this component need to be created here too
 				.appModule(new AppModule(this))
 				.build();
-
-		CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-				.setFontAttrId(R.attr.fontPath)
-				.build()
-		);
 	}
 }
 

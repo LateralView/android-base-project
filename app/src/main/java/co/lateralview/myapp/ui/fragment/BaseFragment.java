@@ -47,12 +47,6 @@ public abstract class BaseFragment extends Fragment
 
 	public abstract String getTAG();
 
-	@Override
-	public void onAttach(Context context)
-	{
-		super.onAttach(CalligraphyContextWrapper.wrap(context));
-	}
-
 	public void baseErrorHandler()
 	{
 		((BaseActivity) getActivity()).baseErrorHandler();

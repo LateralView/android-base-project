@@ -2,6 +2,8 @@ package co.lateralview.myapp.infraestructure.manager.implementation;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
+
 import co.lateralview.myapp.infraestructure.manager.interfaces.ParserManager;
 
 /**
@@ -15,6 +17,12 @@ public class ParserManagerImpl implements ParserManager
 	}
 
 	public <T> T fromJson(String json, Class<T> type)
+	{
+		return new Gson().fromJson(json, type);
+	}
+
+	@Override
+	public <T> T fromJson(String json, Type type)
 	{
 		return new Gson().fromJson(json, type);
 	}

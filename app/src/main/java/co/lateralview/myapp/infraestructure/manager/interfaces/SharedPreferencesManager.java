@@ -1,5 +1,7 @@
 package co.lateralview.myapp.infraestructure.manager.interfaces;
 
+import java.lang.reflect.Type;
+
 public interface SharedPreferencesManager
 {
 	void save(String key, boolean value);
@@ -23,6 +25,8 @@ public interface SharedPreferencesManager
 	<T> void save(String key, T model);
 
 	<T> T get(String key, Class<T> type);
+
+	<T> T get(String key, Type type);
 
 	void clear();
 

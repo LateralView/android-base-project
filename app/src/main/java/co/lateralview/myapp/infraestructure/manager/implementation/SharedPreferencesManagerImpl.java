@@ -3,6 +3,8 @@ package co.lateralview.myapp.infraestructure.manager.implementation;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.lang.reflect.Type;
+
 import co.lateralview.myapp.infraestructure.manager.interfaces.ParserManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferencesManager;
 
@@ -77,6 +79,13 @@ public class SharedPreferencesManagerImpl implements SharedPreferencesManager
 	{
 		String json = getString(key);
 		return json != "" ? mParserManager.fromJson(json, type) : null;
+	}
+
+	@Override
+	public <T> T get(String key, Type type)
+	{
+		String json = getString(key);
+		return json != "" ? (T) mParserManager.fromJson(json, type) : null;
 	}
 
 	public void clear()
