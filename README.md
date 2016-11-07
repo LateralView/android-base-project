@@ -82,7 +82,7 @@ android-base-project/app/src/main/java/co/lateralview/myapp/
          │   ...
 ```
 
-If you are going to be a big application UI recommend that packages are created for each functionality (screen).
+If you are going to develop a big application, we recommend to create one package for each functionality (screen).
 
 ### Extra
 
