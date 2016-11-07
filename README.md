@@ -43,6 +43,8 @@ Allows us via anotations save and restore instance state.
 
 - [Task Manager] (https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/infraestructure/manager/interfaces/TaskManager.java)
 
+Also there is a repository for user management ([UserRepository] (https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/domain/repository/interfaces/UserRepository.java)) and another repository for sessions ([SessionRepository] (https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/domain/repository/interfaces/SessionRepository.java)), which are stored in the shared preferences.
+
 ### Package Structure
 
 ```
