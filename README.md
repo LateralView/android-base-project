@@ -7,7 +7,7 @@ The idea is that the project is to be able to cloned and serve directly to start
 
 Developed by the [LateralView](https://lateralview.co) team.
 
-### Include Libraries
+### Included Libraries
 
 - [Dagger2] (https://google.github.io/dagger/)
 Compile-time dependency injection framework.
