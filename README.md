@@ -1,9 +1,9 @@
 # Android Base Project
 
-Base project builded using [Dagger2] (https://google.github.io/dagger/) for Dependency Injection and MVC architecture with Repository Pattern.
-It has several managers classes that encapsulate features that are usually used in a project, most using inversion control to decouple the implementation.
+Base project built using [Dagger2] (https://google.github.io/dagger/) for Dependency Injection and MVC architecture with Repository Pattern.
+It has several managers classes that encapsulate features that are usually used in a common project, most using inversion control to decouple the implementation.
 
-The idea of the project is to serve directly to start a project without setting what is commonly used.
+This project has the most common setttings applied. The main idea is to start any new project cloning this one.
 
 Developed by the [LateralView](https://lateralview.co) team.
 
@@ -89,3 +89,5 @@ If you are going to be a big application UI recommend that packages are created 
 [Here] (https://github.com/LateralView/android-lateral-skeleton/wiki) you will find all the documentation related to Android Lateral naming standards, good practices, tips, useful libraries and more!
 
 For any suggestions or if you want to join our team please contact us via [android@lateralview.net](mailto: android@lateralview.net)
+
+Happy codding!
