@@ -1,6 +1,6 @@
 # Android Base Project
 
-Based project armed using [Dagger2] (https://google.github.io/dagger/) for Dependency Injection and MVC architecture with Repository Pattern.
+Base project builded using [Dagger2] (https://google.github.io/dagger/) for Dependency Injection and MVC architecture with Repository Pattern.
 It has several managers classes that encapsulate features that are usually used in a project, most using inversion control to decouple the implementation.
 
 The idea is that the project is to be able to cloned and serve directly to start a project without setting what is commonly used.
