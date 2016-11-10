@@ -7,7 +7,9 @@ import com.android.volley.Request;
 import net.lateralview.simplerestclienthandler.RestClientManager;
 import net.lateralview.simplerestclienthandler.base.RequestHandler;
 
+import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.infraestructure.networking.MyAppServerCallback;
+import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
 import co.lateralview.myapp.infraestructure.networking.RestConstants;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import co.lateralview.myapp.ui.common.MyAppCallback;
@@ -29,7 +31,7 @@ public class UserServerImpl extends BaseServerImpl implements UserServer
 		bundle.putString(Parameters.EMAIL, userEmail);
 		bundle.putString(Parameters.PASSWORD, userPassword);
 
-		mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(), new RequestHandler(new MyAppServerCallback(callback), bundle));
+		mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(), new RequestHandler(new MyAppServerCallback<User, MyAppServerError>(callback), bundle));
 	}
 
 	public enum Url
