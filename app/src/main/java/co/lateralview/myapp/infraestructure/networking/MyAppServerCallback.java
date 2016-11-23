@@ -1,13 +1,17 @@
 package co.lateralview.myapp.infraestructure.networking;
 
+import net.lateralview.simplerestclienthandler.base.ICallbackTypes;
 import net.lateralview.simplerestclienthandler.base.RequestCallbacks;
+import net.lateralview.simplerestclienthandler.helper.ReflectionHelper;
+
+import java.lang.reflect.Type;
 
 import co.lateralview.myapp.ui.common.MyAppCallback;
 
 /**
  * Created by julianfalcionelli on 7/28/16.
  */
-public class MyAppServerCallback<R, E> extends RequestCallbacks<R, E>
+public class MyAppServerCallback extends RequestCallbacks implements ICallbackTypes
 {
 	private MyAppCallback mCallback;
 
@@ -29,14 +33,26 @@ public class MyAppServerCallback<R, E> extends RequestCallbacks<R, E>
 	}
 
 	@Override
-	protected void onRequestSuccess(R o)
+	protected void onRequestSuccess(Object o)
 	{
 		mCallback.onSuccess(o);
 	}
 
 	@Override
-	protected void onRequestError(E o)
+	protected void onRequestError(Object o)
 	{
 		mCallback.onError(o);
+	}
+
+	@Override
+	public Type getResponseType()
+	{
+		return ReflectionHelper.getTypeArgument(mCallback, 0);
+	}
+
+	@Override
+	public Type getErrorType()
+	{
+		return ReflectionHelper.getTypeArgument(mCallback, 1);
 	}
 }

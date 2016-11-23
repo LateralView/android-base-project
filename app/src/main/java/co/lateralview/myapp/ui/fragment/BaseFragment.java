@@ -1,14 +1,12 @@
 package co.lateralview.myapp.ui.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
 import co.lateralview.myapp.application.MyApp;
 import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.ui.activity.BaseActivity;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseFragment extends Fragment
 {

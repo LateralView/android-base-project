@@ -2,9 +2,6 @@ package co.lateralview.myapp.application;
 
 import android.app.Application;
 
-import co.lateralview.myapp.R;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
 
 public class MyApp extends Application
 {

@@ -21,7 +21,6 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
 import co.lateralview.myapp.infraestructure.networking.interfaces.BaseServer;
 import co.lateralview.myapp.ui.broadcast.InternetReceiver;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity implements InternetReceiver.InternetReceiverListener
 {
