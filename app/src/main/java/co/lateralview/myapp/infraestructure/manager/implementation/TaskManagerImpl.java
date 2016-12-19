@@ -36,7 +36,7 @@ public class TaskManagerImpl implements TaskManager
 
 		for (PendingTask pendingTask : mPendingTasksQueue)
 		{
-			if (!pendingTask.equals(tag))
+			if (!pendingTask.getTag().equals(tag))
 			{
 				pendingTasks.add(pendingTask);
 			}
