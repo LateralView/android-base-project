@@ -12,6 +12,9 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     signingConfigs {
         release {
@@ -41,15 +44,20 @@ android {
     }
 }
 
+def support_version = "25.0.1"
+def dagger_version = "2.5"
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
+    compile "com.android.support:recyclerview-v7:${support_version}"
+    compile "com.android.support:design:${support_version}"
+    compile "com.android.support:support-v13:${support_version}"
+    compile "com.android.support:appcompat-v7:${support_version}"
 
     //Dagger2 for Dependency Injection
-    apt 'com.google.dagger:dagger-compiler:2.2'
-    compile 'com.google.dagger:dagger:2.2'
+    apt "com.google.dagger:dagger-compiler:${dagger_version}"
+    compile "com.google.dagger:dagger:${dagger_version}"
     provided 'javax.annotation:jsr250-api:1.0'
 
     //REST Client
@@ -63,4 +71,6 @@ dependencies {
     compile 'frankiesardo:icepick:3.1.0'
     provided 'frankiesardo:icepick-processor:3.1.0'
 
+    //Image Crop
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
-		tools:context=".ui.activity.MainActivity">
+		tools:context=".ui.activities.main.MainActivity">
 
 	<android.support.design.widget.CoordinatorLayout
 		android:layout_width="match_parent"
@@ -10,10 +10,9 @@
 
 		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:theme="@style/AppTheme.AppBarOverlay">
+			android:layout_height="wrap_content">
 
-			<include layout="@layout/tool_bar"/>
+			<include layout="@layout/toolbar"/>
 
 		</android.support.design.widget.AppBarLayout>
 

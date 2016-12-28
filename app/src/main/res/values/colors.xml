@@ -7,4 +7,6 @@
 	<color name="white">#FFF</color>
 	<color name="black">#000</color>
 
+	<color name="red">#e47373</color>
+	<color name="green">#59b394</color>
 </resources>

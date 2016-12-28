@@ -5,9 +5,9 @@ import javax.inject.Singleton;
 
 import co.lateralview.myapp.domain.repository.RepositoryModule;
 import co.lateralview.myapp.infraestructure.networking.NetModule;
-import co.lateralview.myapp.ui.activity.BaseActivity;
-import co.lateralview.myapp.ui.activity.MainActivity;
-import co.lateralview.myapp.ui.fragment.BaseFragment;
+import co.lateralview.myapp.ui.activities.base.BaseActivity;
+import co.lateralview.myapp.ui.activities.base.fragments.BaseFragment;
+import co.lateralview.myapp.ui.activities.main.MainActivity;
 import dagger.Component;
 
 /**

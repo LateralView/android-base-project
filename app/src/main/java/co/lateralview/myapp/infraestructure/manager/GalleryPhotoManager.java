@@ -1,0 +1,142 @@
+package co.lateralview.myapp.infraestructure.manager;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.Fragment;
+
+import java.io.File;
+
+import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerImpl;
+
+public class GalleryPhotoManager
+{
+	private int mRequestCodePhotoFromGallery;
+	private int mRequestCodePhotoFromGalleryCrop;
+	private int mRequestCodeCropImage;
+
+	public interface IGalleryPhotoCallback
+	{
+		void onPhotoObtained(Bitmap picture, File file);
+	}
+
+	protected Fragment mCallerFragment;
+	protected Activity mCallerActivity;
+	protected IGalleryPhotoCallback mCallback;
+	protected Uri mCroppedImage;
+
+	public GalleryPhotoManager(Fragment fragment, IGalleryPhotoCallback callback, int requestCode)
+	{
+		this(fragment.getActivity(), callback, requestCode);
+		mCallerFragment = fragment;
+	}
+
+	public GalleryPhotoManager(Activity activity, IGalleryPhotoCallback callback, int requestCode)
+	{
+		mRequestCodePhotoFromGallery = requestCode;
+		mCallerActivity = activity;
+		mCallback = callback;
+	}
+
+	public void startService()
+	{
+		start(false);
+	}
+
+	public void startServiceWithCrop(int cropImageRequestCode1, int cropImageRequestCode2)
+	{
+		mRequestCodePhotoFromGalleryCrop = cropImageRequestCode1;
+		mRequestCodeCropImage = cropImageRequestCode2;
+
+		start(true);
+	}
+
+	private void start(boolean cropIt)
+	{
+		Intent mediaChooser = new Intent(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT ? Intent.ACTION_GET_CONTENT : Intent.ACTION_OPEN_DOCUMENT);
+		mediaChooser.setType("image/*");
+
+		if (mCallerFragment != null)
+		{
+			mCallerFragment.startActivityForResult(mediaChooser, cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
+		}
+		else
+		{
+			mCallerActivity.startActivityForResult(mediaChooser, cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
+		}
+	}
+
+	public void processResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == Activity.RESULT_OK)
+		{
+			if (requestCode == mRequestCodePhotoFromGallery)
+			{
+				onPhotoFromGallerySuccess(data);
+				return;
+			}
+
+			if (requestCode == mRequestCodeCropImage)
+			{
+				onPhotoFromGalleryCroppedSuccess(mCroppedImage);
+				return;
+			}
+
+			if (requestCode == mRequestCodePhotoFromGalleryCrop)
+			{
+				mCroppedImage = new FileManagerImpl().createPhotoUri();
+
+				if (mCallerFragment != null)
+				{
+					new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(data.getData(), mCroppedImage);
+				}
+				else
+				{
+					new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(data.getData(), mCroppedImage);
+				}
+
+				return;
+			}
+		}
+	}
+
+	protected void onPhotoFromGallerySuccess(Intent data)
+	{
+		if (data != null)
+		{
+			final String path = null != data.getData() ? data.getData().getPath() : data.getAction().replace("file://", "");
+
+			getPhotoFromPath(path);
+		}
+	}
+
+	protected void onPhotoFromGalleryCroppedSuccess(final Uri imageUri)
+	{
+		if (imageUri != null)
+		{
+			getPhotoFromPath(imageUri.getPath());
+		}
+	}
+
+	protected void getPhotoFromPath(final String path)
+	{
+		new PhotoDecodeTask(new PhotoDecodeTask.IPhotoDecodeTaskCallback()
+		{
+			@Override
+			public void onPhotoDecodeTaskSuccess(final Bitmap photo)
+			{
+
+				mCallerActivity.runOnUiThread(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						mCallback.onPhotoObtained(photo, new File(path));
+					}
+				});
+			}
+		}).execute(path);
+	}
+}

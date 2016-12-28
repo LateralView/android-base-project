@@ -3,9 +3,12 @@ package co.lateralview.myapp.infraestructure.manager.implementation;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -54,6 +57,38 @@ public class FileManagerImpl implements FileManager
 		return null != file ? Uri.fromFile(file) : null;
 	}
 
+	public Uri createPhotoUri()
+	{
+		File file = createPhotoFile();
+
+		return null != file ? Uri.fromFile(file) : null;
+	}
+
+	public void saveBitmapToFile(Bitmap croppedImage, Uri saveUri)
+	{
+		if (saveUri != null)
+		{
+			FileOutputStream outputStream = null;
+			try
+			{
+				outputStream = new FileOutputStream(saveUri.getPath());
+
+				if (outputStream != null)
+				{
+					croppedImage.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+				}
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			finally
+			{
+				closeSilently(outputStream);
+				croppedImage.recycle();
+			}
+		}
+	}
+
 	private boolean writeFile(File f, byte[] bytes)
 	{
 		return writeFile(f.getAbsolutePath(), bytes);
@@ -70,13 +105,30 @@ public class FileManagerImpl implements FileManager
 				stream.write(bytes);
 			} finally
 			{
-				stream.close();
+				closeSilently(stream);
 			}
 
 			return true;
 		} catch (Exception e)
 		{
 			return false;
+		}
+	}
+
+
+	private void closeSilently(@Nullable Closeable c)
+	{
+		if (c == null)
+		{
+			return;
+		}
+
+		try
+		{
+			c.close();
+		} catch (Throwable t)
+		{
+			// Do nothing
 		}
 	}
 }

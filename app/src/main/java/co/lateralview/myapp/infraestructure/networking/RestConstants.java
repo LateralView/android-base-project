@@ -1,5 +1,8 @@
 package co.lateralview.myapp.infraestructure.networking;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import co.lateralview.myapp.BuildConfig;
 
 /**
@@ -41,5 +44,18 @@ public class RestConstants
 		{
 			return mSubcode;
 		}
+	}
+
+	public static Map<String, String> getAuthorizationHeaderProvider(String token)
+	{
+		Map<String, String> authorizationMap = new HashMap<>();
+		authorizationMap.put("x-access-token", token);
+
+		return authorizationMap;
+	}
+
+	public static String replaceParameterIntoUrl(String url, String parameterKey, String parameterValue)
+	{
+		return 	url.replace("{" + parameterKey + "}", parameterValue);
 	}
 }

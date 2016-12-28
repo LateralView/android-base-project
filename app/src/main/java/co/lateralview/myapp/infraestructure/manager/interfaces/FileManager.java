@@ -15,4 +15,8 @@ public interface FileManager
 	File createPhotoFile();
 
 	Uri getUri(File file);
+
+	Uri createPhotoUri();
+
+	void saveBitmapToFile(Bitmap croppedImage, Uri saveUri);
 }

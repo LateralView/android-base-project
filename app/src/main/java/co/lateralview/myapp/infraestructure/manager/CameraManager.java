@@ -1,39 +1,71 @@
 package co.lateralview.myapp.infraestructure.manager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 
 import java.io.File;
+import java.io.IOException;
 
+import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerImpl;
+import co.lateralview.myapp.infraestructure.manager.implementation.ImageManagerImpl;
 import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
+import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 
 public class CameraManager
 {
+	private int mRequestCodeTakePhoto;
+	private int mRequestCodeTakePhotoCrop;
+	private int mRequestCodeCropImage;
+
 	protected Activity mCallerActivity;
-	private int mRequestTakePhotoCode;
+	protected Fragment mCallerFragment;
 	private ICameraServiceCallback mCameraServiceListener;
 	private File mPhotoFile;
+    private FileManager mFileManager;
+    private ImageManager mImageManager;
+	protected Uri mCroppedImage;
 
-	private FileManager mFileManager;
+	public interface ICameraServiceCallback
+	{
+		void onPictureTaken(Bitmap picture, File file);
+	}
 
-	public CameraManager(Activity callerActivity, FileManager fileManager, int requestCode, ICameraServiceCallback cameraServiceListener)
+	public CameraManager(Fragment fragment, ICameraServiceCallback cameraServiceListener, int takePhotoRequestCode)
+	{
+		this(fragment.getActivity(), cameraServiceListener, takePhotoRequestCode);
+		mCallerFragment = fragment;
+	}
+
+	public CameraManager(Activity callerActivity, ICameraServiceCallback cameraServiceListener, int takePhotoRequestCode)
 	{
 		mCallerActivity = callerActivity;
-		mRequestTakePhotoCode = requestCode;
-		mFileManager = fileManager;
 		mCameraServiceListener = cameraServiceListener;
-	}
+        mFileManager = new FileManagerImpl();
+        mImageManager = new ImageManagerImpl(callerActivity);
+		mRequestCodeTakePhoto = takePhotoRequestCode;
+    }
 
-	public void startCameraService()
+	public void startService()
 	{
-		mPhotoFile = dispatchTakePictureIntent();
+		mPhotoFile = dispatchTakePictureIntent(false);
 	}
 
-	private File dispatchTakePictureIntent()
+	public void startServiceWithCrop(int cropImageRequestCode1, int cropImageRequestCode2)
+	{
+		mRequestCodeTakePhotoCrop = cropImageRequestCode1;
+		mRequestCodeCropImage = cropImageRequestCode2;
+
+		mPhotoFile = dispatchTakePictureIntent(true);
+	}
+
+	private File dispatchTakePictureIntent(boolean cropIt)
 	{
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -43,14 +75,21 @@ public class CameraManager
 		if (takePictureIntent.resolveActivity(mCallerActivity.getPackageManager()) != null)
 		{
 			// Create the File where the photo should go
-			photoFile = mFileManager.createPhotoFile();
+			photoFile = new FileManagerImpl().createPhotoFile();
 
 			// Continue only if the File was successfully created
 			if (photoFile != null)
 			{
 				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 
-				mCallerActivity.startActivityForResult(takePictureIntent, mRequestTakePhotoCode);
+				if (mCallerFragment != null)
+				{
+					mCallerFragment.startActivityForResult(takePictureIntent, cropIt ? mRequestCodeTakePhotoCrop : mRequestCodeTakePhoto);
+				}
+				else
+				{
+					mCallerActivity.startActivityForResult(takePictureIntent, cropIt ? mRequestCodeTakePhotoCrop : mRequestCodeTakePhoto);
+				}
 			}
 		}
 
@@ -59,9 +98,37 @@ public class CameraManager
 
 	public void processResult(int requestCode, int resultCode, Intent data)
 	{
-		if (resultCode == Activity.RESULT_OK && requestCode == mRequestTakePhotoCode)
+		if (resultCode == Activity.RESULT_OK)
 		{
-			onRequestTakePhotoSuccess();
+			if (requestCode == mRequestCodeCropImage)
+			{
+				onRequestTakePhotoCropSuccess(mCroppedImage);
+				return;
+			}
+
+			if (requestCode == mRequestCodeTakePhoto)
+			{
+				onRequestTakePhotoSuccess();
+				return;
+			}
+
+			if (requestCode == mRequestCodeTakePhotoCrop)
+			{
+				normalizeImageForUri(mCallerActivity, Uri.fromFile(mPhotoFile));
+
+				mCroppedImage = new FileManagerImpl().createPhotoUri();
+
+				if (mCallerFragment != null)
+				{
+					new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(Uri.fromFile(mPhotoFile), mCroppedImage);
+				}
+				else
+				{
+					new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(Uri.fromFile(mPhotoFile), mCroppedImage);
+				}
+
+				return;
+			}
 		}
 	}
 
@@ -75,8 +142,55 @@ public class CameraManager
 		}
 	}
 
-	public interface ICameraServiceCallback
+	private void onRequestTakePhotoCropSuccess(Uri imageCropperUri)
 	{
-		void onPictureTaken(Bitmap picture, File file);
+		if (imageCropperUri != null)
+		{
+			final String path = imageCropperUri.getPath();
+
+			new PhotoDecodeTask(new PhotoDecodeTask.IPhotoDecodeTaskCallback()
+			{
+				@Override
+				public void onPhotoDecodeTaskSuccess(final Bitmap photo)
+				{
+
+					mCallerActivity.runOnUiThread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							mCameraServiceListener.onPictureTaken(photo, new File(path));
+						}
+					});
+				}
+			}).execute(path);
+		}
 	}
+
+	/**
+	 * Allows to fix issue for some phones when image processed with android-crop
+	 * is not rotated properly.
+	 * Based on https://github.com/jdamcd/android-crop/issues/140#issuecomment-125109892
+	 *
+	 * @param context - context to use while saving file
+	 * @param uri     - origin file uri
+	 */
+	private void normalizeImageForUri(Context context, Uri uri)
+	{
+		try
+		{
+			ExifInterface exif = new ExifInterface(uri.getPath());
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+			Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+			Bitmap rotatedBitmap = mImageManager.rotateBitmap(bitmap, orientation);
+
+			if (!bitmap.equals(rotatedBitmap))
+			{
+				mFileManager.saveBitmapToFile(rotatedBitmap, uri);
+			}
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+    }
 }

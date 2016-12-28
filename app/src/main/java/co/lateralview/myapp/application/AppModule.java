@@ -5,6 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import co.lateralview.myapp.infraestructure.manager.InternetManager;
+import co.lateralview.myapp.infraestructure.manager.MailManager;
 import co.lateralview.myapp.infraestructure.manager.SystemManager;
 import co.lateralview.myapp.infraestructure.manager.implementation.ImageManagerImpl;
 import co.lateralview.myapp.infraestructure.manager.implementation.ParserManagerImpl;
@@ -39,35 +40,30 @@ public class AppModule
 	}
 
 	@Provides
-	@Singleton
 	public ImageManager providesImageManager(Application application)
 	{
 		return new ImageManagerImpl(application);
 	}
 
 	@Provides
-	@Singleton
 	public ParserManager providesParserManager()
 	{
 		return new ParserManagerImpl();
 	}
 
 	@Provides
-	@Singleton
 	public SharedPreferencesManager providesSharedPreferencesManager(Application application, ParserManager parserManager)
 	{
 		return new SharedPreferencesManagerImpl(application, parserManager);
 	}
 
 	@Provides
-	@Singleton
 	public SystemManager providesSystemManager(Application application)
 	{
 		return new SystemManager(application);
 	}
 
 	@Provides
-	@Singleton
 	public InternetManager providesInternetManager(Application application)
 	{
 		return new InternetManager(application);
@@ -78,5 +74,11 @@ public class AppModule
 	public TaskManager providesTaskManager()
 	{
 		return new TaskManagerImpl();
+	}
+
+	@Provides
+	public MailManager providesMailManager()
+	{
+		return new MailManager();
 	}
 }

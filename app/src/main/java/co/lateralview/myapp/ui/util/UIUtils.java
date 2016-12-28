@@ -3,7 +3,6 @@ package co.lateralview.myapp.ui.util;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +11,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -22,10 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,62 +46,6 @@ public abstract class UIUtils
 			// finally change the color
 			window.setStatusBarColor(color);
 		}
-	}
-
-	public static void setDeviceOrientation(Activity activity)
-	{
-		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	}
-
-	public static void vibrate(Activity activity, int millis)
-	{
-		((Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(millis);
-	}
-
-	public static void keepScreenOn(Activity activity)
-	{
-		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-	}
-
-	public static void fullScreenMode(Activity activity)
-	{
-		// Hide both the navigation bar and the status bar.
-		// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-		// a general rule, you should design your app to hide the status bar whenever you
-		// hide the navigation bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-
-		activity.getWindow().getDecorView().setSystemUiVisibility(uiOptions);
-	}
-
-	public static void hideKeyboard(Activity activity)
-	{
-		if (isKeyboardVisible(activity))
-		{
-			View view = activity.getCurrentFocus();
-			if (view != null)
-			{
-				InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-			}
-		}
-	}
-
-	public static void showKeyboard(Activity activity)
-	{
-		if (!isKeyboardVisible(activity))
-		{
-			InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-			activity.getWindow().getDecorView().requestFocus();
-			inputMethodManager.showSoftInput(activity.getWindow().getDecorView(), 0);
-		}
-	}
-
-	public static boolean isKeyboardVisible(Activity activity)
-	{
-		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		return imm.isAcceptingText();
 	}
 
 	public static void setGroupViewTreeEnable(ViewGroup view, boolean enable)
@@ -208,15 +148,7 @@ public abstract class UIUtils
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public static void setGradientBackground(View view, String color1, String color2)
 	{
-		GradientDrawable gd = new GradientDrawable(
-				GradientDrawable.Orientation.LEFT_RIGHT,
-				new int[]{Color.parseColor(color1), Color.parseColor(color2)});
-
-		gd.setCornerRadius(0f);
-
-		gd.setAlpha(204);
-
-		view.setBackground(gd);
+		setGradientBackground(view, Color.parseColor(color1), Color.parseColor(color2));
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -282,6 +214,17 @@ public abstract class UIUtils
 		}
 	}
 
+	public static Drawable getDrawableFromRes(Context context, int resDrawable)
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+		{
+			return context.getDrawable(resDrawable);
+		} else
+		{
+			return context.getResources().getDrawable(resDrawable);
+		}
+	}
+
 	public static Bitmap getBitmapFromURL(String src)
 	{
 		try
@@ -297,24 +240,6 @@ public abstract class UIUtils
 		{
 			// Log exception
 			return null;
-		}
-	}
-
-	public static void setSpinnerHeight(Spinner spinner, int height)
-	{
-		try
-		{
-			Field popup = Spinner.class.getDeclaredField("mPopup");
-			popup.setAccessible(true);
-
-			// Get private mPopup member variable and try cast to ListPopupWindow
-			android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(spinner);
-
-			// Set popupWindow height to 500px
-			popupWindow.setHeight(height);
-		} catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e)
-		{
-			// silently fail...
 		}
 	}
 

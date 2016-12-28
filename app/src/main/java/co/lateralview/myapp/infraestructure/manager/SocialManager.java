@@ -14,11 +14,11 @@ import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerIm
  */
 public class SocialManager
 {
-	private FileManagerImpl mFileService;
+	private FileManagerImpl mFileManager;
 
-	public SocialManager(FileManagerImpl fileService)
+	public SocialManager(FileManagerImpl fileManager)
 	{
-		mFileService = fileService;
+		mFileManager = fileManager;
 	}
 
 	public void shareData(Activity activity, String text)
@@ -36,7 +36,7 @@ public class SocialManager
 		Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
 				.setType("image/jpeg")
 				.setText(text)
-				.setStream(Uri.parse(mFileService.savePhotoToInternalStorage(image)))
+				.setStream(Uri.parse(mFileManager.savePhotoToInternalStorage(image)))
 				.getIntent();
 
 		activity.startActivity(shareIntent);

@@ -1,11 +1,10 @@
-package co.lateralview.myapp.ui.activity;
+package co.lateralview.myapp.ui.activities.main;
 
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.EditText;
 
@@ -16,10 +15,12 @@ import co.lateralview.myapp.application.MyApp;
 import co.lateralview.myapp.databinding.ActivityMainBinding;
 import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
+import co.lateralview.myapp.domain.util.SnackBarData;
 import co.lateralview.myapp.infraestructure.manager.implementation.PendingTask;
 import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
+import co.lateralview.myapp.ui.activities.base.BaseActivity;
 import co.lateralview.myapp.ui.common.MyAppCallback;
-import co.lateralview.myapp.ui.util.ToolbarUtils;
+import co.lateralview.myapp.ui.util.SnackBarHelper;
 
 public class MainActivity extends BaseActivity
 {
@@ -46,7 +47,7 @@ public class MainActivity extends BaseActivity
 
 		MyApp.getAppComponent().inject(this);
 
-		ToolbarUtils.setupActionBar(this, false, "Toolbar Title");
+		initializeToolbar(false, "Toolbar Title");
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener()
@@ -54,8 +55,9 @@ public class MainActivity extends BaseActivity
 			@Override
 			public void onClick(View view)
 			{
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
+				SnackBarHelper.createSnackBar(view, new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
+
+				//SnackBarHelper.createSnackBar(MainActivity.this, new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
 			}
 		});
 
@@ -78,7 +80,7 @@ public class MainActivity extends BaseActivity
 			public void onError(MyAppServerError error)
 			{
 				//if cant handler the error call base error handler
-				baseErrorHandler(new PendingTask(getTAG(), new PendingTask.ITasksListener()
+				baseErrorHandler(error, new PendingTask(getTAG(), new PendingTask.ITasksListener()
 				{
 					@Override
 					public void callPendingTask()
