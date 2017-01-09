@@ -10,12 +10,14 @@ import android.support.v4.app.Fragment;
 import java.io.File;
 
 import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerImpl;
+import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
 
 public class GalleryPhotoManager
 {
 	private int mRequestCodePhotoFromGallery;
 	private int mRequestCodePhotoFromGalleryCrop;
 	private int mRequestCodeCropImage;
+	private FileManager mFileManager;
 
 	public interface IGalleryPhotoCallback
 	{
@@ -38,6 +40,7 @@ public class GalleryPhotoManager
 		mRequestCodePhotoFromGallery = requestCode;
 		mCallerActivity = activity;
 		mCallback = callback;
+		mFileManager = new FileManagerImpl(mCallerActivity);
 	}
 
 	public void startService()
@@ -86,7 +89,7 @@ public class GalleryPhotoManager
 
 			if (requestCode == mRequestCodePhotoFromGalleryCrop)
 			{
-				mCroppedImage = new FileManagerImpl().createPhotoUri();
+				mCroppedImage = mFileManager.createPhotoUri();
 
 				if (mCallerFragment != null)
 				{

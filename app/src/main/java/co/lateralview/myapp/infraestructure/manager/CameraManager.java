@@ -47,7 +47,7 @@ public class CameraManager
 	{
 		mCallerActivity = callerActivity;
 		mCameraServiceListener = cameraServiceListener;
-        mFileManager = new FileManagerImpl();
+        mFileManager = new FileManagerImpl(callerActivity);
         mImageManager = new ImageManagerImpl(callerActivity);
 		mRequestCodeTakePhoto = takePhotoRequestCode;
     }
@@ -75,12 +75,12 @@ public class CameraManager
 		if (takePictureIntent.resolveActivity(mCallerActivity.getPackageManager()) != null)
 		{
 			// Create the File where the photo should go
-			photoFile = new FileManagerImpl().createPhotoFile();
+			photoFile = mFileManager.createPhotoFile();
 
 			// Continue only if the File was successfully created
 			if (photoFile != null)
 			{
-				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileManager.getUri(photoFile));
 
 				if (mCallerFragment != null)
 				{
@@ -114,17 +114,17 @@ public class CameraManager
 
 			if (requestCode == mRequestCodeTakePhotoCrop)
 			{
-				normalizeImageForUri(mCallerActivity, Uri.fromFile(mPhotoFile));
+				normalizeImageForUri(mCallerActivity, mFileManager.getUri(mPhotoFile));
 
-				mCroppedImage = new FileManagerImpl().createPhotoUri();
+				mCroppedImage = mFileManager.createPhotoUri();
 
 				if (mCallerFragment != null)
 				{
-					new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(Uri.fromFile(mPhotoFile), mCroppedImage);
+					new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(mFileManager.getUri(mPhotoFile), mCroppedImage);
 				}
 				else
 				{
-					new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(Uri.fromFile(mPhotoFile), mCroppedImage);
+					new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(mFileManager.getUri(mPhotoFile), mCroppedImage);
 				}
 
 				return;

@@ -1,9 +1,11 @@
 package co.lateralview.myapp.infraestructure.manager.implementation;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -16,13 +18,19 @@ import java.util.Date;
 
 import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
 
-
 /**
  * Created by julianfalcionelli on 7/28/16.
  */
 public class FileManagerImpl implements FileManager
 {
-	private static final String FILE_TEMP_PREFIX = "TANTAN";
+	private static final String FILE_TEMP_PREFIX = "MYAPP";
+
+	private Context mContext;
+
+	public FileManagerImpl(Context mContext)
+	{
+		this.mContext = mContext;
+	}
 
 	public String savePhotoToInternalStorage(Bitmap bitmapImage)
 	{
@@ -54,14 +62,14 @@ public class FileManagerImpl implements FileManager
 
 	public Uri getUri(File file)
 	{
-		return null != file ? Uri.fromFile(file) : null;
+		return null != file ? FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", file) : null;
 	}
 
 	public Uri createPhotoUri()
 	{
 		File file = createPhotoFile();
 
-		return null != file ? Uri.fromFile(file) : null;
+		return null != file ? getUri(file) : null;
 	}
 
 	public void saveBitmapToFile(Bitmap croppedImage, Uri saveUri)
