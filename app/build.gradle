@@ -46,6 +46,8 @@ android {
 
 def support_version = "25.0.1"
 def dagger_version = "2.5"
+def rxjava_version = '1.2.5'
+def rxandroid_version = '1.2.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -73,4 +75,8 @@ dependencies {
 
     //Image Crop
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+
+    //Reactive Programming
+    compile "io.reactivex:rxjava:${rxjava_version}"
+    compile "io.reactivex:rxandroid:${rxandroid_version}"
 }

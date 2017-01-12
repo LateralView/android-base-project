@@ -3,6 +3,7 @@ package co.lateralview.myapp.ui.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,5 +34,10 @@ public class SystemUtils
 		int uiOptions = View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
 		activity.getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+	}
+
+	public static boolean isRunningOnMainThread()
+	{
+		return Looper.getMainLooper().getThread() == Thread.currentThread();
 	}
 }
