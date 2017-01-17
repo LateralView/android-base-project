@@ -1,8 +1,12 @@
 package co.lateralview.myapp.domain.repository.implementation;
 
+import java.util.concurrent.Callable;
+
+import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
-import co.lateralview.myapp.ui.common.MyAppCallback;
+import co.lateralview.myapp.infraestructure.util.RxUtils;
+import rx.Observable;
 
 public class UserRepositoryImpl implements UserRepository
 {
@@ -14,8 +18,15 @@ public class UserRepositoryImpl implements UserRepository
 	}
 
 	@Override
-	public void login(String userEmail, String userPassword, MyAppCallback callback, String tag)
+	public Observable login(final String userEmail, final String userPassword)
 	{
-		mUserServer.signIn(userEmail, userPassword, callback, tag);
+		return RxUtils.newObservableFromIoToMainThread(new Callable<User>()
+		{
+			@Override
+			public User call() //All background work
+			{
+				return mUserServer.signIn(userEmail, userPassword);
+			}
+		});
 	}
 }

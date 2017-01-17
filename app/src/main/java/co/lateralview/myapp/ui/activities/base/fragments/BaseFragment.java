@@ -64,6 +64,9 @@ public abstract class BaseFragment extends Fragment
 	public void onDestroy()
 	{
 		cancelPendingTasks(getTAG());
+
+		unsubscribeObservers();
+
 		super.onDestroy();
 	}
 
@@ -73,4 +76,7 @@ public abstract class BaseFragment extends Fragment
 	}
 
 	public abstract String getTAG();
+
+	public void unsubscribeObservers() {};
+
 }

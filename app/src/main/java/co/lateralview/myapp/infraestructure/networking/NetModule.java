@@ -3,12 +3,11 @@ package co.lateralview.myapp.infraestructure.networking;
 import android.app.Application;
 
 import net.lateralview.simplerestclienthandler.RestClientManager;
+import net.lateralview.simplerestclienthandler.base.RequestFutureHandler;
 
 import javax.inject.Singleton;
 
-import co.lateralview.myapp.infraestructure.networking.implementation.BaseServerImpl;
 import co.lateralview.myapp.infraestructure.networking.implementation.UserServerImpl;
-import co.lateralview.myapp.infraestructure.networking.interfaces.BaseServer;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import dagger.Module;
 import dagger.Provides;
@@ -22,14 +21,10 @@ public class NetModule
 	{
 		RestClientManager.initialize(application);
 
-		return RestClientManager.getInstance();
-	}
+		RequestFutureHandler.setServerErrorClass(MyAppServerError.class); //Default Server Error Class
 
-	@Provides
-	@Singleton
-	public BaseServer provideBaseServer(RestClientManager restClientManager)
-	{
-		return new BaseServerImpl(restClientManager);
+		return RestClientManager.getInstance()
+				.enableDebugLog(true);
 	}
 
 	@Provides

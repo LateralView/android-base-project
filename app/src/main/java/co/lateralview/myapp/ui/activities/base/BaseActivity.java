@@ -24,7 +24,6 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
 import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
 import co.lateralview.myapp.infraestructure.networking.RestConstants;
-import co.lateralview.myapp.infraestructure.networking.interfaces.BaseServer;
 import co.lateralview.myapp.ui.broadcast.InternetReceiver;
 import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.ToolbarUtils;
@@ -40,8 +39,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 	protected ImageManager mImageManager;
 	@Inject
 	protected InternetManager mInternetManager;
-	@Inject
-	protected BaseServer mBaseServer;
 	@Inject
 	protected TaskManager mTaskManager; //Help us to retry failed tasks
 
@@ -258,17 +255,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 	{
 		cancelPendingTasks(getTAG());
 
-		super.onDestroy();
-	}
+		unsubscribeObservers();
 
-	public void cancelPendingRequest(String tag)
-	{
-		mBaseServer.cancelRequest(tag);
+		super.onDestroy();
 	}
 
 	public void cancelPendingTasks(String tag)
 	{
-		cancelPendingRequest(tag);
 		mTaskManager.removeTasks(tag);
 	}
 
@@ -291,4 +284,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 	{
 		Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
 	}
+
+	public void unsubscribeObservers() {};
 }

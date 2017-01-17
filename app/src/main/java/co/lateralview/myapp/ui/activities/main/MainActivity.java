@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.concurrent.Callable;
+import net.lateralview.simplerestclienthandler.base.HttpErrorException;
 
 import javax.inject.Inject;
 
@@ -19,14 +19,10 @@ import co.lateralview.myapp.databinding.ActivityMainBinding;
 import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.domain.util.SnackBarData;
-import co.lateralview.myapp.infraestructure.manager.implementation.PendingTask;
 import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
-import co.lateralview.myapp.infraestructure.util.RxUtils;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
-import co.lateralview.myapp.ui.common.MyAppCallback;
 import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.SystemUtils;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 
@@ -73,32 +69,6 @@ public class MainActivity extends BaseActivity
 		mDummyEditText.setText("Hi world");
 	}
 
-	private void login(final String userEmail, final String userPassword)
-	{
-		mUserRepository.login(userEmail, userPassword, new MyAppCallback<User, MyAppServerError>()
-		{
-			@Override
-			public void onSuccess(User user)
-			{
-				mSessionRepository.logIn(user);
-			}
-
-			@Override
-			public void onError(MyAppServerError error)
-			{
-				//if cant handler the error call base error handler
-				baseErrorHandler(error, new PendingTask(getTAG(), new PendingTask.ITasksListener()
-				{
-					@Override
-					public void callPendingTask()
-					{
-						login(userEmail, userPassword);
-					}
-				}));
-			}
-		}, TAG);
-	}
-
 	public String getTAG()
 	{
 		return TAG;
@@ -108,8 +78,8 @@ public class MainActivity extends BaseActivity
 
 	private void testRx()
 	{
-		mSubscription = getDelayedTask()
-				.subscribe(new Observer<String>()
+		mSubscription = mUserRepository.login("Username", "Password")
+				.subscribe(new Observer<User>()
 				{
 					@Override
 					public void onCompleted()
@@ -120,51 +90,30 @@ public class MainActivity extends BaseActivity
 					@Override
 					public void onError(Throwable e)
 					{
+						if (e instanceof HttpErrorException)
+						{
+							MyAppServerError myAppServerError = ((MyAppServerError) ((HttpErrorException) e).getError());
+							//Do something
+						}
+
 						Log.i(TAG, "onError - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
 					}
 
 					@Override
-					public void onNext(String s)
+					public void onNext(User user)
 					{
-						Log.i(TAG, "onNext: " + s + " - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
+						Log.i(TAG, "onNext: " + user + " - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
 					}
+
 				});
 	}
 
 	@Override
-	protected void onDestroy()
+	public void unsubscribeObservers()
 	{
 		if (mSubscription != null && !mSubscription.isUnsubscribed())
 		{
 			mSubscription.unsubscribe();
 		}
-
-		super.onDestroy();
-	}
-
-	private Observable<String> getDelayedTask() //TODO: This should be on the respect repository
-	{
-		return RxUtils.newObservableFromIoToMainThread(new Callable<String>() {
-
-			@Override
-			public String call() {
-				return delayedTask();
-			}
-		});
-	}
-
-	private String delayedTask()
-	{
-		Log.i(TAG, "delayedTask - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
-
-		try
-		{
-			Thread.sleep(5000);
-		} catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-
-		return "Lalala";
 	}
 }

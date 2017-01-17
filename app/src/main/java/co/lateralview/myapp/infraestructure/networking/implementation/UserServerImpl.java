@@ -5,12 +5,11 @@ import android.os.Bundle;
 import com.android.volley.Request;
 
 import net.lateralview.simplerestclienthandler.RestClientManager;
-import net.lateralview.simplerestclienthandler.base.RequestHandler;
+import net.lateralview.simplerestclienthandler.base.RequestFutureHandler;
 
-import co.lateralview.myapp.infraestructure.networking.MyAppServerCallback;
+import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.infraestructure.networking.RestConstants;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
-import co.lateralview.myapp.ui.common.MyAppCallback;
 
 public class UserServerImpl extends BaseServerImpl implements UserServer
 {
@@ -22,14 +21,14 @@ public class UserServerImpl extends BaseServerImpl implements UserServer
 	}
 
 	@Override
-	public void signIn(String userEmail, String userPassword, MyAppCallback callback, String tag)
+	public User signIn(String userEmail, String userPassword)
 	{
 		Bundle bundle = new Bundle();
 
 		bundle.putString(Parameters.EMAIL, userEmail);
 		bundle.putString(Parameters.PASSWORD, userPassword);
 
-		mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(), new RequestHandler(new MyAppServerCallback(callback), bundle));
+		return (User) mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(), new RequestFutureHandler(User.class, bundle));
 	}
 
 	public enum Url
@@ -83,5 +82,4 @@ public class UserServerImpl extends BaseServerImpl implements UserServer
 		public static final String EMAIL = "email";
 		public static final String PASSWORD = "password";
 	}
-
 }

@@ -11,7 +11,7 @@ import rx.schedulers.Schedulers;
  */
 public class RxUtils
 {
-	public static Observable<String> newObservableFromIoToMainThread(Callable callable)
+	public static Observable newObservableFromIoToMainThread(Callable callable)
 	{
 		return Observable.fromCallable(callable)
 				.subscribeOn(Schedulers.io())

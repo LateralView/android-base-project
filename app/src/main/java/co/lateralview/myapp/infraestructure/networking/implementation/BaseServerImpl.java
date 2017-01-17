@@ -2,9 +2,7 @@ package co.lateralview.myapp.infraestructure.networking.implementation;
 
 import net.lateralview.simplerestclienthandler.RestClientManager;
 
-import co.lateralview.myapp.infraestructure.networking.interfaces.BaseServer;
-
-public class BaseServerImpl implements BaseServer
+public class BaseServerImpl
 {
 	protected static final String TAG = BaseServerImpl.class.getSimpleName();
 
@@ -14,11 +12,4 @@ public class BaseServerImpl implements BaseServer
 	{
 		mRestClientManager = restClientManager;
 	}
-
-	@Override
-	public void cancelRequest(String tag)
-	{
-		mRestClientManager.cancelPendingRequests(tag);
-	}
-
 }

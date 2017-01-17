@@ -1,8 +1,8 @@
 package co.lateralview.myapp.infraestructure.networking.interfaces;
 
-import co.lateralview.myapp.ui.common.MyAppCallback;
+import co.lateralview.myapp.domain.model.User;
 
-public interface UserServer extends BaseServer
+public interface UserServer
 {
-	void signIn(String userEmail, String userPassword, MyAppCallback callback, String tag);
+	User signIn(String userEmail, String userPassword);
 }
