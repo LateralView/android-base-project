@@ -1,7 +1,7 @@
 package co.lateralview.myapp.ui.activities.base.fragments;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import javax.inject.Inject;
 
