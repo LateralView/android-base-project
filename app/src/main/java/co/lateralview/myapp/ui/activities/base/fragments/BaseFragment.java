@@ -5,16 +5,21 @@ import android.os.Bundle;
 
 import javax.inject.Inject;
 
+import co.lateralview.myapp.application.AppComponent;
 import co.lateralview.myapp.application.MyApp;
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.infraestructure.manager.implementation.PendingTask;
 import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
+import co.lateralview.myapp.ui.presenter.BasePresenter;
 
-public abstract class BaseFragment extends Fragment
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment
 {
 	public static final String TAG = BaseFragment.class.getSimpleName();
+
+	@Inject
+	protected T mPresenter;
 
 	@Inject
 	protected ImageManager mImageManager;
@@ -27,8 +32,10 @@ public abstract class BaseFragment extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 
-		MyApp.getAppComponent().inject(this);
+		initDependencies(MyApp.getAppComponent());
 	}
+
+	protected abstract void initDependencies(AppComponent appComponent);
 
 	protected void changeToolbarTitle(String title)
 	{

@@ -11,7 +11,7 @@ import android.widget.EditText;
 import javax.inject.Inject;
 
 import co.lateralview.myapp.R;
-import co.lateralview.myapp.application.MyApp;
+import co.lateralview.myapp.application.AppComponent;
 import co.lateralview.myapp.databinding.ActivityMainBinding;
 import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
@@ -22,7 +22,7 @@ import co.lateralview.myapp.ui.activities.base.BaseActivity;
 import co.lateralview.myapp.ui.common.MyAppCallback;
 import co.lateralview.myapp.ui.util.SnackBarHelper;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends BaseActivity<MainPresenter> implements MainView
 {
 	public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -44,8 +44,7 @@ public class MainActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 
 		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-		MyApp.getAppComponent().inject(this);
+		mBinding.setView(this);
 
 		initializeToolbar(false, "Toolbar Title");
 
@@ -64,6 +63,12 @@ public class MainActivity extends BaseActivity
 		mDummyEditText = mBinding.contentMain.dummyEditText;
 
 		mDummyEditText.setText("Hi world");
+	}
+
+	@Override
+	protected void initDependencies(AppComponent appComponent)
+	{
+		appComponent.inject(this);
 	}
 
 	private void login(final String userEmail, final String userPassword)

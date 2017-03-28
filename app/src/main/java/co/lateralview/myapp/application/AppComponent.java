@@ -8,6 +8,7 @@ import co.lateralview.myapp.infraestructure.networking.NetModule;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
 import co.lateralview.myapp.ui.activities.base.fragments.BaseFragment;
 import co.lateralview.myapp.ui.activities.main.MainActivity;
+import co.lateralview.myapp.ui.presenter.PresenterModule;
 import dagger.Component;
 
 /**
@@ -18,14 +19,12 @@ import dagger.Component;
 		modules = {
 				AppModule.class,
 				NetModule.class,
-				RepositoryModule.class
+				RepositoryModule.class,
+				PresenterModule.class
 		}
 )
 public interface AppComponent
 {
-	void inject(BaseActivity activity);
-
-	void inject(BaseFragment fragment);
 
 	void inject(MainActivity activity);
 

@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
 		tools:context=".ui.activities.main.MainActivity">
-
+	<data>
+		<variable name="view" type="co.lateralview.myapp.ui.activities.main.MainView" />
+	</data>
 	<android.support.design.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

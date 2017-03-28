@@ -15,6 +15,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import co.lateralview.myapp.R;
+import co.lateralview.myapp.application.AppComponent;
 import co.lateralview.myapp.application.MyApp;
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.domain.util.SnackBarData;
@@ -26,13 +27,17 @@ import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
 import co.lateralview.myapp.infraestructure.networking.RestConstants;
 import co.lateralview.myapp.infraestructure.networking.interfaces.BaseServer;
 import co.lateralview.myapp.ui.broadcast.InternetReceiver;
+import co.lateralview.myapp.ui.presenter.BasePresenter;
 import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.ToolbarUtils;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements InternetReceiver.InternetReceiverListener
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements InternetReceiver.InternetReceiverListener
 {
 	public static final String TAG = BaseActivity.class.getSimpleName();
+
+	@Inject
+	protected T mPresenter;
 
 	@Inject
 	protected SessionRepository mSessionRepository;
@@ -59,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 
 		MyApp.setCurrentScreenTag(getTAG());
 
-		MyApp.getAppComponent().inject(this);
+		initDependencies(MyApp.getAppComponent());
 
 		initInternetBroadcastReceiver();
 	}
@@ -101,6 +106,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 	{
 		ToolbarUtils.setToolbarTitle(this, title);
 	}
+
+	protected abstract void initDependencies(AppComponent appComponent);
 
 	protected static Intent newActivityInstance(Context fromActivity, boolean clearStack, Class toActivity)
 	{
