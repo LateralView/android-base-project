@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -67,6 +69,17 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 		initDependencies(MyApp.getAppComponent());
 
 		initInternetBroadcastReceiver();
+	}
+
+	@Override
+	public View onCreateView(View parent, String name, Context context, AttributeSet attrs)
+	{
+		if (mPresenter != null)
+		{
+			mPresenter.attachView(this);
+		}
+
+		return super.onCreateView(parent, name, context, attrs);
 	}
 
 	@Override
@@ -264,6 +277,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 	protected void onDestroy()
 	{
 		cancelPendingTasks(getTAG());
+
+		if (mPresenter != null)
+		{
+			mPresenter.detachView();
+		}
 
 		super.onDestroy();
 	}

@@ -33,6 +33,11 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment
 		super.onCreate(savedInstanceState);
 
 		initDependencies(MyApp.getAppComponent());
+
+		if (mPresenter != null)
+		{
+			mPresenter.attachView(this);
+		}
 	}
 
 	protected abstract void initDependencies(AppComponent appComponent);
@@ -71,6 +76,12 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment
 	public void onDestroy()
 	{
 		cancelPendingTasks(getTAG());
+
+		if (mPresenter != null)
+		{
+			mPresenter.detachView();
+		}
+		
 		super.onDestroy();
 	}
 
