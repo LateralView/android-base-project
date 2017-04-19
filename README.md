@@ -98,6 +98,6 @@ For more information about that check our [Wiki](https://github.com/LateralView/
 
 [Here](https://github.com/LateralView/android-lateral-skeleton/wiki) you will find all the documentation related to Android Lateral naming standards, good practices, tips, useful libraries and more!
 
-For any suggestions or if you want to join our team please contact us via [android@lateralview.net](mailto: android@lateralview.net)
+For any suggestions or if you want to join our team please contact us via [android@lateralview.net](mailto:android@lateralview.net)
 
 Happy codding!
