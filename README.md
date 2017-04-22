@@ -7,6 +7,8 @@ This project has the most common setttings applied. The main idea is to start an
 
 Developed by the [LateralView](https://lateralview.co) team.
 
+Check our [Wiki](https://github.com/LateralView/android-base-project/wiki) to learn the Best Practice in Android Development and more.
+
 ### Included Libraries
 
 - [Dagger2](https://google.github.io/dagger/)
