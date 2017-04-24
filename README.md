@@ -23,7 +23,7 @@ Fast and efficient open source media management and image loading framework.
 - [Icepick](https://github.com/frankiesardo/icepick)
 Allows us via anotations save and restore instance state.
 
-### Usefull Managers
+### Useful Managers
 
 - [Camera Manager](https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/infraestructure/manager/CameraManager.java)
 
