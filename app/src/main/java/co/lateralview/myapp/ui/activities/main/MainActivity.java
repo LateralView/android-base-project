@@ -56,9 +56,7 @@ public class MainActivity extends BaseActivity
 			public void onClick(View view)
 			{
 				SnackBarHelper.createSnackBar(view, new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
-
-				//SnackBarHelper.createSnackBar(MainActivity.this, new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
-			}
+            }
 		});
 
 		mDummyEditText = mBinding.contentMain.dummyEditText;
