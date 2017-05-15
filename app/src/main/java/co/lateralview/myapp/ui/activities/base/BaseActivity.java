@@ -285,5 +285,5 @@ public abstract class BaseActivity extends AppCompatActivity implements Internet
 		Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
 	}
 
-	public void unsubscribeObservers() {};
+	public void unsubscribeObservers() {}
 }

@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import net.lateralview.simplerestclienthandler.base.HttpErrorException;
 
+import org.reactivestreams.Subscription;
+
 import javax.inject.Inject;
 
 import co.lateralview.myapp.R;
@@ -23,8 +25,9 @@ import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
 import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.SystemUtils;
-import rx.Observer;
-import rx.Subscription;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BaseActivity
 {
@@ -54,15 +57,10 @@ public class MainActivity extends BaseActivity
 		initializeToolbar(false, "Toolbar Title");
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				SnackBarHelper.createSnackBar(view, new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
-				testRx();
-			}
-		});
+		fab.setOnClickListener(view -> {
+            SnackBarHelper.createSnackBar(view, new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
+            testRx();
+        });
 
 		mDummyEditText = mBinding.contentMain.dummyEditText;
 
@@ -74,46 +72,34 @@ public class MainActivity extends BaseActivity
 		return TAG;
 	}
 
-	private Subscription mSubscription;
+	private Disposable mSubscription;
 
 	private void testRx()
 	{
 		mSubscription = mUserRepository.login("Username", "Password")
-				.subscribe(new Observer<User>()
-				{
-					@Override
-					public void onCompleted()
-					{
-						Log.i(TAG, "onCompleted - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
-					}
+				.subscribe(
+                        user -> Log.i(TAG, "onNext: " + user + " - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread())),
 
-					@Override
-					public void onError(Throwable e)
-					{
-						if (e instanceof HttpErrorException)
-						{
-							MyAppServerError myAppServerError = ((MyAppServerError) ((HttpErrorException) e).getError());
-							//Do something
-						}
+                        error -> {
+                            if (error instanceof HttpErrorException)
+                            {
+                                MyAppServerError myAppServerError = ((MyAppServerError) ((HttpErrorException) error).getError());
+                                //Do something
+                            }
 
-						Log.i(TAG, "onError - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
-					}
+                            Log.i(TAG, "onError - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
+                        },
 
-					@Override
-					public void onNext(User user)
-					{
-						Log.i(TAG, "onNext: " + user + " - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()));
-					}
-
-				});
+                        () ->  Log.i(TAG, "onCompleted - Running on UI Thread: " + String.valueOf(SystemUtils.isRunningOnMainThread()))
+                );
 	}
 
 	@Override
 	public void unsubscribeObservers()
 	{
-		if (mSubscription != null && !mSubscription.isUnsubscribed())
+		if (mSubscription != null && !mSubscription.isDisposed())
 		{
-			mSubscription.unsubscribe();
+			mSubscription.dispose();
 		}
 	}
 }

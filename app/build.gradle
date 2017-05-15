@@ -1,20 +1,23 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt' //Required to use Dagger2
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "co.lateralview.myapp"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
 
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
+
+        jackOptions {
+            enabled true
+        }
     }
     signingConfigs {
         release {
@@ -42,12 +45,16 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
-def support_version = "25.0.1"
+def support_version = "25.3.0"
 def dagger_version = "2.5"
-def rxjava_version = '1.2.5'
-def rxandroid_version = '1.2.1'
+def rxjava_version = '2.1.0'
+def rxandroid_version = '2.0.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -58,7 +65,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${support_version}"
 
     //Dagger2 for Dependency Injection
-    apt "com.google.dagger:dagger-compiler:${dagger_version}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${dagger_version}"
     compile "com.google.dagger:dagger:${dagger_version}"
     provided 'javax.annotation:jsr250-api:1.0'
 
@@ -77,6 +84,6 @@ dependencies {
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 
     //Reactive Programming
-    compile "io.reactivex:rxjava:${rxjava_version}"
-    compile "io.reactivex:rxandroid:${rxandroid_version}"
+    compile "io.reactivex.rxjava2:rxjava:${rxjava_version}"
+    compile "io.reactivex.rxjava2:rxandroid:${rxandroid_version}"
 }

@@ -2,9 +2,10 @@ package co.lateralview.myapp.infraestructure.util;
 
 import java.util.concurrent.Callable;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by Julian Falcionelli on 12/1/2017.

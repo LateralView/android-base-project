@@ -6,7 +6,7 @@ import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import co.lateralview.myapp.infraestructure.util.RxUtils;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class UserRepositoryImpl implements UserRepository
 {
