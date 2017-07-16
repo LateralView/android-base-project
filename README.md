@@ -94,6 +94,8 @@ There is a branch with the following architectures:
 
 - MVP + Dagger2: Check develop+MVP branch [more](https://github.com/LateralView/android-base-project/wiki/Develop-MVP)
 
+- [Latest] MVP + Dagger2 + RX: Check develop+MVP+RX branch
+
 For more information about that check our [Wiki](https://github.com/LateralView/android-base-project/wiki)
 
 ### Extra
