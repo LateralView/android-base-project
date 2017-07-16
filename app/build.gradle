@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "co.lateralview.myapp"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -42,39 +42,42 @@ android {
             buildConfigField "String", "BASE_URL", "\"https://base-url-for-release\""
         }
     }
-    dataBinding {
-        enabled = true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
-def support_version = "25.3.0"
-def dagger_version = "2.5"
-def rxjava_version = '2.1.0'
-def rxandroid_version = '2.0.1'
+def version_support = '25.3.0'
+def version_dagger = '2.8'
+def version_butterknife = '8.7.0'
+def version_rxjava = '2.1.0'
+def version_rxandroid = '2.0.1'
+def version_leakcanary = '1.5'
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile "com.android.support:recyclerview-v7:${support_version}"
-    compile "com.android.support:design:${support_version}"
-    compile "com.android.support:support-v13:${support_version}"
-    compile "com.android.support:appcompat-v7:${support_version}"
+    compile "com.android.support:recyclerview-v7:${version_support}"
+    compile "com.android.support:design:${version_support}"
+    compile "com.android.support:support-v13:${version_support}"
+    compile "com.android.support:appcompat-v7:${version_support}"
 
-    //Dagger2 for Dependency Injection
-    annotationProcessor "com.google.dagger:dagger-compiler:${dagger_version}"
-    compile "com.google.dagger:dagger:${dagger_version}"
-    provided 'javax.annotation:jsr250-api:1.0'
+    // Dagger 2 - Dependency Injection
+    compile "com.google.dagger:dagger:$version_dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$version_dagger"
+
+    // Butterknife - View binding
+    compile "com.jakewharton:butterknife:$version_butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$version_butterknife"
 
     //REST Client
     compile 'julianfalcionelli:SimpleRESTClientHandler:1.2'
 
     //Image Loader
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'jp.wasabeef:glide-transformations:1.1.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
 
     //Instance State Handler
     compile 'frankiesardo:icepick:3.1.0'
@@ -84,6 +87,14 @@ dependencies {
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 
     //Reactive Programming
-    compile "io.reactivex.rxjava2:rxjava:${rxjava_version}"
-    compile "io.reactivex.rxjava2:rxandroid:${rxandroid_version}"
+    compile "io.reactivex.rxjava2:rxjava:${version_rxjava}"
+    compile "io.reactivex.rxjava2:rxandroid:${version_rxandroid}"
+
+    // Leak Canary - memory leak detection
+    compile "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+
+    // Stetho
+    compile 'com.facebook.stetho:stetho:1.5.0'
 }

@@ -9,19 +9,19 @@ import java.io.File;
 
 public interface ImageManager
 {
-	void loadCircleImage(String url, ImageView imageView);
+    void loadCircleImage(String url, ImageView imageView);
 
-	void loadImage(String url, ImageView imageView);
+    void loadImage(String url, ImageView imageView);
 
-	void loadImage(String url, SimpleTarget simpleTarget);
+    void loadImage(String url, SimpleTarget simpleTarget);
 
-	void loadGifFromRes(int res, ImageView imageView);
+    void loadGifFromRes(int res, ImageView imageView);
 
-	Bitmap compressImage(Bitmap bitmap, File file);
+    Bitmap compressImage(Bitmap bitmap, File file);
 
-	Bitmap rotateBitmap(Bitmap bitmap, int orientation);
+    Bitmap rotateBitmap(Bitmap bitmap, int orientation);
 
-	Bitmap blur(Bitmap image);
+    Bitmap blur(Bitmap image);
 
-	Bitmap transformToCircle(Bitmap bitmap);
+    Bitmap transformToCircle(Bitmap bitmap);
 }

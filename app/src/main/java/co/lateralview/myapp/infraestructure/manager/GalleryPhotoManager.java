@@ -14,132 +14,138 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
 
 public class GalleryPhotoManager
 {
-	private int mRequestCodePhotoFromGallery;
-	private int mRequestCodePhotoFromGalleryCrop;
-	private int mRequestCodeCropImage;
-	private FileManager mFileManager;
+    private int mRequestCodePhotoFromGallery;
+    private int mRequestCodePhotoFromGalleryCrop;
+    private int mRequestCodeCropImage;
+    private FileManager mFileManager;
 
-	public interface IGalleryPhotoCallback
-	{
-		void onPhotoObtained(Bitmap picture, File file);
-	}
+    public interface IGalleryPhotoCallback
+    {
+        void onPhotoObtained(Bitmap picture, File file);
+    }
 
-	protected Fragment mCallerFragment;
-	protected Activity mCallerActivity;
-	protected IGalleryPhotoCallback mCallback;
-	protected Uri mCroppedImage;
+    protected Fragment mCallerFragment;
+    protected Activity mCallerActivity;
+    protected IGalleryPhotoCallback mCallback;
+    protected Uri mCroppedImage;
 
-	public GalleryPhotoManager(Fragment fragment, IGalleryPhotoCallback callback, int requestCode)
-	{
-		this(fragment.getActivity(), callback, requestCode);
-		mCallerFragment = fragment;
-	}
+    public GalleryPhotoManager(Fragment fragment, IGalleryPhotoCallback callback, int requestCode)
+    {
+        this(fragment.getActivity(), callback, requestCode);
+        mCallerFragment = fragment;
+    }
 
-	public GalleryPhotoManager(Activity activity, IGalleryPhotoCallback callback, int requestCode)
-	{
-		mRequestCodePhotoFromGallery = requestCode;
-		mCallerActivity = activity;
-		mCallback = callback;
-		mFileManager = new FileManagerImpl(mCallerActivity);
-	}
+    public GalleryPhotoManager(Activity activity, IGalleryPhotoCallback callback, int requestCode)
+    {
+        mRequestCodePhotoFromGallery = requestCode;
+        mCallerActivity = activity;
+        mCallback = callback;
+        mFileManager = new FileManagerImpl(mCallerActivity);
+    }
 
-	public void startService()
-	{
-		start(false);
-	}
+    public void startService()
+    {
+        start(false);
+    }
 
-	public void startServiceWithCrop(int cropImageRequestCode1, int cropImageRequestCode2)
-	{
-		mRequestCodePhotoFromGalleryCrop = cropImageRequestCode1;
-		mRequestCodeCropImage = cropImageRequestCode2;
+    public void startServiceWithCrop(int cropImageRequestCode1, int cropImageRequestCode2)
+    {
+        mRequestCodePhotoFromGalleryCrop = cropImageRequestCode1;
+        mRequestCodeCropImage = cropImageRequestCode2;
 
-		start(true);
-	}
+        start(true);
+    }
 
-	private void start(boolean cropIt)
-	{
-		Intent mediaChooser = new Intent(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT ? Intent.ACTION_GET_CONTENT : Intent.ACTION_OPEN_DOCUMENT);
-		mediaChooser.setType("image/*");
+    private void start(boolean cropIt)
+    {
+        Intent mediaChooser = new Intent(
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT ? Intent.ACTION_GET_CONTENT
+                        : Intent.ACTION_OPEN_DOCUMENT);
+        mediaChooser.setType("image/*");
 
-		if (mCallerFragment != null)
-		{
-			mCallerFragment.startActivityForResult(mediaChooser, cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
-		}
-		else
-		{
-			mCallerActivity.startActivityForResult(mediaChooser, cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
-		}
-	}
+        if (mCallerFragment != null)
+        {
+            mCallerFragment.startActivityForResult(mediaChooser,
+                    cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
+        } else
+        {
+            mCallerActivity.startActivityForResult(mediaChooser,
+                    cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
+        }
+    }
 
-	public void processResult(int requestCode, int resultCode, Intent data)
-	{
-		if (resultCode == Activity.RESULT_OK)
-		{
-			if (requestCode == mRequestCodePhotoFromGallery)
-			{
-				onPhotoFromGallerySuccess(data);
-				return;
-			}
+    public void processResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if (requestCode == mRequestCodePhotoFromGallery)
+            {
+                onPhotoFromGallerySuccess(data);
+                return;
+            }
 
-			if (requestCode == mRequestCodeCropImage)
-			{
-				onPhotoFromGalleryCroppedSuccess(mCroppedImage);
-				return;
-			}
+            if (requestCode == mRequestCodeCropImage)
+            {
+                onPhotoFromGalleryCroppedSuccess(mCroppedImage);
+                return;
+            }
 
-			if (requestCode == mRequestCodePhotoFromGalleryCrop)
-			{
-				mCroppedImage = mFileManager.createPhotoUri();
+            if (requestCode == mRequestCodePhotoFromGalleryCrop)
+            {
+                mCroppedImage = mFileManager.createPhotoUri();
 
-				if (mCallerFragment != null)
-				{
-					new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(data.getData(), mCroppedImage);
-				}
-				else
-				{
-					new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(data.getData(), mCroppedImage);
-				}
+                if (mCallerFragment != null)
+                {
+                    new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(
+                            data.getData(), mCroppedImage);
+                } else
+                {
+                    new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(
+                            data.getData(), mCroppedImage);
+                }
 
-				return;
-			}
-		}
-	}
+                return;
+            }
+        }
+    }
 
-	protected void onPhotoFromGallerySuccess(Intent data)
-	{
-		if (data != null)
-		{
-			final String path = null != data.getData() ? data.getData().getPath() : data.getAction().replace("file://", "");
+    protected void onPhotoFromGallerySuccess(Intent data)
+    {
+        if (data != null)
+        {
+            final String path =
+                    null != data.getData() ? data.getData().getPath() : data.getAction().replace(
+                            "file://", "");
 
-			getPhotoFromPath(path);
-		}
-	}
+            getPhotoFromPath(path);
+        }
+    }
 
-	protected void onPhotoFromGalleryCroppedSuccess(final Uri imageUri)
-	{
-		if (imageUri != null)
-		{
-			getPhotoFromPath(imageUri.getPath());
-		}
-	}
+    protected void onPhotoFromGalleryCroppedSuccess(final Uri imageUri)
+    {
+        if (imageUri != null)
+        {
+            getPhotoFromPath(imageUri.getPath());
+        }
+    }
 
-	protected void getPhotoFromPath(final String path)
-	{
-		new PhotoDecodeTask(new PhotoDecodeTask.IPhotoDecodeTaskCallback()
-		{
-			@Override
-			public void onPhotoDecodeTaskSuccess(final Bitmap photo)
-			{
+    protected void getPhotoFromPath(final String path)
+    {
+        new PhotoDecodeTask(new PhotoDecodeTask.IPhotoDecodeTaskCallback()
+        {
+            @Override
+            public void onPhotoDecodeTaskSuccess(final Bitmap photo)
+            {
 
-				mCallerActivity.runOnUiThread(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						mCallback.onPhotoObtained(photo, new File(path));
-					}
-				});
-			}
-		}).execute(path);
-	}
+                mCallerActivity.runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        mCallback.onPhotoObtained(photo, new File(path));
+                    }
+                });
+            }
+        }).execute(path);
+    }
 }

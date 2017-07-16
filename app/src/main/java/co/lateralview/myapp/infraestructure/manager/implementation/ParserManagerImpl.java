@@ -11,19 +11,19 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.ParserManager;
  */
 public class ParserManagerImpl implements ParserManager
 {
-	public String toJson(Object object)
-	{
-		return new Gson().toJson(object);
-	}
+    public String toJson(Object object)
+    {
+        return new Gson().toJson(object);
+    }
 
-	public <T> T fromJson(String json, Class<T> type)
-	{
-		return new Gson().fromJson(json, type);
-	}
+    public <T> T fromJson(String json, Class<T> type)
+    {
+        return new Gson().fromJson(json, type);
+    }
 
-	@Override
-	public <T> T fromJson(String json, Type type)
-	{
-		return new Gson().fromJson(json, type);
-	}
+    @Override
+    public <T> T fromJson(String json, Type type)
+    {
+        return new Gson().fromJson(json, type);
+    }
 }

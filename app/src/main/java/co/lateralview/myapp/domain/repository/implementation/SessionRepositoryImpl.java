@@ -7,51 +7,51 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferences
 
 public class SessionRepositoryImpl implements SessionRepository
 {
-	private SharedPreferencesManager mSharedPreferencesManager;
-	private User mCurrentUser;
+    private SharedPreferencesManager mSharedPreferencesManager;
+    private User mCurrentUser;
 
-	public SessionRepositoryImpl(SharedPreferencesManager sharedPreferencesManager)
-	{
-		mSharedPreferencesManager = sharedPreferencesManager;
-	}
+    public SessionRepositoryImpl(SharedPreferencesManager sharedPreferencesManager)
+    {
+        mSharedPreferencesManager = sharedPreferencesManager;
+    }
 
-	public boolean isUserLoggedIn()
-	{
-		User currentUser = getCurrentUser();
-		return currentUser != null;
-	}
+    public boolean isUserLoggedIn()
+    {
+        User currentUser = getCurrentUser();
+        return currentUser != null;
+    }
 
-	public void logOut()
-	{
-		mCurrentUser = null;
+    public void logOut()
+    {
+        mCurrentUser = null;
 
-		mSharedPreferencesManager.clear();
-	}
+        mSharedPreferencesManager.clear();
+    }
 
-	public void logIn(User user)
-	{
-		save(user);
-	}
+    public void logIn(User user)
+    {
+        save(user);
+    }
 
-	public User getCurrentUser()
-	{
-		if (mCurrentUser == null)
-		{
-			mCurrentUser = mSharedPreferencesManager.get(User.SHARED_PREFERENCE_KEY, User.class);
-		}
+    public User getCurrentUser()
+    {
+        if (mCurrentUser == null)
+        {
+            mCurrentUser = mSharedPreferencesManager.get(User.SHARED_PREFERENCE_KEY, User.class);
+        }
 
-		return mCurrentUser;
-	}
+        return mCurrentUser;
+    }
 
-	public void updateUser(User user)
-	{
-		save(user);
-	}
+    public void updateUser(User user)
+    {
+        save(user);
+    }
 
-	private void save(User newUser)
-	{
-		mCurrentUser = newUser;
+    private void save(User newUser)
+    {
+        mCurrentUser = newUser;
 
-		mSharedPreferencesManager.save(User.SHARED_PREFERENCE_KEY, newUser);
-	}
+        mSharedPreferencesManager.save(User.SHARED_PREFERENCE_KEY, newUser);
+    }
 }

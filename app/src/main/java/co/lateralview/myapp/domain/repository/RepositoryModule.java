@@ -14,17 +14,18 @@ import dagger.Provides;
 @Module
 public class RepositoryModule
 {
-	@Provides
-	@Singleton
-	public SessionRepository provideSessionRepository(SharedPreferencesManager sharedPreferencesManager)
-	{
-		return new SessionRepositoryImpl(sharedPreferencesManager);
-	}
+    @Provides
+    @Singleton
+    public SessionRepository provideSessionRepository(
+            SharedPreferencesManager sharedPreferencesManager)
+    {
+        return new SessionRepositoryImpl(sharedPreferencesManager);
+    }
 
-	@Provides
-	@Singleton
-	public UserRepository provideUserRepository(UserServer userServer)
-	{
-		return new UserRepositoryImpl(userServer);
-	}
+    @Provides
+    @Singleton
+    public UserRepository provideUserRepository(UserServer userServer)
+    {
+        return new UserRepositoryImpl(userServer);
+    }
 }

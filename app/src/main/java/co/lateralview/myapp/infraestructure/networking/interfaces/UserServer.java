@@ -4,5 +4,5 @@ import co.lateralview.myapp.domain.model.User;
 
 public interface UserServer
 {
-	User signIn(String userEmail, String userPassword);
+    User signIn(String userEmail, String userPassword);
 }

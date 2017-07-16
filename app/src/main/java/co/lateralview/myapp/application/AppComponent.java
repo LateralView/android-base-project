@@ -4,10 +4,12 @@ package co.lateralview.myapp.application;
 import javax.inject.Singleton;
 
 import co.lateralview.myapp.domain.repository.RepositoryModule;
+import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
+import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
+import co.lateralview.myapp.infraestructure.manager.InternetManager;
+import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
+import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
 import co.lateralview.myapp.infraestructure.networking.NetModule;
-import co.lateralview.myapp.ui.activities.base.BaseActivity;
-import co.lateralview.myapp.ui.activities.base.fragments.BaseFragment;
-import co.lateralview.myapp.ui.activities.main.MainActivity;
 import dagger.Component;
 
 /**
@@ -15,18 +17,21 @@ import dagger.Component;
  */
 @Singleton
 @Component(
-		modules = {
-				AppModule.class,
-				NetModule.class,
-				RepositoryModule.class
-		}
+        modules = {
+                AppModule.class,
+                NetModule.class,
+                RepositoryModule.class
+        }
 )
 public interface AppComponent
 {
-	void inject(BaseActivity activity);
+    ImageManager imageManager();
 
-	void inject(BaseFragment fragment);
+    InternetManager internetManager();
 
-	void inject(MainActivity activity);
+    TaskManager taskManager();
 
+    UserRepository userReposiroty();
+
+    SessionRepository sessionReposiroty();
 }

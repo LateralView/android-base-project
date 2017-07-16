@@ -4,12 +4,12 @@ import net.lateralview.simplerestclienthandler.RestClientManager;
 
 public class BaseServerImpl
 {
-	protected static final String TAG = BaseServerImpl.class.getSimpleName();
+    protected static final String TAG = BaseServerImpl.class.getSimpleName();
 
-	protected RestClientManager mRestClientManager;
+    protected RestClientManager mRestClientManager;
 
-	public BaseServerImpl(RestClientManager restClientManager)
-	{
-		mRestClientManager = restClientManager;
-	}
+    public BaseServerImpl(RestClientManager restClientManager)
+    {
+        mRestClientManager = restClientManager;
+    }
 }

@@ -10,52 +10,53 @@ import co.lateralview.myapp.BuildConfig;
  */
 public class RestConstants
 {
-	public static final String BASE_URL = BuildConfig.BASE_URL;
+    public static final String BASE_URL = BuildConfig.BASE_URL;
 
-	public static String getUrl(String relativeUrl)
-	{
-		return BASE_URL + relativeUrl;
-	}
+    public static String getUrl(String relativeUrl)
+    {
+        return BASE_URL + relativeUrl;
+    }
 
-	public enum Subcode
-	{
-		INVALID_TOKEN(200002);
+    public enum Subcode
+    {
+        INVALID_TOKEN(200002);
 
-		private int mSubcode;
+        private int mSubcode;
 
-		Subcode(int subcode)
-		{
-			mSubcode = subcode;
-		}
+        Subcode(int subcode)
+        {
+            mSubcode = subcode;
+        }
 
-		public static Subcode fromInt(int code)
-		{
-			for (Subcode subcode : Subcode.values())
-			{
-				if (subcode.getSubcode() == code)
-				{
-					return subcode;
-				}
-			}
-			return null;
-		}
+        public static Subcode fromInt(int code)
+        {
+            for (Subcode subcode : Subcode.values())
+            {
+                if (subcode.getSubcode() == code)
+                {
+                    return subcode;
+                }
+            }
+            return null;
+        }
 
-		public int getSubcode()
-		{
-			return mSubcode;
-		}
-	}
+        public int getSubcode()
+        {
+            return mSubcode;
+        }
+    }
 
-	public static Map<String, String> getAuthorizationHeaderProvider(String token)
-	{
-		Map<String, String> authorizationMap = new HashMap<>();
-		authorizationMap.put("x-access-token", token);
+    public static Map<String, String> getAuthorizationHeaderProvider(String token)
+    {
+        Map<String, String> authorizationMap = new HashMap<>();
+        authorizationMap.put("x-access-token", token);
 
-		return authorizationMap;
-	}
+        return authorizationMap;
+    }
 
-	public static String replaceParameterIntoUrl(String url, String parameterKey, String parameterValue)
-	{
-		return 	url.replace("{" + parameterKey + "}", parameterValue);
-	}
+    public static String replaceParameterIntoUrl(String url, String parameterKey,
+            String parameterValue)
+    {
+        return url.replace("{" + parameterKey + "}", parameterValue);
+    }
 }

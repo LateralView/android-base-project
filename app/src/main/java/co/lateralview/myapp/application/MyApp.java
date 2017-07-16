@@ -2,44 +2,48 @@ package co.lateralview.myapp.application;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 
 public class MyApp extends Application
 {
-	public static final String TAG = MyApp.class.getSimpleName();
+    public static final String TAG = MyApp.class.getSimpleName();
 
-	private static String sCurrentScreenTag;
+    private static String sCurrentScreenTag;
 
-	private static AppComponent mAppComponent;
+    private static AppComponent mAppComponent;
 
-	public static AppComponent getAppComponent()
-	{
-		return mAppComponent;
-	}
+    public static AppComponent getAppComponent()
+    {
+        return mAppComponent;
+    }
 
-	public static void setCurrentScreenTag(String tag)
-	{
-		sCurrentScreenTag = tag;
-	}
+    public static void setCurrentScreenTag(String tag)
+    {
+        sCurrentScreenTag = tag;
+    }
 
-	public static boolean isApplicationRunning()
-	{
-		return sCurrentScreenTag != null;
-	}
+    public static boolean isApplicationRunning()
+    {
+        return sCurrentScreenTag != null;
+    }
 
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
 
-		initializeServices();
-	}
+        initializeServices();
+    }
 
-	private void initializeServices()
-	{
-		mAppComponent = DaggerAppComponent.builder()
-				// list of modules that are part of this component need to be created here too
-				.appModule(new AppModule(this))
-				.build();
-	}
+    private void initializeServices()
+    {
+        mAppComponent = DaggerAppComponent.builder()
+                // list of modules that are part of this component need to be created here too
+                .appModule(new AppModule(this))
+                .build();
+
+        //TODO Wrapper
+        Stetho.initializeWithDefaults(this);
+    }
 }
 

@@ -15,23 +15,24 @@ import dagger.Provides;
 @Module
 public class NetModule
 {
-	@Provides
-	@Singleton
-	public RestClientManager provideRestClient(Application application)
-	{
-		RestClientManager.initialize(application);
+    @Provides
+    @Singleton
+    public RestClientManager provideRestClient(Application application)
+    {
+        RestClientManager.initialize(application);
 
-		RequestFutureHandler.setServerErrorClass(MyAppServerError.class); //Default Server Error Class
+        RequestFutureHandler.setServerErrorClass(
+                MyAppServerError.class); //Default Server Error Class
 
-		return RestClientManager.getInstance()
-				.enableDebugLog(true);
-	}
+        return RestClientManager.getInstance()
+                .enableDebugLog(true);
+    }
 
-	@Provides
-	@Singleton
-	public UserServer provideUserServer(RestClientManager restClientManager)
-	{
-		return new UserServerImpl(restClientManager);
-	}
+    @Provides
+    @Singleton
+    public UserServer provideUserServer(RestClientManager restClientManager)
+    {
+        return new UserServerImpl(restClientManager);
+    }
 
 }

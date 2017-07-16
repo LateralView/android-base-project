@@ -8,39 +8,39 @@ import java.io.File;
 
 public class PhotoDecodeTask extends AsyncTask<String, Integer, Integer>
 {
-	private IPhotoDecodeTaskCallback mPhotoDecodeTaskListener;
+    private IPhotoDecodeTaskCallback mPhotoDecodeTaskListener;
 
-	public interface IPhotoDecodeTaskCallback
-	{
-		void onPhotoDecodeTaskSuccess(Bitmap photo);
-	}
+    public interface IPhotoDecodeTaskCallback
+    {
+        void onPhotoDecodeTaskSuccess(Bitmap photo);
+    }
 
-	public PhotoDecodeTask(IPhotoDecodeTaskCallback photoDecodeTaskListener)
-	{
-		mPhotoDecodeTaskListener = photoDecodeTaskListener;
-	}
+    public PhotoDecodeTask(IPhotoDecodeTaskCallback photoDecodeTaskListener)
+    {
+        mPhotoDecodeTaskListener = photoDecodeTaskListener;
+    }
 
-	protected Integer doInBackground(String... paths)
-	{
-		String photoPath = paths[0];
+    protected Integer doInBackground(String... paths)
+    {
+        String photoPath = paths[0];
 
-		if (!photoPath.isEmpty())
-		{
-			final File photo = new File(photoPath);
+        if (!photoPath.isEmpty())
+        {
+            final File photo = new File(photoPath);
 
-			if (photo.exists())
-			{
-				final Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
+            if (photo.exists())
+            {
+                final Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
 
-				mPhotoDecodeTaskListener.onPhotoDecodeTaskSuccess(bitmap);
-			}
-		}
+                mPhotoDecodeTaskListener.onPhotoDecodeTaskSuccess(bitmap);
+            }
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	protected void onProgressUpdate(Integer... progress)
-	{
-	}
+    protected void onProgressUpdate(Integer... progress)
+    {
+    }
 
 }

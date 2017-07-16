@@ -14,31 +14,31 @@ import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerIm
  */
 public class SocialManager
 {
-	private FileManagerImpl mFileManager;
+    private FileManagerImpl mFileManager;
 
-	public SocialManager(FileManagerImpl fileManager)
-	{
-		mFileManager = fileManager;
-	}
+    public SocialManager(FileManagerImpl fileManager)
+    {
+        mFileManager = fileManager;
+    }
 
-	public void shareData(Activity activity, String text)
-	{
-		Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
-				.setType("text/plain")
-				.setText(text)
-				.getIntent();
+    public void shareData(Activity activity, String text)
+    {
+        Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
+                .setType("text/plain")
+                .setText(text)
+                .getIntent();
 
-		activity.startActivity(shareIntent);
-	}
+        activity.startActivity(shareIntent);
+    }
 
-	public void shareData(Activity activity, String text, Bitmap image)
-	{
-		Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
-				.setType("image/jpeg")
-				.setText(text)
-				.setStream(Uri.parse(mFileManager.savePhotoToInternalStorage(image)))
-				.getIntent();
+    public void shareData(Activity activity, String text, Bitmap image)
+    {
+        Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
+                .setType("image/jpeg")
+                .setText(text)
+                .setStream(Uri.parse(mFileManager.savePhotoToInternalStorage(image)))
+                .getIntent();
 
-		activity.startActivity(shareIntent);
-	}
+        activity.startActivity(shareIntent);
+    }
 }

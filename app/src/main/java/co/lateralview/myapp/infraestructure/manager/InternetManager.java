@@ -6,18 +6,19 @@ import android.net.NetworkInfo;
 
 public class InternetManager
 {
-	private Context mContext;
+    private Context mContext;
 
-	public InternetManager(Context context)
-	{
-		mContext = context;
-	}
+    public InternetManager(Context context)
+    {
+        mContext = context;
+    }
 
-	public Boolean isOnline()
-	{
-		ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		return netInfo != null && netInfo.isConnectedOrConnecting();
-	}
+    public Boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 }

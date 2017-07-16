@@ -9,7 +9,8 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+public class DatePickerDialogFragment extends DialogFragment implements
+        DatePickerDialog.OnDateSetListener
 {
     public static final String TAG = DatePickerDialogFragment.class.getSimpleName();
 

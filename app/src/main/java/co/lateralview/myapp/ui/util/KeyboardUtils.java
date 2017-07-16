@@ -13,8 +13,10 @@ public class KeyboardUtils
     {
         if (activity.getCurrentFocus() != null)
         {
-            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                    0);
         }
     }
 
@@ -22,7 +24,8 @@ public class KeyboardUtils
     {
         if (!isKeyboardVisible(activity))
         {
-            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
             activity.getWindow().getDecorView().requestFocus();
             inputMethodManager.showSoftInput(activity.getWindow().getDecorView(), 0);
         }
@@ -30,7 +33,8 @@ public class KeyboardUtils
 
     public static boolean isKeyboardVisible(Activity activity)
     {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
 
         return imm.isAcceptingText();
     }

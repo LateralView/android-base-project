@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public class User implements Serializable
 {
-	public static final String SHARED_PREFERENCE_KEY = User.class.getSimpleName();
+    public static final String SHARED_PREFERENCE_KEY = User.class.getSimpleName();
 
 }

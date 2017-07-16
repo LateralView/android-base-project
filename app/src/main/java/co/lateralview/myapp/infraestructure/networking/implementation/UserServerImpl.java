@@ -13,73 +13,74 @@ import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 
 public class UserServerImpl extends BaseServerImpl implements UserServer
 {
-	protected static final String TAG = UserServerImpl.class.getSimpleName();
+    protected static final String TAG = UserServerImpl.class.getSimpleName();
 
-	public UserServerImpl(RestClientManager restClientManager)
-	{
-		super(restClientManager);
-	}
+    public UserServerImpl(RestClientManager restClientManager)
+    {
+        super(restClientManager);
+    }
 
-	@Override
-	public User signIn(String userEmail, String userPassword)
-	{
-		Bundle bundle = new Bundle();
+    @Override
+    public User signIn(String userEmail, String userPassword)
+    {
+        Bundle bundle = new Bundle();
 
-		bundle.putString(Parameters.EMAIL, userEmail);
-		bundle.putString(Parameters.PASSWORD, userPassword);
+        bundle.putString(Parameters.EMAIL, userEmail);
+        bundle.putString(Parameters.PASSWORD, userPassword);
 
-		return (User) mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(), new RequestFutureHandler(User.class, bundle));
-	}
+        return (User) mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(),
+                new RequestFutureHandler(User.class, bundle));
+    }
 
-	public enum Url
-	{
-		SIGN_IN(RestConstants.getUrl("users/authenticate"));
+    public enum Url
+    {
+        SIGN_IN(RestConstants.getUrl("users/authenticate"));
 
-		private String mUrl;
+        private String mUrl;
 
-		Url(String url)
-		{
-			mUrl = url;
-		}
+        Url(String url)
+        {
+            mUrl = url;
+        }
 
-		public String getUrl()
-		{
-			return mUrl;
-		}
-	}
+        public String getUrl()
+        {
+            return mUrl;
+        }
+    }
 
-	public enum Subcode
-	{
-		INVALID_CREDENTIALS(200001);
+    public enum Subcode
+    {
+        INVALID_CREDENTIALS(200001);
 
-		private int mSubcode;
+        private int mSubcode;
 
-		Subcode(int subcode)
-		{
-			mSubcode = subcode;
-		}
+        Subcode(int subcode)
+        {
+            mSubcode = subcode;
+        }
 
-		public static Subcode fromInt(int code)
-		{
-			for (Subcode subcode : Subcode.values())
-			{
-				if (subcode.getSubcode() == code)
-				{
-					return subcode;
-				}
-			}
-			return null;
-		}
+        public static Subcode fromInt(int code)
+        {
+            for (Subcode subcode : Subcode.values())
+            {
+                if (subcode.getSubcode() == code)
+                {
+                    return subcode;
+                }
+            }
+            return null;
+        }
 
-		public int getSubcode()
-		{
-			return mSubcode;
-		}
-	}
+        public int getSubcode()
+        {
+            return mSubcode;
+        }
+    }
 
-	public static class Parameters
-	{
-		public static final String EMAIL = "email";
-		public static final String PASSWORD = "password";
-	}
+    public static class Parameters
+    {
+        public static final String EMAIL = "email";
+        public static final String PASSWORD = "password";
+    }
 }

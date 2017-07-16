@@ -10,13 +10,13 @@ import java.io.File;
  */
 public interface FileManager
 {
-	String savePhotoToInternalStorage(Bitmap bitmapImage);
+    String savePhotoToInternalStorage(Bitmap bitmapImage);
 
-	File createPhotoFile();
+    File createPhotoFile();
 
-	Uri getUri(File file);
+    Uri getUri(File file);
 
-	Uri createPhotoUri();
+    Uri createPhotoUri();
 
-	void saveBitmapToFile(Bitmap croppedImage, Uri saveUri);
+    void saveBitmapToFile(Bitmap croppedImage, Uri saveUri);
 }

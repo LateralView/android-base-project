@@ -12,37 +12,38 @@ import co.lateralview.myapp.R;
  */
 public class ToolbarUtils
 {
-	public static void initializeToolbar(AppCompatActivity activity, boolean backEnabled, @Nullable String title)
-	{
-		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+    public static void initializeToolbar(AppCompatActivity activity, boolean backEnabled,
+            @Nullable String title)
+    {
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
 
-		if (toolbar != null)
-		{
-			activity.setSupportActionBar(toolbar);
+        if (toolbar != null)
+        {
+            activity.setSupportActionBar(toolbar);
 
-			setToolbarTitle(activity, title != null && !title.isEmpty() ? title : "");
+            setToolbarTitle(activity, title != null && !title.isEmpty() ? title : "");
 
-			activity.getSupportActionBar().setDisplayHomeAsUpEnabled(backEnabled);
-			activity.getSupportActionBar().setHomeButtonEnabled(backEnabled);
-		}
-	}
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(backEnabled);
+            activity.getSupportActionBar().setHomeButtonEnabled(backEnabled);
+        }
+    }
 
-	public static void setActionBarVisibility(Activity activity, int visibility)
-	{
-		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+    public static void setActionBarVisibility(Activity activity, int visibility)
+    {
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
 
-		if (toolbar != null)
-		{
-			toolbar.setVisibility(visibility);
-		}
-	}
+        if (toolbar != null)
+        {
+            toolbar.setVisibility(visibility);
+        }
+    }
 
-	public static void setToolbarTitle(AppCompatActivity activity, String title)
-	{
-		if (activity.getSupportActionBar() != null)
-		{
-			activity.getSupportActionBar().setTitle(title);
-		}
-	}
+    public static void setToolbarTitle(AppCompatActivity activity, String title)
+    {
+        if (activity.getSupportActionBar() != null)
+        {
+            activity.getSupportActionBar().setTitle(title);
+        }
+    }
 
 }

@@ -9,42 +9,42 @@ import co.lateralview.myapp.infraestructure.manager.InternetManager;
 
 public class InternetReceiver extends BroadcastReceiver
 {
-	private InternetReceiverListener mReceiverHandler;
-	private InternetManager mInternetManager;
+    private InternetReceiverListener mReceiverHandler;
+    private InternetManager mInternetManager;
 
-	public InternetReceiver(InternetReceiverListener handler, InternetManager internetManager)
-	{
-		mReceiverHandler = handler;
-		mInternetManager = internetManager;
-	}
+    public InternetReceiver(InternetReceiverListener handler, InternetManager internetManager)
+    {
+        mReceiverHandler = handler;
+        mInternetManager = internetManager;
+    }
 
-	@Override
-	public void onReceive(final Context context, final Intent intent)
-	{
-		if (mInternetManager.isOnline())
-		{
-			mReceiverHandler.onInternetServiceEnabled();
-		} else
-		{
-			mReceiverHandler.onInternetServiceDisabled();
-		}
-	}
+    @Override
+    public void onReceive(final Context context, final Intent intent)
+    {
+        if (mInternetManager.isOnline())
+        {
+            mReceiverHandler.onInternetServiceEnabled();
+        } else
+        {
+            mReceiverHandler.onInternetServiceDisabled();
+        }
+    }
 
-	public IntentFilter getIntentFilter()
-	{
-		IntentFilter locationServicesChangeFilter = new IntentFilter();
+    public IntentFilter getIntentFilter()
+    {
+        IntentFilter locationServicesChangeFilter = new IntentFilter();
 
-		locationServicesChangeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        locationServicesChangeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
 
-		return locationServicesChangeFilter;
-	}
+        return locationServicesChangeFilter;
+    }
 
-	public interface InternetReceiverListener
-	{
-		void onInternetServiceEnabled();
+    public interface InternetReceiverListener
+    {
+        void onInternetServiceEnabled();
 
-		void onInternetServiceDisabled();
-	}
+        void onInternetServiceDisabled();
+    }
 
 
 }

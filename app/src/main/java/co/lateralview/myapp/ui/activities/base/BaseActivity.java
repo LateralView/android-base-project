@@ -1,5 +1,6 @@
 package co.lateralview.myapp.ui.activities.base;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,278 +13,253 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.lateralview.myapp.R;
+import co.lateralview.myapp.application.AppComponent;
 import co.lateralview.myapp.application.MyApp;
-import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.domain.util.SnackBarData;
 import co.lateralview.myapp.infraestructure.manager.InternetManager;
-import co.lateralview.myapp.infraestructure.manager.implementation.PendingTask;
 import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
-import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
-import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
-import co.lateralview.myapp.infraestructure.networking.RestConstants;
+import co.lateralview.myapp.ui.activities.base.fragments.BaseFragment;
 import co.lateralview.myapp.ui.broadcast.InternetReceiver;
 import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.ToolbarUtils;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements InternetReceiver.InternetReceiverListener
+public abstract class BaseActivity<T extends BasePresenter> extends
+        AppCompatActivity implements InternetReceiver.InternetReceiverListener, Base.View
 {
-	public static final String TAG = BaseActivity.class.getSimpleName();
+    public static final String TAG = BaseActivity.class.getSimpleName();
 
-	@Inject
-	protected SessionRepository mSessionRepository;
-	@Inject
-	protected ImageManager mImageManager;
-	@Inject
-	protected InternetManager mInternetManager;
-	@Inject
-	protected TaskManager mTaskManager; //Help us to retry failed tasks
+    @Inject
+    protected T mPresenter;
+    @Inject
+    protected ImageManager mImageManager;
+    @Inject
+    protected InternetManager mInternetManager;
 
-	private ProgressDialog mProgressDialog;
-	private InternetReceiver mInternetReceiver;
-	private IntentFilter mInternetStatusChangedFilter;
-	private boolean mProcessInternetChangeReceiver = false;
+    private ProgressDialog mProgressDialog;
+    private InternetReceiver mInternetReceiver;
+    private IntentFilter mInternetStatusChangedFilter;
+    private boolean mProcessInternetChangeReceiver = false;
 
-	private Snackbar mNoInternetSnackbar, mConnectionErrorSnackbar;
+    private Snackbar mNoInternetSnackbar, mConnectionErrorSnackbar;
 
-	@Override
-	protected void onCreate(@Nullable Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+    private List<WeakReference<Fragment>> mFragments = new ArrayList<>();
 
-		MyApp.setCurrentScreenTag(getTAG());
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
 
-		MyApp.getAppComponent().inject(this);
+        MyApp.setCurrentScreenTag(getTAG());
 
-		initInternetBroadcastReceiver();
-	}
+        injectDependencies();
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case android.R.id.home:
-				onBackPressed();
-				break;
-		}
+        initInternetBroadcastReceiver();
+    }
 
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
 
-	public void initializeToolbar(boolean backEnabled)
-	{
-		initializeToolbar(backEnabled, null);
-	}
+        return super.onOptionsItemSelected(item);
+    }
 
-	public void initializeToolbar(boolean backEnabled, @Nullable int title)
-	{
-		initializeToolbar(backEnabled, getString(title));
-	}
+    public void initializeToolbar(boolean backEnabled)
+    {
+        initializeToolbar(backEnabled, null);
+    }
 
-	public void initializeToolbar(boolean backEnabled, @Nullable String title)
-	{
-		ToolbarUtils.initializeToolbar(this, backEnabled, title);
-	}
+    public void initializeToolbar(boolean backEnabled, @Nullable int title)
+    {
+        initializeToolbar(backEnabled, getString(title));
+    }
 
-	public void setActionBarVisibility(int visibility)
-	{
-		ToolbarUtils.setActionBarVisibility(this, visibility);
-	}
+    public void initializeToolbar(boolean backEnabled, @Nullable String title)
+    {
+        ToolbarUtils.initializeToolbar(this, backEnabled, title);
+    }
 
-	public void setToolbarTitle(String title)
-	{
-		ToolbarUtils.setToolbarTitle(this, title);
-	}
+    public void setActionBarVisibility(int visibility)
+    {
+        ToolbarUtils.setActionBarVisibility(this, visibility);
+    }
 
-	protected static Intent newActivityInstance(Context fromActivity, boolean clearStack, Class toActivity)
-	{
-		Intent intent = new Intent(fromActivity, toActivity);
+    public void setToolbarTitle(String title)
+    {
+        ToolbarUtils.setToolbarTitle(this, title);
+    }
 
-		if (clearStack)
-		{
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		}
+    protected AppComponent getAppComponent()
+    {
+        return MyApp.getAppComponent();
+    }
 
-		return intent;
-	}
+    protected Base.BaseViewModule getBaseActivityModule()
+    {
+        return new Base.BaseViewModule(this, this);
+    }
 
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
+    protected abstract void injectDependencies();
 
-		registerReceiver(mInternetReceiver, mInternetStatusChangedFilter);
-	}
+    protected static Intent newActivityInstance(Context fromActivity, boolean clearStack,
+            Class toActivity)
+    {
+        Intent intent = new Intent(fromActivity, toActivity);
+
+        if (clearStack)
+        {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+
+        return intent;
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        registerReceiver(mInternetReceiver, mInternetStatusChangedFilter);
+    }
 
 
-	@Override
-	protected void onStop()
-	{
-		unregisterReceiver(mInternetReceiver);
+    @Override
+    protected void onStop()
+    {
+        unregisterReceiver(mInternetReceiver);
 
-		super.onStop();
-	}
+        super.onStop();
+    }
 
-	private void initInternetBroadcastReceiver()
-	{
-		mInternetReceiver = new InternetReceiver(this, mInternetManager);
-		mInternetStatusChangedFilter = mInternetReceiver.getIntentFilter();
-	}
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        mFragments.add(new WeakReference(fragment));
+    }
 
-	@Override
-	public void onInternetServiceEnabled()
-	{
-		if (mProcessInternetChangeReceiver)
-		{
-			if (mNoInternetSnackbar != null)
-			{
-				mNoInternetSnackbar.dismiss();
-			}
+    private void initInternetBroadcastReceiver()
+    {
+        mInternetReceiver = new InternetReceiver(this, mInternetManager);
+        mInternetStatusChangedFilter = mInternetReceiver.getIntentFilter();
+    }
 
-			mTaskManager.callPendingTasks();
-		} else
-		{
-			mProcessInternetChangeReceiver = true;
-		}
-	}
+    @Override
+    public void onInternetServiceEnabled()
+    {
+        if (mProcessInternetChangeReceiver)
+        {
+            if (mNoInternetSnackbar != null)
+            {
+                mNoInternetSnackbar.dismiss();
+            }
 
-	@Override
-	public void onInternetServiceDisabled()
-	{
-		if (!mProcessInternetChangeReceiver)
-		{
-			mProcessInternetChangeReceiver = true;
-		}
+        } else
+        {
+            mProcessInternetChangeReceiver = true;
+        }
 
-		if (canShowInternetConnectionProblemsSnackbar())
-		{
-			showInternetConnectionProblemsSnackbar();
-		}
-	}
+        notifyFragmentsConnectivityChange(true);
+    }
 
-	public void showProgressDialog(String message)
-	{
-		if (mProgressDialog == null)
-		{
-			mProgressDialog = new ProgressDialog(this);
-			mProgressDialog.setCancelable(false);
-		}
+    @Override
+    public void onInternetServiceDisabled()
+    {
+        if (!mProcessInternetChangeReceiver)
+        {
+            mProcessInternetChangeReceiver = true;
+        }
 
-		if (!mProgressDialog.isShowing())
-		{
-			mProgressDialog.show();
-			mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-			mProgressDialog.setContentView(R.layout.layout_progress_dialog);
+        if (canShowInternetConnectionProblemsSnackbar())
+        {
+            showInternetConnectionProblemsSnackbar();
+        }
 
-			if (message != null)
-			{
-				mProgressDialog.setMessage(message);
-			}
-		}
-	}
+        notifyFragmentsConnectivityChange(false);
+    }
 
-	public void showProgressDialog()
-	{
-		showProgressDialog(null);
-	}
+    private void notifyFragmentsConnectivityChange(boolean enabled) {
+        for (WeakReference<Fragment> fragmentWeakReference : mFragments) {
+            Fragment fragment = fragmentWeakReference.get();
 
-	public void hideProgressDialog()
-	{
-		if (mProgressDialog != null && mProgressDialog.isShowing())
-		{
-			mProgressDialog.dismiss();
-		}
-	}
+            if (fragment != null && fragment instanceof BaseFragment) {
+                BaseFragment baseFragment = (BaseFragment) fragment;
 
-	public abstract String getTAG();
+                if (enabled) {
+                    baseFragment.onInternetServiceEnabled();
+                } else {
+                    baseFragment.onInternetServiceDisabled();
+                }
+            }
+        }
+    }
 
-	public void baseErrorHandler(MyAppServerError error)
-	{
-		baseErrorHandler(error, null);
-	}
+    public void showProgressDialog(String message)
+    {
+        if (mProgressDialog == null)
+        {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setCancelable(false);
+        }
 
-	public void baseErrorHandler(MyAppServerError error, final PendingTask pendingTask)
-	{
-		if (error != null)
-		{
-			switch (RestConstants.Subcode.fromInt(error.getErrorCode()))
-			{
-				case INVALID_TOKEN:
-				{
-					mSessionRepository.logOut();
-					//Do something
-					return;
-				}
-			}
-		}
+        if (!mProgressDialog.isShowing())
+        {
+            mProgressDialog.show();
+            mProgressDialog.getWindow().setBackgroundDrawable(
+                    new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            mProgressDialog.setContentView(R.layout.layout_progress_dialog);
 
-		if (pendingTask != null)
-		{
-			mTaskManager.addTask(pendingTask);
-		}
+            if (message != null)
+            {
+                mProgressDialog.setMessage(message);
+            }
+        }
+    }
 
-		if (!mInternetManager.isOnline())
-		{
-			showInternetConnectionProblemsSnackbar();
-		} else
-		{
-			SnackBarData snackBarData = new SnackBarData(SnackBarData.SnackBarType.CONNECTION_ERROR, null);
+    public void showProgressDialog()
+    {
+        showProgressDialog(null);
+    }
 
-			if (pendingTask != null)
-			{
-				snackBarData.setSnackBarListener(new SnackBarHelper.ISnackBarHandler()
-				{
-					@Override
-					public void onActionClick()
-					{
-						pendingTask.callPendingTask();
-					}
-				});
-			}
+    public void hideProgressDialog()
+    {
+        if (mProgressDialog != null && mProgressDialog.isShowing())
+        {
+            mProgressDialog.dismiss();
+        }
+    }
 
-			mConnectionErrorSnackbar = SnackBarHelper.createSnackBar(this, snackBarData);
-			mConnectionErrorSnackbar.show();
-		}
-	}
+    public abstract String getTAG();
 
-	@Override
-	protected void onDestroy()
-	{
-		cancelPendingTasks(getTAG());
+    protected void showInternetConnectionProblemsSnackbar()
+    {
+        if (mNoInternetSnackbar == null)
+        {
+            mNoInternetSnackbar = SnackBarHelper.createSnackBar(this,
+                    new SnackBarData(SnackBarData.SnackBarType.NO_INTERNET, null));
+        }
 
-		unsubscribeObservers();
+        mNoInternetSnackbar.show();
+    }
 
-		super.onDestroy();
-	}
+    protected boolean canShowInternetConnectionProblemsSnackbar()
+    {
+        return true;
+    }
 
-	public void cancelPendingTasks(String tag)
-	{
-		mTaskManager.removeTasks(tag);
-	}
-
-	protected void showInternetConnectionProblemsSnackbar()
-	{
-		if (mNoInternetSnackbar == null)
-		{
-			mNoInternetSnackbar = SnackBarHelper.createSnackBar(this, new SnackBarData(SnackBarData.SnackBarType.NO_INTERNET, null));
-		}
-
-		mNoInternetSnackbar.show();
-	}
-
-	protected boolean canShowInternetConnectionProblemsSnackbar()
-	{
-		return true;
-	}
-
-	public void showComingSoonMessage()
-	{
-		Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
-	}
-
-	public void unsubscribeObservers() {}
+    public void showComingSoonMessage()
+    {
+        Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+    }
 }

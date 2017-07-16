@@ -13,61 +13,61 @@ import java.security.NoSuchAlgorithmException;
 
 public class SystemManager
 {
-	private Context mContext;
+    private Context mContext;
 
-	public SystemManager(Context context)
-	{
-		mContext = context;
-	}
+    public SystemManager(Context context)
+    {
+        mContext = context;
+    }
 
-	/**
-	 * Shown in console the KeyHash application.
-	 */
-	public void showKeyHash()
-	{
-		try
-		{
-			PackageInfo info = mContext.getPackageManager().getPackageInfo(
-					mContext.getPackageName(),
-					PackageManager.GET_SIGNATURES);
+    /**
+     * Shown in console the KeyHash application.
+     */
+    public void showKeyHash()
+    {
+        try
+        {
+            PackageInfo info = mContext.getPackageManager().getPackageInfo(
+                    mContext.getPackageName(),
+                    PackageManager.GET_SIGNATURES);
 
-			for (Signature signature : info.signatures)
-			{
-				MessageDigest md = MessageDigest.getInstance("SHA");
-				md.update(signature.toByteArray());
-				Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-			}
-		} catch (PackageManager.NameNotFoundException e)
-		{
+            for (Signature signature : info.signatures)
+            {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e)
+        {
 
-		} catch (NoSuchAlgorithmException e)
-		{
+        } catch (NoSuchAlgorithmException e)
+        {
 
-		}
-	}
+        }
+    }
 
-	public void showDeviceInfo()
-	{
-		switch (mContext.getResources().getDisplayMetrics().densityDpi)
-		{
-			case DisplayMetrics.DENSITY_LOW:
-				Log.i("DeviceScreenDensity", "ldpi");
-				break;
-			case DisplayMetrics.DENSITY_MEDIUM:
-				Log.i("DeviceScreenDensity", "mdpi");
-				break;
-			case DisplayMetrics.DENSITY_HIGH:
-				Log.i("DeviceScreenDensity", "hdpi");
-				break;
-			case DisplayMetrics.DENSITY_XHIGH:
-				Log.i("DeviceScreenDensity", "xhdpi");
-				break;
-			case DisplayMetrics.DENSITY_XXHIGH:
-				Log.i("DeviceScreenDensity", "xxhdpi");
-				break;
-			case DisplayMetrics.DENSITY_XXXHIGH:
-				Log.i("DeviceScreenDensity", "xxxhdpi");
-				break;
-		}
-	}
+    public void showDeviceInfo()
+    {
+        switch (mContext.getResources().getDisplayMetrics().densityDpi)
+        {
+            case DisplayMetrics.DENSITY_LOW:
+                Log.i("DeviceScreenDensity", "ldpi");
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                Log.i("DeviceScreenDensity", "mdpi");
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                Log.i("DeviceScreenDensity", "hdpi");
+                break;
+            case DisplayMetrics.DENSITY_XHIGH:
+                Log.i("DeviceScreenDensity", "xhdpi");
+                break;
+            case DisplayMetrics.DENSITY_XXHIGH:
+                Log.i("DeviceScreenDensity", "xxhdpi");
+                break;
+            case DisplayMetrics.DENSITY_XXXHIGH:
+                Log.i("DeviceScreenDensity", "xxxhdpi");
+                break;
+        }
+    }
 }

@@ -1,9 +1,9 @@
 package co.lateralview.myapp.domain.repository.interfaces;
 
 import co.lateralview.myapp.domain.model.User;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface UserRepository
 {
-	Observable<User> login(String userEmail, String userPassword);
+    Single<User> login(String userEmail, String userPassword);
 }

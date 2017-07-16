@@ -4,11 +4,11 @@ import co.lateralview.myapp.infraestructure.manager.implementation.PendingTask;
 
 public interface TaskManager
 {
-	void callPendingTasks();
+    void callPendingTasks();
 
-	void addTask(PendingTask task);
+    void addTask(PendingTask task);
 
-	void removeTasks(String tag);
+    void removeTasks(String tag);
 
-	void clearQueue();
+    void clearQueue();
 }

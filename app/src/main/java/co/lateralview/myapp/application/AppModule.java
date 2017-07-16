@@ -25,60 +25,61 @@ import dagger.Provides;
 @Module
 public class AppModule
 {
-	protected Application mApplication;
+    protected Application mApplication;
 
-	public AppModule(Application application)
-	{
-		mApplication = application;
-	}
+    public AppModule(Application application)
+    {
+        mApplication = application;
+    }
 
-	@Provides
-	@Singleton
-	public Application providesApplication()
-	{
-		return mApplication;
-	}
+    @Provides
+    @Singleton
+    public Application providesApplication()
+    {
+        return mApplication;
+    }
 
-	@Provides
-	public ImageManager providesImageManager(Application application)
-	{
-		return new ImageManagerImpl(application);
-	}
+    @Provides
+    public ImageManager providesImageManager(Application application)
+    {
+        return new ImageManagerImpl(application);
+    }
 
-	@Provides
-	public ParserManager providesParserManager()
-	{
-		return new ParserManagerImpl();
-	}
+    @Provides
+    public ParserManager providesParserManager()
+    {
+        return new ParserManagerImpl();
+    }
 
-	@Provides
-	public SharedPreferencesManager providesSharedPreferencesManager(Application application, ParserManager parserManager)
-	{
-		return new SharedPreferencesManagerImpl(application, parserManager);
-	}
+    @Provides
+    public SharedPreferencesManager providesSharedPreferencesManager(Application application,
+            ParserManager parserManager)
+    {
+        return new SharedPreferencesManagerImpl(application, parserManager);
+    }
 
-	@Provides
-	public SystemManager providesSystemManager(Application application)
-	{
-		return new SystemManager(application);
-	}
+    @Provides
+    public SystemManager providesSystemManager(Application application)
+    {
+        return new SystemManager(application);
+    }
 
-	@Provides
-	public InternetManager providesInternetManager(Application application)
-	{
-		return new InternetManager(application);
-	}
+    @Provides
+    public InternetManager providesInternetManager(Application application)
+    {
+        return new InternetManager(application);
+    }
 
-	@Provides
-	@Singleton
-	public TaskManager providesTaskManager()
-	{
-		return new TaskManagerImpl();
-	}
+    @Provides
+    @Singleton
+    public TaskManager providesTaskManager()
+    {
+        return new TaskManagerImpl();
+    }
 
-	@Provides
-	public MailManager providesMailManager()
-	{
-		return new MailManager();
-	}
+    @Provides
+    public MailManager providesMailManager()
+    {
+        return new MailManager();
+    }
 }

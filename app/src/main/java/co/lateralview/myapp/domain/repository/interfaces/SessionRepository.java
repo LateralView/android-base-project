@@ -7,13 +7,13 @@ import co.lateralview.myapp.domain.model.User;
  */
 public interface SessionRepository
 {
-	boolean isUserLoggedIn();
+    boolean isUserLoggedIn();
 
-	void logOut();
+    void logOut();
 
-	void logIn(User user);
+    void logIn(User user);
 
-	User getCurrentUser();
+    User getCurrentUser();
 
-	void updateUser(User user);
+    void updateUser(User user);
 }

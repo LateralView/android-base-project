@@ -8,48 +8,47 @@ import com.soundcloud.android.crop.Crop;
 
 public class CropManager
 {
-	public static final int MAX_IMAGE_WIDTH = 600;
-	public static final int MAX_IMAGE_HEIGHT = 600;
+    public static final int MAX_IMAGE_WIDTH = 600;
+    public static final int MAX_IMAGE_HEIGHT = 600;
 
-	protected Activity mCallerActivity;
-	protected Fragment mCallerFragment;
+    protected Activity mCallerActivity;
+    protected Fragment mCallerFragment;
 
-	protected int mRequestId;
+    protected int mRequestId;
 
-	public CropManager(Fragment fragment, int requestId)
-	{
-		this(fragment.getActivity(), requestId);
-		mCallerFragment = fragment;
-	}
+    public CropManager(Fragment fragment, int requestId)
+    {
+        this(fragment.getActivity(), requestId);
+        mCallerFragment = fragment;
+    }
 
-	public CropManager(Activity activity, int requestId)
-	{
-		mCallerActivity = activity;
-		mRequestId = requestId;
-	}
+    public CropManager(Activity activity, int requestId)
+    {
+        mCallerActivity = activity;
+        mRequestId = requestId;
+    }
 
-	public boolean requestCrop(Uri imagePath, Uri outPath)
-	{
-		//Uri croppedImage = new FileManagerImpl().createPhotoUri();
+    public boolean requestCrop(Uri imagePath, Uri outPath)
+    {
+        //Uri croppedImage = new FileManagerImpl().createPhotoUri();
 
-		if (outPath != null)
-		{
-			if (mCallerFragment != null)
-			{
-				Crop.of(imagePath, outPath)
-						.withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
-						.start(mCallerActivity, mCallerFragment, mRequestId);
-			}
-			else
-			{
-				Crop.of(imagePath, outPath)
-						.withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
-						.start(mCallerActivity, mRequestId);
-			}
+        if (outPath != null)
+        {
+            if (mCallerFragment != null)
+            {
+                Crop.of(imagePath, outPath)
+                        .withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
+                        .start(mCallerActivity, mCallerFragment, mRequestId);
+            } else
+            {
+                Crop.of(imagePath, outPath)
+                        .withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
+                        .start(mCallerActivity, mRequestId);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
