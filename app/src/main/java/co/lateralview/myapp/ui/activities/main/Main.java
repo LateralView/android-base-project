@@ -1,7 +1,3 @@
-/*
- * Copyright © 2017 Razer Inc. All rights reserved.
- */
-
 package co.lateralview.myapp.ui.activities.main;
 
 import co.lateralview.myapp.domain.model.User;

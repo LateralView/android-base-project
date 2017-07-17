@@ -1,7 +1,3 @@
-/*
- * Copyright © 2017 Razer Inc. All rights reserved.
- */
-
 package co.lateralview.myapp.ui.activities.base;
 
 import android.app.Activity;
