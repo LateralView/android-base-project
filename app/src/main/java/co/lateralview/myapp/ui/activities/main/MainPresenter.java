@@ -11,12 +11,11 @@ import io.reactivex.disposables.CompositeDisposable;
 @ActivityScoped
 public class MainPresenter extends BasePresenter implements Main.Presenter
 {
+    protected CompositeDisposable mSubscriptions = new CompositeDisposable();
     @Inject
     Main.View mView;
     @Inject
     UserRepository mUserRepository;
-
-    protected CompositeDisposable mSubscriptions = new CompositeDisposable();
 
     @Inject
     MainPresenter()

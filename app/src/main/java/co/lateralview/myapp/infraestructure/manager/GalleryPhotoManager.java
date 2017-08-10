@@ -14,21 +14,14 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
 
 public class GalleryPhotoManager
 {
-    private int mRequestCodePhotoFromGallery;
-    private int mRequestCodePhotoFromGalleryCrop;
-    private int mRequestCodeCropImage;
-    private FileManager mFileManager;
-
-    public interface IGalleryPhotoCallback
-    {
-        void onPhotoObtained(Bitmap picture, File file);
-    }
-
     protected Fragment mCallerFragment;
     protected Activity mCallerActivity;
     protected IGalleryPhotoCallback mCallback;
     protected Uri mCroppedImage;
-
+    private int mRequestCodePhotoFromGallery;
+    private int mRequestCodePhotoFromGalleryCrop;
+    private int mRequestCodeCropImage;
+    private FileManager mFileManager;
     public GalleryPhotoManager(Fragment fragment, IGalleryPhotoCallback callback, int requestCode)
     {
         this(fragment.getActivity(), callback, requestCode);
@@ -147,5 +140,10 @@ public class GalleryPhotoManager
                 });
             }
         }).execute(path);
+    }
+
+    public interface IGalleryPhotoCallback
+    {
+        void onPhotoObtained(Bitmap picture, File file);
     }
 }

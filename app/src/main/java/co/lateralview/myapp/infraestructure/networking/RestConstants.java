@@ -1,8 +1,5 @@
 package co.lateralview.myapp.infraestructure.networking;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import co.lateralview.myapp.BuildConfig;
 
 /**
@@ -12,10 +9,8 @@ public class RestConstants
 {
     public static final String BASE_URL = BuildConfig.BASE_URL;
 
-    public static String getUrl(String relativeUrl)
-    {
-        return BASE_URL + relativeUrl;
-    }
+    //TODO Set Auth Header
+    public static final String HEADER_AUTH = "auth-header";
 
     public enum Subcode
     {
@@ -46,17 +41,9 @@ public class RestConstants
         }
     }
 
-    public static Map<String, String> getAuthorizationHeaderProvider(String token)
+    public static String getUrl(String relativeUrl)
     {
-        Map<String, String> authorizationMap = new HashMap<>();
-        authorizationMap.put("x-access-token", token);
-
-        return authorizationMap;
+        return BASE_URL + relativeUrl;
     }
 
-    public static String replaceParameterIntoUrl(String url, String parameterKey,
-            String parameterValue)
-    {
-        return url.replace("{" + parameterKey + "}", parameterValue);
-    }
 }

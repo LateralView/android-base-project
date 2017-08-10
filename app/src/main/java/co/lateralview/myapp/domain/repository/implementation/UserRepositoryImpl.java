@@ -1,8 +1,5 @@
 package co.lateralview.myapp.domain.repository.implementation;
 
-import java.util.concurrent.Callable;
-
-import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import co.lateralview.myapp.infraestructure.util.RxUtils;
@@ -20,13 +17,7 @@ public class UserRepositoryImpl implements UserRepository
     @Override
     public Single login(final String userEmail, final String userPassword)
     {
-        return RxUtils.newSingleFromIoToMainThread(new Callable<User>()
-        {
-            @Override
-            public User call() //All background work
-            {
-                return mUserServer.signIn(userEmail, userPassword);
-            }
-        });
+        return mUserServer.login(userEmail, userPassword)
+                .compose(RxUtils.applySingleSchedulers());
     }
 }

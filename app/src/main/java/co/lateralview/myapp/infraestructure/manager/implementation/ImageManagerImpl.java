@@ -29,6 +29,8 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class ImageManagerImpl implements ImageManager
 {
+    private static final float BITMAP_SCALE = 0.4f;
+    private static final float BLUR_RADIUS = 7.5f;
     private Context mContext;
 
     public ImageManagerImpl(Context context)
@@ -146,9 +148,6 @@ public class ImageManagerImpl implements ImageManager
             return null;
         }
     }
-
-    private static final float BITMAP_SCALE = 0.4f;
-    private static final float BLUR_RADIUS = 7.5f;
 
     public Bitmap blur(Bitmap image)
     {

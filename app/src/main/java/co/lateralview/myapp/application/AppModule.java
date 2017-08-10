@@ -2,6 +2,9 @@ package co.lateralview.myapp.application;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.inject.Singleton;
 
 import co.lateralview.myapp.infraestructure.manager.InternetManager;
@@ -15,6 +18,8 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.ParserManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferencesManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
+import co.lateralview.myapp.infraestructure.networking.gson.AnnotationExclusionStrategy;
+import co.lateralview.myapp.ui.util.DateUtils;
 import dagger.Module;
 import dagger.Provides;
 
@@ -46,9 +51,19 @@ public class AppModule
     }
 
     @Provides
-    public ParserManager providesParserManager()
+    public Gson providesGson()
     {
-        return new ParserManagerImpl();
+        //TODO Check ISO FORMAT
+        return new GsonBuilder()
+                .setDateFormat(DateUtils.ISO_8601_PATTERN)
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .create();
+    }
+
+    @Provides
+    public ParserManager providesParserManager(Gson gson)
+    {
+        return new ParserManagerImpl(gson);
     }
 
     @Provides

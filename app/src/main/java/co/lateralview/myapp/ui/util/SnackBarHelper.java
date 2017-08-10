@@ -11,11 +11,6 @@ import co.lateralview.myapp.domain.util.SnackBarData;
 
 public class SnackBarHelper
 {
-    public interface ISnackBarHandler
-    {
-        void onActionClick();
-    }
-
     public static Snackbar createSnackBar(Activity activity, SnackBarData snackBar)
     {
         return createSnackBar(getActivityViewContainer(activity), snackBar);
@@ -101,5 +96,10 @@ public class SnackBarHelper
     private static final View getActivityViewContainer(Activity activity)
     {
         return activity.getWindow().getDecorView().findViewById(android.R.id.content);
+    }
+
+    public interface ISnackBarHandler
+    {
+        void onActionClick();
     }
 }
