@@ -20,22 +20,16 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 
 public class CameraManager
 {
+    protected Activity mCallerActivity;
+    protected Fragment mCallerFragment;
+    protected Uri mCroppedImage;
     private int mRequestCodeTakePhoto;
     private int mRequestCodeTakePhotoCrop;
     private int mRequestCodeCropImage;
-
-    protected Activity mCallerActivity;
-    protected Fragment mCallerFragment;
     private ICameraServiceCallback mCameraServiceListener;
     private File mPhotoFile;
     private FileManager mFileManager;
     private ImageManager mImageManager;
-    protected Uri mCroppedImage;
-
-    public interface ICameraServiceCallback
-    {
-        void onPictureTaken(Bitmap picture, File file);
-    }
 
     public CameraManager(Fragment fragment, ICameraServiceCallback cameraServiceListener,
             int takePhotoRequestCode)
@@ -197,5 +191,10 @@ public class CameraManager
         {
             e.printStackTrace();
         }
+    }
+
+    public interface ICameraServiceCallback
+    {
+        void onPictureTaken(Bitmap picture, File file);
     }
 }

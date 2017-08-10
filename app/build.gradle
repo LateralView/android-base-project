@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
@@ -21,10 +29,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("myreleasekey.keystore")
-            storePassword "password"
-            keyAlias "MyReleaseKey"
-            keyPassword "password"
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
     }
     buildTypes {
@@ -54,7 +62,8 @@ def version_butterknife = '8.7.0'
 def version_rxjava = '2.1.0'
 def version_rxandroid = '2.0.1'
 def version_leakcanary = '1.5'
-
+def version_retrofit = '2.3.0'
+def version_firebase = '11.0.2'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -71,9 +80,6 @@ dependencies {
     // Butterknife - View binding
     compile "com.jakewharton:butterknife:$version_butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$version_butterknife"
-
-    //REST Client
-    compile 'julianfalcionelli:SimpleRESTClientHandler:1.2'
 
     //Image Loader
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -95,6 +101,17 @@ dependencies {
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
 
+    // REST Client
+    compile "com.squareup.retrofit2:retrofit:$version_retrofit"
+    compile "com.squareup.retrofit2:converter-gson:$version_retrofit"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$version_retrofit"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+
     // Stetho
     compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    //Firebase
+    compile "com.google.firebase:firebase-core:$version_firebase"
+    releaseCompile "com.google.firebase:firebase-crash:$version_firebase"
 }

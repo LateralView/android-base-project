@@ -17,6 +17,8 @@ import co.lateralview.myapp.R;
 
 public class DateUtils
 {
+    public static final String ISO_8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
+
     public final static long SECOND = 1;
     public final static long MINUTE = SECOND * 60;
     public final static long HOUR = MINUTE * 60;
@@ -29,6 +31,13 @@ public class DateUtils
     public final static String MM_DD_YY_SLASH = "MM/dd/yy";
     public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd'T'HH:mm:ss";
     public final static String YYYY_MM_DD_HH_MM = "yyyy-MM-dd'T'HH:mm";
+
+    public enum DateOrderType
+    {
+        BEFORE,
+        AFTER,
+        EQUALS
+    }
 
     public static Date getDateFromString(String dateString)
     {
@@ -319,12 +328,5 @@ public class DateUtils
     public static Long getTranscurredMinutes(Date date)
     {
         return getRemainingMinutesFromMillis(new Date().getTime() - date.getTime());
-    }
-
-    public enum DateOrderType
-    {
-        BEFORE,
-        AFTER,
-        EQUALS
     }
 }

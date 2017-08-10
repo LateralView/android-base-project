@@ -1,6 +1,8 @@
 package co.lateralview.myapp.application;
 
 
+import android.app.Application;
+
 import javax.inject.Singleton;
 
 import co.lateralview.myapp.domain.repository.RepositoryModule;
@@ -25,13 +27,15 @@ import dagger.Component;
 )
 public interface AppComponent
 {
+    Application application();
+
     ImageManager imageManager();
 
     InternetManager internetManager();
 
     TaskManager taskManager();
 
-    UserRepository userReposiroty();
+    UserRepository userRepository();
 
-    SessionRepository sessionReposiroty();
+    SessionRepository sessionRepository();
 }

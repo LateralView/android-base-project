@@ -1,9 +1,9 @@
 package co.lateralview.myapp.infraestructure.util;
 
-import java.util.concurrent.Callable;
-
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.CompletableTransformer;
+import io.reactivex.MaybeTransformer;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -13,18 +13,32 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class RxUtils
 {
-    public static Observable newObservableFromIoToMainThread(Callable callable)
+    private RxUtils()
     {
-        return Observable.fromCallable(callable)
-                .subscribeOn(Schedulers.io())
+
+    }
+
+    public static <T> ObservableTransformer<T, T> applyObservableSchedulers()
+    {
+        return upstream -> upstream.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Single newSingleFromIoToMainThread(Callable callable)
+    public static <T> MaybeTransformer<T, T> applyMaybeSchedulers()
     {
-        return Single.fromCallable(callable)
-                .subscribeOn(Schedulers.io())
+        return upstream -> upstream.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static <T> SingleTransformer<T, T> applySingleSchedulers()
+    {
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static CompletableTransformer applyCompletableSchedulers()
+    {
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

@@ -13,12 +13,6 @@ public class DatePickerDialogFragment extends DialogFragment implements
         DatePickerDialog.OnDateSetListener
 {
     public static final String TAG = DatePickerDialogFragment.class.getSimpleName();
-
-    public interface DatePickerInterface
-    {
-        void onDateSelected(Date date);
-    }
-
     private DatePickerInterface mCallback;
 
     @Override
@@ -50,5 +44,10 @@ public class DatePickerDialogFragment extends DialogFragment implements
     public void setListener(DatePickerInterface datePickerInterface)
     {
         mCallback = datePickerInterface;
+    }
+
+    public interface DatePickerInterface
+    {
+        void onDateSelected(Date date);
     }
 }

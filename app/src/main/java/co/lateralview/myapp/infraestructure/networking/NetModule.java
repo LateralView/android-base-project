@@ -2,11 +2,12 @@ package co.lateralview.myapp.infraestructure.networking;
 
 import android.app.Application;
 
-import net.lateralview.simplerestclienthandler.RestClientManager;
-import net.lateralview.simplerestclienthandler.base.RequestFutureHandler;
+import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
+import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
+import co.lateralview.myapp.infraestructure.manager.InternetManager;
 import co.lateralview.myapp.infraestructure.networking.implementation.UserServerImpl;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import dagger.Module;
@@ -17,22 +18,16 @@ public class NetModule
 {
     @Provides
     @Singleton
-    public RestClientManager provideRestClient(Application application)
+    public RetrofitManager provideRetrofitManager(Application application, Gson gson,
+            SessionRepository sessionRepository, InternetManager internetManager)
     {
-        RestClientManager.initialize(application);
-
-        RequestFutureHandler.setServerErrorClass(
-                MyAppServerError.class); //Default Server Error Class
-
-        return RestClientManager.getInstance()
-                .enableDebugLog(true);
+        return new RetrofitManager(application, gson, sessionRepository, internetManager);
     }
 
     @Provides
     @Singleton
-    public UserServer provideUserServer(RestClientManager restClientManager)
+    public UserServer provideUserServer(UserServerImpl userServer)
     {
-        return new UserServerImpl(restClientManager);
+        return userServer;
     }
-
 }

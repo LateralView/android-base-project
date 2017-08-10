@@ -1,15 +1,15 @@
 package co.lateralview.myapp.infraestructure.networking.implementation;
 
-import net.lateralview.simplerestclienthandler.RestClientManager;
+import co.lateralview.myapp.infraestructure.networking.RetrofitManager;
 
 public class BaseServerImpl
 {
     protected static final String TAG = BaseServerImpl.class.getSimpleName();
 
-    protected RestClientManager mRestClientManager;
+    protected RetrofitManager mRetrofitManager;
 
-    public BaseServerImpl(RestClientManager restClientManager)
+    public BaseServerImpl(RetrofitManager retrofitManager)
     {
-        mRestClientManager = restClientManager;
+        mRetrofitManager = retrofitManager;
     }
 }

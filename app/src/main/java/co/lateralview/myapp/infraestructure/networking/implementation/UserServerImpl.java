@@ -1,53 +1,20 @@
 package co.lateralview.myapp.infraestructure.networking.implementation;
 
-import android.os.Bundle;
-
-import com.android.volley.Request;
-
-import net.lateralview.simplerestclienthandler.RestClientManager;
-import net.lateralview.simplerestclienthandler.base.RequestFutureHandler;
+import javax.inject.Inject;
 
 import co.lateralview.myapp.domain.model.User;
-import co.lateralview.myapp.infraestructure.networking.RestConstants;
+import co.lateralview.myapp.infraestructure.networking.RetrofitManager;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
+import io.reactivex.Single;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 public class UserServerImpl extends BaseServerImpl implements UserServer
 {
     protected static final String TAG = UserServerImpl.class.getSimpleName();
 
-    public UserServerImpl(RestClientManager restClientManager)
-    {
-        super(restClientManager);
-    }
-
-    @Override
-    public User signIn(String userEmail, String userPassword)
-    {
-        Bundle bundle = new Bundle();
-
-        bundle.putString(Parameters.EMAIL, userEmail);
-        bundle.putString(Parameters.PASSWORD, userPassword);
-
-        return (User) mRestClientManager.makeJsonRequest(Request.Method.POST, Url.SIGN_IN.getUrl(),
-                new RequestFutureHandler(User.class, bundle));
-    }
-
-    public enum Url
-    {
-        SIGN_IN(RestConstants.getUrl("users/authenticate"));
-
-        private String mUrl;
-
-        Url(String url)
-        {
-            mUrl = url;
-        }
-
-        public String getUrl()
-        {
-            return mUrl;
-        }
-    }
+    private IUserServer mIUserServer;
 
     public enum Subcode
     {
@@ -78,9 +45,24 @@ public class UserServerImpl extends BaseServerImpl implements UserServer
         }
     }
 
-    public static class Parameters
+    @Inject
+    UserServerImpl(RetrofitManager retrofitManager)
     {
-        public static final String EMAIL = "email";
-        public static final String PASSWORD = "password";
+        super(retrofitManager);
+        mIUserServer = mRetrofitManager.getCustomRetrofit().create(IUserServer.class);
+    }
+
+    @Override
+    public Single<User> login(String phoneNumber, String deviceId)
+    {
+        return mIUserServer.login(phoneNumber, deviceId);
+    }
+
+    interface IUserServer
+    {
+        @FormUrlEncoded
+        @POST("users/login")
+        Single<User> login(@Field("phoneNumber") String phoneNumber,
+                @Field("deviceId") String deviceId);
     }
 }

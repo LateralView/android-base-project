@@ -10,11 +10,6 @@ public class PhotoDecodeTask extends AsyncTask<String, Integer, Integer>
 {
     private IPhotoDecodeTaskCallback mPhotoDecodeTaskListener;
 
-    public interface IPhotoDecodeTaskCallback
-    {
-        void onPhotoDecodeTaskSuccess(Bitmap photo);
-    }
-
     public PhotoDecodeTask(IPhotoDecodeTaskCallback photoDecodeTaskListener)
     {
         mPhotoDecodeTaskListener = photoDecodeTaskListener;
@@ -41,6 +36,11 @@ public class PhotoDecodeTask extends AsyncTask<String, Integer, Integer>
 
     protected void onProgressUpdate(Integer... progress)
     {
+    }
+
+    public interface IPhotoDecodeTaskCallback
+    {
+        void onPhotoDecodeTaskSuccess(Bitmap photo);
     }
 
 }

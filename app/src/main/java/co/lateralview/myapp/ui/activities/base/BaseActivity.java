@@ -52,6 +52,19 @@ public abstract class BaseActivity<T extends BasePresenter> extends
 
     private List<WeakReference<Fragment>> mFragments = new ArrayList<>();
 
+    protected static Intent newActivityInstance(Context fromActivity, boolean clearStack,
+            Class toActivity)
+    {
+        Intent intent = new Intent(fromActivity, toActivity);
+
+        if (clearStack)
+        {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+
+        return intent;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -59,9 +72,19 @@ public abstract class BaseActivity<T extends BasePresenter> extends
 
         MyApp.setCurrentScreenTag(getTAG());
 
+        enterTransition();
+
         injectDependencies();
 
         initInternetBroadcastReceiver();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        unregisterReceiver(mInternetReceiver);
+
+        super.onStop();
     }
 
     @Override
@@ -77,56 +100,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeToolbar(boolean backEnabled)
-    {
-        initializeToolbar(backEnabled, null);
-    }
-
-    public void initializeToolbar(boolean backEnabled, @Nullable int title)
-    {
-        initializeToolbar(backEnabled, getString(title));
-    }
-
-    public void initializeToolbar(boolean backEnabled, @Nullable String title)
-    {
-        ToolbarUtils.initializeToolbar(this, backEnabled, title);
-    }
-
-    public void setActionBarVisibility(int visibility)
-    {
-        ToolbarUtils.setActionBarVisibility(this, visibility);
-    }
-
-    public void setToolbarTitle(String title)
-    {
-        ToolbarUtils.setToolbarTitle(this, title);
-    }
-
-    protected AppComponent getAppComponent()
-    {
-        return MyApp.getAppComponent();
-    }
-
-    protected Base.BaseViewModule getBaseActivityModule()
-    {
-        return new Base.BaseViewModule(this, this);
-    }
-
-    protected abstract void injectDependencies();
-
-    protected static Intent newActivityInstance(Context fromActivity, boolean clearStack,
-            Class toActivity)
-    {
-        Intent intent = new Intent(fromActivity, toActivity);
-
-        if (clearStack)
-        {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-
-        return intent;
-    }
-
     @Override
     protected void onStart()
     {
@@ -135,24 +108,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends
         registerReceiver(mInternetReceiver, mInternetStatusChangedFilter);
     }
 
-
     @Override
-    protected void onStop()
+    public void onAttachFragment(Fragment fragment)
     {
-        unregisterReceiver(mInternetReceiver);
-
-        super.onStop();
-    }
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
         mFragments.add(new WeakReference(fragment));
-    }
-
-    private void initInternetBroadcastReceiver()
-    {
-        mInternetReceiver = new InternetReceiver(this, mInternetManager);
-        mInternetStatusChangedFilter = mInternetReceiver.getIntentFilter();
     }
 
     @Override
@@ -189,16 +148,89 @@ public abstract class BaseActivity<T extends BasePresenter> extends
         notifyFragmentsConnectivityChange(false);
     }
 
-    private void notifyFragmentsConnectivityChange(boolean enabled) {
-        for (WeakReference<Fragment> fragmentWeakReference : mFragments) {
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        exitTransition();
+    }
+
+    @Override
+    public void showInternetRequiredError()
+    {
+        //TODO
+    }
+
+    @Override
+    public void showUnexpectedErrorHappened()
+    {
+        //TODO
+    }
+
+    @Override
+    public void logout()
+    {
+        //TODO
+    }
+
+    public void initializeToolbar(boolean backEnabled)
+    {
+        initializeToolbar(backEnabled, null);
+    }
+
+    public void initializeToolbar(boolean backEnabled, @Nullable int title)
+    {
+        initializeToolbar(backEnabled, getString(title));
+    }
+
+    public void initializeToolbar(boolean backEnabled, @Nullable String title)
+    {
+        ToolbarUtils.initializeToolbar(this, backEnabled, title);
+    }
+
+    public void setActionBarVisibility(int visibility)
+    {
+        ToolbarUtils.setActionBarVisibility(this, visibility);
+    }
+
+    public void setToolbarTitle(String title)
+    {
+        ToolbarUtils.setToolbarTitle(this, title);
+    }
+
+    protected abstract void injectDependencies();
+
+    public AppComponent getAppComponent()
+    {
+        return MyApp.getAppComponent();
+    }
+
+    public Base.BaseViewModule getBaseActivityModule()
+    {
+        return new Base.BaseViewModule(this);
+    }
+
+    private void initInternetBroadcastReceiver()
+    {
+        mInternetReceiver = new InternetReceiver(this, mInternetManager);
+        mInternetStatusChangedFilter = mInternetReceiver.getIntentFilter();
+    }
+
+    private void notifyFragmentsConnectivityChange(boolean enabled)
+    {
+        for (WeakReference<Fragment> fragmentWeakReference : mFragments)
+        {
             Fragment fragment = fragmentWeakReference.get();
 
-            if (fragment != null && fragment instanceof BaseFragment) {
+            if (fragment != null && fragment instanceof BaseFragment)
+            {
                 BaseFragment baseFragment = (BaseFragment) fragment;
 
-                if (enabled) {
+                if (enabled)
+                {
                     baseFragment.onInternetServiceEnabled();
-                } else {
+                } else
+                {
                     baseFragment.onInternetServiceDisabled();
                 }
             }
@@ -261,5 +293,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends
     public void showComingSoonMessage()
     {
         Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+    }
+
+    protected void enterTransition()
+    {
+        /*override method on child's*/
+    }
+
+    protected void exitTransition()
+    {
+        /*override method on child's*/
     }
 }
