@@ -90,11 +90,9 @@ If you are going to develop a big application, we recommend to create one packag
 
 There is a branch with the following architectures:
 
-- MVC + Dagger2 + RX: Check develop+RX branch
-
 - MVP + Dagger2: Check develop+MVP branch [more](https://github.com/LateralView/android-base-project/wiki/Develop-MVP)
 
-- [Latest] MVP + Dagger2 + RX: Check develop+MVP+RX branch
+- [Latest] MVP + Dagger2 + RX: Check develop+MVP+RX branch --> Totally recommended!
 
 For more information about that check our [Wiki](https://github.com/LateralView/android-base-project/wiki)
 
