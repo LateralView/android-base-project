@@ -14,14 +14,13 @@ Check our [Wiki](https://github.com/LateralView/android-base-project/wiki) to le
 - [Dagger2](https://google.github.io/dagger/)
 Compile-time dependency injection framework.
  
-- [SimpleRESTClient](https://github.com/julianfalcionelli/SimpleRESTClientHandler)
-Open Source Android library that allows developers to easily make request to a REST server usign VOLLEY and GSON.
+- [Retrofit](http://square.github.io/retrofit/)
+Networking library that allows developers to easily make request to a server through Annotations.
 
 - [Glide](https://github.com/bumptech/glide)
 Fast and efficient open source media management and image loading framework.
 
-- [Icepick](https://github.com/frankiesardo/icepick)
-Allows us via anotations save and restore instance state.
+More...
 
 ### Useful Managers
 
@@ -90,9 +89,9 @@ If you are going to develop a big application, we recommend to create one packag
 
 There is a branch with the following architectures:
 
-- MVP + Dagger2: Check develop+MVP branch [more](https://github.com/LateralView/android-base-project/wiki/Develop-MVP)
+- MVP + Dagger2: Check develop+MVP branch [more](https://github.com/LateralView/android-base-project/wiki/%5BBRANCH%5D-Develop-MVP)
 
-- [Latest] MVP + Dagger2 + RX: Check develop+MVP+RX branch --> Totally recommended!
+- [Latest] MVP + Dagger2 + RX: Check develop+MVP+RX branch [more](https://github.com/LateralView/android-base-project/wiki/%5BBRANCH%5D-Develop---MVP---RX)
 
 For more information about that check our [Wiki](https://github.com/LateralView/android-base-project/wiki)
 
