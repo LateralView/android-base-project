@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
@@ -22,10 +24,6 @@ android {
 
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
-
-        jackOptions {
-            enabled true
-        }
     }
     signingConfigs {
         release {
