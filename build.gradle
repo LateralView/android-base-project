@@ -18,6 +18,7 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url "https://clojars.org/repo/" } //Required to use Icepick
+        maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local/" }
     }
 }
 

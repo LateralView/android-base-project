@@ -64,6 +64,7 @@ def version_rxandroid = '2.0.1'
 def version_leakcanary = '1.5'
 def version_retrofit = '2.3.0'
 def version_firebase = '11.0.2'
+def version_permission = '3.0.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -114,4 +115,8 @@ dependencies {
     //Firebase
     compile "com.google.firebase:firebase-core:$version_firebase"
     releaseCompile "com.google.firebase:firebase-crash:$version_firebase"
+
+    //PermissionsDispatcher
+    compile("com.github.hotchemi:permissionsdispatcher:$version_permission")
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$version_permission"
 }
