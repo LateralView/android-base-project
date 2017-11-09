@@ -28,8 +28,6 @@ More...
 
 - [Internet Manager](https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/infraestructure/manager/InternetManager.java)
 
-- [Permissions Manager](https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/infraestructure/manager/PermissionsManager.java)
-
 - [System Manager](https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/infraestructure/manager/SystemManager.java)
 
 - [Social Manager](https://github.com/LateralView/android-base-project/blob/master/app/src/main/java/co/lateralview/myapp/infraestructure/manager/SocialManager.java)
