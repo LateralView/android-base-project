@@ -55,14 +55,10 @@ public class SnackBarHelper
 
         if (action != null && snackBarHandler != null)
         {
-            snackbar.setAction(action, new View.OnClickListener()
+            snackbar.setAction(action, view1 ->
             {
-                @Override
-                public void onClick(View view)
-                {
-                    snackBarHandler.onActionClick();
-                    snackbar.dismiss();
-                }
+                snackBarHandler.onActionClick();
+                snackbar.dismiss();
             });
         }
 
@@ -79,14 +75,7 @@ public class SnackBarHelper
         TextView textView = (TextView) snackBarView.findViewById(
                 android.support.design.R.id.snackbar_text);
 
-        textView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                snackbar.dismiss();
-            }
-        });
+        textView.setOnClickListener(v -> snackbar.dismiss());
 
         textView.setTextColor(Color.WHITE);
 

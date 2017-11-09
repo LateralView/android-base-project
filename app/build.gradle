@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
@@ -12,7 +10,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "co.lateralview.myapp"
@@ -24,6 +22,12 @@ android {
 
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
     signingConfigs {
         release {
@@ -41,7 +45,7 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
@@ -65,56 +69,56 @@ def version_firebase = '11.0.2'
 def version_permission = '3.0.1'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile "com.android.support:recyclerview-v7:${version_support}"
-    compile "com.android.support:design:${version_support}"
-    compile "com.android.support:support-v13:${version_support}"
-    compile "com.android.support:appcompat-v7:${version_support}"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation "com.android.support:recyclerview-v7:${version_support}"
+    implementation "com.android.support:design:${version_support}"
+    implementation "com.android.support:support-v13:${version_support}"
+    implementation "com.android.support:appcompat-v7:${version_support}"
 
     // Dagger 2 - Dependency Injection
-    compile "com.google.dagger:dagger:$version_dagger"
+    implementation "com.google.dagger:dagger:$version_dagger"
     annotationProcessor "com.google.dagger:dagger-compiler:$version_dagger"
 
     // Butterknife - View binding
-    compile "com.jakewharton:butterknife:$version_butterknife"
+    implementation "com.jakewharton:butterknife:$version_butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$version_butterknife"
 
     //Image Loader
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.2'
 
     //Instance State Handler
-    compile 'frankiesardo:icepick:3.1.0'
-    provided 'frankiesardo:icepick-processor:3.1.0'
+    implementation 'frankiesardo:icepick:3.1.0'
+    compileOnly 'frankiesardo:icepick-processor:3.1.0'
 
     //Image Crop
-    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
 
     //Reactive Programming
-    compile "io.reactivex.rxjava2:rxjava:${version_rxjava}"
-    compile "io.reactivex.rxjava2:rxandroid:${version_rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${version_rxjava}"
+    implementation "io.reactivex.rxjava2:rxandroid:${version_rxandroid}"
 
     // Leak Canary - memory leak detection
-    compile "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    implementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
 
     // REST Client
-    compile "com.squareup.retrofit2:retrofit:$version_retrofit"
-    compile "com.squareup.retrofit2:converter-gson:$version_retrofit"
-    compile "com.squareup.retrofit2:adapter-rxjava2:$version_retrofit"
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$version_retrofit"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
     // Stetho
-    compile 'com.facebook.stetho:stetho:1.5.0'
-    compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
     //Firebase
-    compile "com.google.firebase:firebase-core:$version_firebase"
-    releaseCompile "com.google.firebase:firebase-crash:$version_firebase"
+    implementation "com.google.firebase:firebase-core:$version_firebase"
+    releaseImplementation "com.google.firebase:firebase-crash:$version_firebase"
 
     //PermissionsDispatcher
-    compile("com.github.hotchemi:permissionsdispatcher:$version_permission")
+    implementation("com.github.hotchemi:permissionsdispatcher:$version_permission")
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$version_permission"
 }
