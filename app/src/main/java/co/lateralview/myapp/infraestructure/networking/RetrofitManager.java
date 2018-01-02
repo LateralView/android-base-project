@@ -29,11 +29,13 @@ public class RetrofitManager
 {
     public static final String TAG = "RetrofitManager";
 
-    public static final String CACHE_CONTROL = "Cache-Control";
+    public static final String HEADER_CACHE_CONTROL = "Cache-Control";
+    public static final String HEADER_PRAGMA = "Pragma";
 
     private Application mApplication;
     private Gson mGson;
-    private Retrofit mCustomRetrofit, mRetrofit;
+    private Retrofit mCustomRetrofit, mCustomCachedRetrofit, mRetrofit;
+    private OkHttpClient mCustomOkHttpClient, mCustomCachedOkHttpClient, mDefaultOkHttpClient;
     private Cache mCache;
     private SessionRepository mSessionRepository;
     private InternetManager mInternetManager;
@@ -66,18 +68,53 @@ public class RetrofitManager
                     .addInterceptor(provideOfflineCacheInterceptor())
                     .addNetworkInterceptor(new StethoInterceptor())
                     .addNetworkInterceptor(provideCacheInterceptor())
-                    .cache(provideCache());
+                    .cache(provideCache())
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES);
+
+            mCustomOkHttpClient = httpClient.build();
 
             mCustomRetrofit = new Retrofit.Builder()
                     .baseUrl(RestConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(mGson))
                     .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
-                    .client(httpClient.build())
+                    .client(mCustomOkHttpClient)
                     .build();
         }
 
         return mCustomRetrofit;
     }
+
+    /**
+     * Returns a Custom Retrofit instance which only checks on Cache
+     */
+    public Retrofit getCustomCachedRetrofit() {
+        if (mCustomCachedRetrofit == null) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // set your desired log level
+            logging.setLevel(Level.BODY);
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                    .addInterceptor(logging)
+                    .addInterceptor(provideForcedOfflineCacheInterceptor())
+                    .addNetworkInterceptor(new StethoInterceptor())
+                    .cache(provideCache())
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES);
+
+            mCustomCachedOkHttpClient = httpClient.build();
+
+            mCustomCachedRetrofit = new Retrofit.Builder()
+                    .baseUrl(RestConstants.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(mGson))
+                    .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                    .client(mCustomCachedOkHttpClient)
+                    .build();
+        }
+
+        return mCustomCachedRetrofit;
+    }
+
 
     /**
      * Returns a Clean Retrofit instance
@@ -97,11 +134,13 @@ public class RetrofitManager
                     .addNetworkInterceptor(provideCacheInterceptor())
                     .cache(provideCache());
 
+            mDefaultOkHttpClient = httpClient.build();
+
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(RestConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(mGson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(httpClient.build())
+                    .client(mDefaultOkHttpClient)
                     .build();
         }
 
@@ -125,46 +164,43 @@ public class RetrofitManager
         return mCache;
     }
 
-    private Interceptor provideCacheInterceptor()
-    {
-        return chain ->
-        {
+    private Interceptor provideCacheInterceptor() {
+        return chain -> {
             Response response = chain.proceed(chain.request());
 
             CacheControl cacheControl;
 
-            if (mInternetManager.isOnline())
-            {
+            if (mInternetManager.isOnline()) {
                 cacheControl = new CacheControl.Builder()
                         .maxAge(0, TimeUnit.SECONDS)
                         .build();
-            } else
-            {
+            } else {
                 cacheControl = new CacheControl.Builder()
                         .maxStale(7, TimeUnit.DAYS)
                         .build();
             }
 
             return response.newBuilder()
-                    .header(CACHE_CONTROL, cacheControl.toString())
+                    .removeHeader(HEADER_PRAGMA)
+                    .removeHeader(HEADER_CACHE_CONTROL)
+                    .header(HEADER_CACHE_CONTROL, cacheControl.toString())
                     .build();
 
         };
     }
 
-    private Interceptor provideOfflineCacheInterceptor()
-    {
-        return chain ->
-        {
+    private Interceptor provideOfflineCacheInterceptor() {
+        return chain -> {
             Request request = chain.request();
 
-            if (!mInternetManager.isOnline())
-            {
+            if (!mInternetManager.isOnline()) {
                 CacheControl cacheControl = new CacheControl.Builder()
                         .maxStale(7, TimeUnit.DAYS)
                         .build();
 
                 request = request.newBuilder()
+                        .removeHeader(HEADER_PRAGMA)
+                        .removeHeader(HEADER_CACHE_CONTROL)
                         .cacheControl(cacheControl)
                         .build();
             }
@@ -173,8 +209,37 @@ public class RetrofitManager
         };
     }
 
+    private Interceptor provideForcedOfflineCacheInterceptor() {
+        return chain -> {
+            Request request = chain.request();
+
+            CacheControl cacheControl = new CacheControl.Builder()
+                    .maxStale(7, TimeUnit.DAYS)
+                    .build();
+
+            request = request.newBuilder()
+                    .removeHeader(HEADER_PRAGMA)
+                    .removeHeader(HEADER_CACHE_CONTROL)
+                    .cacheControl(cacheControl)
+                    .build();
+
+            return chain.proceed(request);
+        };
+    }
+
     public void clean()
     {
+
+        if (mCustomOkHttpClient != null) {
+            // Cancel Pending Request
+            mCustomOkHttpClient.dispatcher().cancelAll();
+        }
+
+        if (mDefaultOkHttpClient != null) {
+            // Cancel Pending Request
+            mDefaultOkHttpClient.dispatcher().cancelAll();
+        }
+
         mCustomRetrofit = null;
         mRetrofit = null;
 
