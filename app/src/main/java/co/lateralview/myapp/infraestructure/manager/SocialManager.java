@@ -8,10 +8,6 @@ import android.support.v4.app.ShareCompat;
 
 import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerImpl;
 
-
-/**
- * Created by julianfalcionelli on 7/28/16.
- */
 public class SocialManager
 {
     private FileManagerImpl mFileManager;

@@ -2,9 +2,6 @@ package co.lateralview.myapp.infraestructure.networking;
 
 import co.lateralview.myapp.BuildConfig;
 
-/**
- * Created by Julian on 4/16/2015.
- */
 public class RestConstants
 {
     public static final String BASE_URL = BuildConfig.BASE_URL;

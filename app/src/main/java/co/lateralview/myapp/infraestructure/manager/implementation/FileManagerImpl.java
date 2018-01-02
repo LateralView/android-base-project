@@ -18,9 +18,6 @@ import java.util.Date;
 
 import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
 
-/**
- * Created by julianfalcionelli on 7/28/16.
- */
 public class FileManagerImpl implements FileManager
 {
     private static final String FILE_TEMP_PREFIX = "LV_MYAPP";

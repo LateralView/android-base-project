@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
-/**
- * Created by julianfalcionelli on 11/15/16.
- */
 public class KeyboardUtils
 {
     public static void hideSoftKeyboard(Activity activity)

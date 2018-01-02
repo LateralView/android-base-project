@@ -5,9 +5,6 @@ import android.net.Uri;
 
 import java.io.File;
 
-/**
- * Created by julianfalcionelli on 7/28/16.
- */
 public interface FileManager
 {
     String savePhotoToInternalStorage(Bitmap bitmapImage);

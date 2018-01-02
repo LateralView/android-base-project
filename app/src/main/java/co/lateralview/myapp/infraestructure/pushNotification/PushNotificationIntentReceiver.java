@@ -10,9 +10,6 @@ import co.lateralview.myapp.infraestructure.pushNotification.processor.base.Noti
 import co.lateralview.myapp.infraestructure.pushNotification.processor.base
         .PushNotificationProcessor;
 
-/**
- * Created by Julian on 4/5/16.
- */
 public class PushNotificationIntentReceiver extends WakefulBroadcastReceiver
 {
     public static final String TAG = PushNotificationIntentReceiver.class.getSimpleName();

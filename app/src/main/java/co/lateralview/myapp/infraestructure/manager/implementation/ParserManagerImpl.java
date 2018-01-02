@@ -6,9 +6,6 @@ import java.lang.reflect.Type;
 
 import co.lateralview.myapp.infraestructure.manager.interfaces.ParserManager;
 
-/**
- * Created by julianfalcionelli on 7/28/16.
- */
 public class ParserManagerImpl implements ParserManager
 {
     private Gson mGson;

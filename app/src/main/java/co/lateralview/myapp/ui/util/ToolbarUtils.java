@@ -11,9 +11,6 @@ import android.widget.ImageView;
 
 import co.lateralview.myapp.R;
 
-/**
- * Created by julianfalcionelli on 7/28/16.
- */
 public class ToolbarUtils
 {
     public static void initializeToolbar(AppCompatActivity activity, boolean backEnabled,
