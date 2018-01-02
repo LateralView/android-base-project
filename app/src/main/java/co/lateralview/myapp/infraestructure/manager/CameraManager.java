@@ -150,7 +150,8 @@ public class CameraManager
 
             new PhotoDecodeTask(
                     photo -> mCallerActivity.runOnUiThread(
-                            () -> mCameraServiceListener.onPictureTaken(photo, new File(path)))).execute(path);
+                            () -> mCameraServiceListener.onPictureTaken(photo,
+                                    new File(path)))).execute(path);
         }
     }
 

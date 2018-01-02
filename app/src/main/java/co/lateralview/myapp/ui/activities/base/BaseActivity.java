@@ -24,7 +24,6 @@ import co.lateralview.myapp.application.AppComponent;
 import co.lateralview.myapp.application.MyApp;
 import co.lateralview.myapp.domain.util.SnackBarData;
 import co.lateralview.myapp.infraestructure.manager.InternetManager;
-import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.ui.activities.base.fragments.BaseFragment;
 import co.lateralview.myapp.ui.broadcast.InternetReceiver;
 import co.lateralview.myapp.ui.util.SnackBarHelper;

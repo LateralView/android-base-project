@@ -17,59 +17,71 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
+public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
+{
     private final RxJava2CallAdapterFactory original;
 
-    private RxErrorHandlingCallAdapterFactory() {
+    private RxErrorHandlingCallAdapterFactory()
+    {
         original = RxJava2CallAdapterFactory.create();
     }
 
-    public static CallAdapter.Factory create() {
+    public static CallAdapter.Factory create()
+    {
         return new RxErrorHandlingCallAdapterFactory();
     }
 
     @SuppressWarnings("NullableProblems")
     @Override
-    public CallAdapter get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+    public CallAdapter get(Type returnType, Annotation[] annotations, Retrofit retrofit)
+    {
         return new RxCallAdapterWrapper(retrofit, original.get(returnType, annotations, retrofit));
     }
 
-    private static class RxCallAdapterWrapper implements CallAdapter {
+    private static class RxCallAdapterWrapper implements CallAdapter
+    {
         private final Retrofit retrofit;
         private final CallAdapter wrapped;
 
-        public RxCallAdapterWrapper(Retrofit retrofit, CallAdapter wrapped) {
+        public RxCallAdapterWrapper(Retrofit retrofit, CallAdapter wrapped)
+        {
             this.retrofit = retrofit;
             this.wrapped = wrapped;
         }
 
         @Override
-        public Type responseType() {
+        public Type responseType()
+        {
             return wrapped.responseType();
         }
 
         @SuppressWarnings({"unchecked", "NullableProblems"})
         @Override
-        public Object adapt(Call call) {
+        public Object adapt(Call call)
+        {
             Object adaptedCall = wrapped.adapt(call);
 
-            if (adaptedCall instanceof Completable) {
+            if (adaptedCall instanceof Completable)
+            {
                 return ((Completable) adaptedCall).onErrorResumeNext(
                         throwable -> Completable.error(asRetrofitException(throwable)));
             }
 
-            if (adaptedCall instanceof Single) {
+            if (adaptedCall instanceof Single)
+            {
                 return ((Single) adaptedCall).onErrorResumeNext(
                         throwable -> Single.error(asRetrofitException((Throwable) throwable)));
             }
 
-            if (adaptedCall instanceof Observable) {
+            if (adaptedCall instanceof Observable)
+            {
                 return ((Observable) adaptedCall).onErrorResumeNext(
                         (ObservableSource) throwable -> Observable.error(
                                 asRetrofitException((Throwable) throwable)));
             }
 
-            if (adaptedCall instanceof Maybe) {
+            if (adaptedCall instanceof Maybe)
+            {
                 return ((Maybe) adaptedCall).onErrorResumeNext(
                         (MaybeSource) throwable -> Maybe.error(
                                 asRetrofitException((Throwable) throwable)));
@@ -78,9 +90,11 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
             throw new RuntimeException("Observable Type not supported");
         }
 
-        private ServerException asRetrofitException(Throwable throwable) {
+        private ServerException asRetrofitException(Throwable throwable)
+        {
             // We had non-200 http error
-            if (throwable instanceof HttpException) {
+            if (throwable instanceof HttpException)
+            {
                 HttpException httpException = (HttpException) throwable;
                 Response response = httpException.response();
                 return ServerException.httpError(response.raw().request().url().toString(),
@@ -88,7 +102,8 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
             }
 
             // A network error happened
-            if (throwable instanceof IOException) {
+            if (throwable instanceof IOException)
+            {
                 return ServerException.networkError((IOException) throwable);
             }
 

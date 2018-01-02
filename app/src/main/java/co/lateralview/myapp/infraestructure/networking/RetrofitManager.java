@@ -88,8 +88,10 @@ public class RetrofitManager
     /**
      * Returns a Custom Retrofit instance which only checks on Cache
      */
-    public Retrofit getCustomCachedRetrofit() {
-        if (mCustomCachedRetrofit == null) {
+    public Retrofit getCustomCachedRetrofit()
+    {
+        if (mCustomCachedRetrofit == null)
+        {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             // set your desired log level
             logging.setLevel(Level.BODY);
@@ -164,17 +166,21 @@ public class RetrofitManager
         return mCache;
     }
 
-    private Interceptor provideCacheInterceptor() {
-        return chain -> {
+    private Interceptor provideCacheInterceptor()
+    {
+        return chain ->
+        {
             Response response = chain.proceed(chain.request());
 
             CacheControl cacheControl;
 
-            if (mInternetManager.isOnline()) {
+            if (mInternetManager.isOnline())
+            {
                 cacheControl = new CacheControl.Builder()
                         .maxAge(0, TimeUnit.SECONDS)
                         .build();
-            } else {
+            } else
+            {
                 cacheControl = new CacheControl.Builder()
                         .maxStale(7, TimeUnit.DAYS)
                         .build();
@@ -189,11 +195,14 @@ public class RetrofitManager
         };
     }
 
-    private Interceptor provideOfflineCacheInterceptor() {
-        return chain -> {
+    private Interceptor provideOfflineCacheInterceptor()
+    {
+        return chain ->
+        {
             Request request = chain.request();
 
-            if (!mInternetManager.isOnline()) {
+            if (!mInternetManager.isOnline())
+            {
                 CacheControl cacheControl = new CacheControl.Builder()
                         .maxStale(7, TimeUnit.DAYS)
                         .build();
@@ -209,8 +218,10 @@ public class RetrofitManager
         };
     }
 
-    private Interceptor provideForcedOfflineCacheInterceptor() {
-        return chain -> {
+    private Interceptor provideForcedOfflineCacheInterceptor()
+    {
+        return chain ->
+        {
             Request request = chain.request();
 
             CacheControl cacheControl = new CacheControl.Builder()
@@ -230,12 +241,14 @@ public class RetrofitManager
     public void clean()
     {
 
-        if (mCustomOkHttpClient != null) {
+        if (mCustomOkHttpClient != null)
+        {
             // Cancel Pending Request
             mCustomOkHttpClient.dispatcher().cancelAll();
         }
 
-        if (mDefaultOkHttpClient != null) {
+        if (mDefaultOkHttpClient != null)
+        {
             // Cancel Pending Request
             mDefaultOkHttpClient.dispatcher().cancelAll();
         }

@@ -28,22 +28,28 @@ public class SystemUtils
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public static String getVersionName(Context context) {
+    public static String getVersionName(Context context)
+    {
         final PackageInfo packageInfo;
-        try {
+        try
+        {
             packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e)
+        {
             return null;
         }
     }
 
-    public static int getVersionCode(Context context) {
+    public static int getVersionCode(Context context)
+    {
         final PackageInfo packageInfo;
-        try {
+        try
+        {
             packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e)
+        {
             return -1;
         }
     }

@@ -41,7 +41,8 @@ public class MyAppService extends Service
         Observable.interval(
                 2, TimeUnit.MINUTES)
                 .compose(RxSchedulersUtils.applyObservableSchedulers())
-                .subscribe(__ -> {/*do something*/},
+                .subscribe(__ ->
+                        {/*do something*/},
                         error -> Log.e(TAG, "Error executing MyAppService", error));
     }
 
