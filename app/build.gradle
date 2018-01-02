@@ -9,13 +9,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
 
     defaultConfig {
         applicationId "co.lateralview.myapp"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -58,14 +58,14 @@ android {
     }
 }
 
-def version_support = '25.3.0'
+def version_support = '27.0.2'
 def version_dagger = '2.8'
 def version_butterknife = '8.7.0'
 def version_rxjava = '2.1.0'
 def version_rxandroid = '2.0.1'
 def version_leakcanary = '1.5'
 def version_retrofit = '2.3.0'
-def version_firebase = '11.0.2'
+def version_firebase = '11.6.0'
 def version_permission = '3.0.1'
 
 dependencies {

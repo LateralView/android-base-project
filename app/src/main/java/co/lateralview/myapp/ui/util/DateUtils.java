@@ -31,6 +31,7 @@ public class DateUtils
     public final static String MM_DD_YY_SLASH = "MM/dd/yy";
     public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd'T'HH:mm:ss";
     public final static String YYYY_MM_DD_HH_MM = "yyyy-MM-dd'T'HH:mm";
+    public final static String YYYYMMDD = "yyyyMMdd";
 
     public enum DateOrderType
     {
@@ -315,9 +316,22 @@ public class DateUtils
         return getFormatString(date, "MMMM");
     }
 
+    public static String getNowFormatString(String dateFormat)
+    {
+        return getFormatString(now(), dateFormat);
+    }
+
     public static String getFormatString(Date date, String dateFormat)
     {
         return new SimpleDateFormat(dateFormat).format(date);
+    }
+
+    public static String getUTCFormatString(Date date, String dateFormat)
+    {
+        DateFormat formatter = new SimpleDateFormat(dateFormat);
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        return formatter.format(date);
     }
 
     public static String getMonthYearString(Date date)
@@ -328,5 +342,10 @@ public class DateUtils
     public static Long getTranscurredMinutes(Date date)
     {
         return getRemainingMinutesFromMillis(new Date().getTime() - date.getTime());
+    }
+
+    public static Date now()
+    {
+        return Calendar.getInstance().getTime();
     }
 }

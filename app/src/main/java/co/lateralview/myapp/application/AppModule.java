@@ -23,10 +23,6 @@ import co.lateralview.myapp.ui.util.DateUtils;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by julianfalcionelli on 5/9/16.
- */
-
 @Module
 public class AppModule
 {

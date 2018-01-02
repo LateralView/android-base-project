@@ -5,5 +5,5 @@ import io.reactivex.Single;
 
 public interface UserServer
 {
-    Single<User> login(String userEmail, String userPassword);
+    Single<User> login(String email, String password);
 }

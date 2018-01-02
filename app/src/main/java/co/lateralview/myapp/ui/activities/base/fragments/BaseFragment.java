@@ -27,7 +27,7 @@ public abstract class BaseFragment extends Fragment
 
     protected AppComponent getAppComponent()
     {
-        return ((BaseActivity) getActivity()).getAppComponent();
+        return BaseActivity.getAppComponent();
     }
 
     protected Base.BaseViewModule getBaseActivityModule()
@@ -36,11 +36,6 @@ public abstract class BaseFragment extends Fragment
     }
 
     protected abstract void injectDependencies();
-
-    protected void changeToolbarTitle(String title)
-    {
-        ((BaseActivity) getActivity()).setToolbarTitle(title);
-    }
 
     public void onInternetServiceEnabled()
     {
@@ -54,16 +49,25 @@ public abstract class BaseFragment extends Fragment
 
     public void showProgressDialog()
     {
-        ((BaseActivity) getActivity()).showProgressDialog();
+        if (getActivity() != null)
+        {
+            ((BaseActivity) getActivity()).showProgressDialog();
+        }
     }
 
     public void hideProgressDialog()
     {
-        ((BaseActivity) getActivity()).hideProgressDialog();
+        if (getActivity() != null)
+        {
+            ((BaseActivity) getActivity()).hideProgressDialog();
+        }
     }
 
     public void showComingSoonMessage()
     {
-        ((BaseActivity) getActivity()).showComingSoonMessage();
+        if (getActivity() != null)
+        {
+            ((BaseActivity) getActivity()).showComingSoonMessage();
+        }
     }
 }

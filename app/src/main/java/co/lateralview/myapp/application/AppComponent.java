@@ -14,9 +14,6 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
 import co.lateralview.myapp.infraestructure.networking.NetModule;
 import dagger.Component;
 
-/**
- * Created by julianfalcionelli on 5/12/16.
- */
 @Singleton
 @Component(
         modules = {

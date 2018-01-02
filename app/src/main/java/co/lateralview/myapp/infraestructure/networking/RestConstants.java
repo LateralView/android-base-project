@@ -40,10 +40,4 @@ public class RestConstants
             return mSubcode;
         }
     }
-
-    public static String getUrl(String relativeUrl)
-    {
-        return BASE_URL + relativeUrl;
-    }
-
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.Fragment;
 
 import java.io.File;
@@ -22,6 +21,7 @@ public class GalleryPhotoManager
     private int mRequestCodePhotoFromGalleryCrop;
     private int mRequestCodeCropImage;
     private FileManager mFileManager;
+
     public GalleryPhotoManager(Fragment fragment, IGalleryPhotoCallback callback, int requestCode)
     {
         this(fragment.getActivity(), callback, requestCode);
@@ -51,9 +51,7 @@ public class GalleryPhotoManager
 
     private void start(boolean cropIt)
     {
-        Intent mediaChooser = new Intent(
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT ? Intent.ACTION_GET_CONTENT
-                        : Intent.ACTION_OPEN_DOCUMENT);
+        Intent mediaChooser = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         mediaChooser.setType("image/*");
 
         if (mCallerFragment != null)
@@ -124,22 +122,8 @@ public class GalleryPhotoManager
 
     protected void getPhotoFromPath(final String path)
     {
-        new PhotoDecodeTask(new PhotoDecodeTask.IPhotoDecodeTaskCallback()
-        {
-            @Override
-            public void onPhotoDecodeTaskSuccess(final Bitmap photo)
-            {
-
-                mCallerActivity.runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        mCallback.onPhotoObtained(photo, new File(path));
-                    }
-                });
-            }
-        }).execute(path);
+        new PhotoDecodeTask(photo -> mCallerActivity.runOnUiThread(
+                () -> mCallback.onPhotoObtained(photo, new File(path)))).execute(path);
     }
 
     public interface IGalleryPhotoCallback

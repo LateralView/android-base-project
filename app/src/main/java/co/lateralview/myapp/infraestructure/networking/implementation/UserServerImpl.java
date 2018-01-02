@@ -8,6 +8,7 @@ import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public class UserServerImpl extends BaseServerImpl implements UserServer
@@ -49,20 +50,21 @@ public class UserServerImpl extends BaseServerImpl implements UserServer
     UserServerImpl(RetrofitManager retrofitManager)
     {
         super(retrofitManager);
-        mIUserServer = mRetrofitManager.getCustomRetrofit().create(IUserServer.class);
+        mIUserServer = mRetrofitManager.getRetrofit().create(IUserServer.class);
     }
 
     @Override
-    public Single<User> login(String phoneNumber, String deviceId)
+    public Single<User> login(String email, String password)
     {
-        return mIUserServer.login(phoneNumber, deviceId);
+        return mIUserServer.login(email, password);
     }
 
     interface IUserServer
     {
         @FormUrlEncoded
-        @POST("users/login")
-        Single<User> login(@Field("phoneNumber") String phoneNumber,
-                @Field("deviceId") String deviceId);
+        @Headers({"Accept: */*"})
+        @POST("users/authenticate")
+        Single<User> login(@Field(value = "email") String email,
+                @Field(value = "password") String password);
     }
 }

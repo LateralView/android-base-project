@@ -31,15 +31,13 @@ import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.ToolbarUtils;
 
 
-public abstract class BaseActivity<T extends BasePresenter> extends
+public abstract class BaseActivity extends
         AppCompatActivity implements InternetReceiver.InternetReceiverListener, Base.View
 {
-    public static final String TAG = BaseActivity.class.getSimpleName();
+    public static final String TAG = "BaseActivity";
 
-    @Inject
-    protected T mPresenter;
-    @Inject
-    protected ImageManager mImageManager;
+    public static boolean sAppVisible = false;
+
     @Inject
     protected InternetManager mInternetManager;
 
@@ -65,6 +63,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends
         return intent;
     }
 
+    public static AppComponent getAppComponent()
+    {
+        return MyApp.getAppComponent();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -77,6 +80,20 @@ public abstract class BaseActivity<T extends BasePresenter> extends
         injectDependencies();
 
         initInternetBroadcastReceiver();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        sAppVisible = true;
+    }
+
+    @Override
+    protected void onPause()
+    {
+        sAppVisible = false;
+        super.onPause();
     }
 
     @Override
@@ -198,11 +215,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends
         ToolbarUtils.setToolbarTitle(this, title);
     }
 
-    protected abstract void injectDependencies();
-
-    public AppComponent getAppComponent()
+    protected void injectDependencies()
     {
-        return MyApp.getAppComponent();
+        DaggerBaseComponent.builder()
+                .appComponent(getAppComponent())
+                .baseViewModule(getBaseActivityModule())
+                .build()
+                .inject(this);
     }
 
     public Base.BaseViewModule getBaseActivityModule()

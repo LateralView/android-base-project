@@ -10,7 +10,7 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferences
 
 public class SharedPreferencesManagerImpl implements SharedPreferencesManager
 {
-    public static final String DEFAULT_FILE_NAME = "co.lateralview.attender.sharedPreferences";
+    public static final String DEFAULT_FILE_NAME = "co.lateralview.myapp.sharedPreferences";
     private SharedPreferences mSharedPreferences;
     private ParserManager mParserManager;
 

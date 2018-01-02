@@ -2,7 +2,7 @@ package co.lateralview.myapp.domain.repository.implementation;
 
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
-import co.lateralview.myapp.infraestructure.util.RxUtils;
+import co.lateralview.myapp.ui.util.RxSchedulersUtils;
 import io.reactivex.Single;
 
 public class UserRepositoryImpl implements UserRepository
@@ -15,9 +15,9 @@ public class UserRepositoryImpl implements UserRepository
     }
 
     @Override
-    public Single login(final String userEmail, final String userPassword)
+    public Single login(final String email, final String password)
     {
-        return mUserServer.login(userEmail, userPassword)
-                .compose(RxUtils.applySingleSchedulers());
+        return mUserServer.login(email, password)
+                .compose(RxSchedulersUtils.applySingleSchedulers());
     }
 }

@@ -3,25 +3,19 @@ package co.lateralview.myapp.ui.activities.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
-import android.widget.EditText;
 
-import butterknife.BindView;
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import co.lateralview.myapp.R;
-import co.lateralview.myapp.domain.model.User;
-import co.lateralview.myapp.domain.util.SnackBarData;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
-import co.lateralview.myapp.ui.util.SnackBarHelper;
-import co.lateralview.myapp.ui.util.SystemUtils;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements Main.View
+public class MainActivity extends BaseActivity implements Main.View
 {
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = "MainActivity";
 
-    @BindView(R.id.dummyEditText)
-    EditText mDummyEditText;
+    @Inject
+    MainPresenter mPresenter;
 
     public static Intent newInstance(Context fromActivity, boolean clearStack)
     {
@@ -37,23 +31,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Main.Vi
 
         ButterKnife.bind(this);
 
-        initializeToolbar(false, "Toolbar Title");
+        initializeToolbar(false);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view ->
-        {
-            SnackBarHelper.createSnackBar(view,
-                    new SnackBarData(SnackBarData.SnackBarType.DUMMY)).show();
-            mPresenter.testRx();
-        });
-
-        mDummyEditText.setText("Hi world");
+    @Override
+    protected void onDestroy()
+    {
+        mPresenter.destroy();
+        super.onDestroy();
     }
 
     @Override
     protected void injectDependencies()
     {
-        DaggerMainActivityComponent.builder()
+        DaggerMainComponent.builder()
                 .appComponent(getAppComponent())
                 .baseViewModule(getBaseActivityModule())
                 .viewModule(new Main.ViewModule(this))
@@ -66,16 +57,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Main.Vi
     }
 
     @Override
-    public void showResult(User user)
+    public void onBackPressed()
     {
-        Log.i(TAG, "onNext: " + user + " - Running on UI Thread: " + String.valueOf(
-                SystemUtils.isRunningOnMainThread()));
+        moveTaskToBack(true);
     }
 
     @Override
     public void showError()
     {
-        Log.i(TAG, "onError - Running on UI Thread: " + String.valueOf(
-                SystemUtils.isRunningOnMainThread()));
+
     }
 }

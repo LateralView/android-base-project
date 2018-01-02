@@ -7,7 +7,10 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferences
 
 public class SessionRepositoryImpl implements SessionRepository
 {
-    public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY = "AccessToken";
+    //TODO: Make SharedPreferences I/O Async
+
+    public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY =
+            "SHARED_PREFERENCES_ACCESS_TOKEN_KEY";
 
     private SharedPreferencesManager mSharedPreferencesManager;
     private User mCurrentUser;
@@ -29,10 +32,9 @@ public class SessionRepositoryImpl implements SessionRepository
     public void logOut()
     {
         mCurrentUser = null;
-
+        mAccessToken = null;
         mSharedPreferencesManager.clear();
     }
-
 
     @Override
     public void logIn(User user, String accessToken)

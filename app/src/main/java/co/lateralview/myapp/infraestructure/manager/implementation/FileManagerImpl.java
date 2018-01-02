@@ -23,7 +23,7 @@ import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
  */
 public class FileManagerImpl implements FileManager
 {
-    private static final String FILE_TEMP_PREFIX = "MYAPP";
+    private static final String FILE_TEMP_PREFIX = "LV_MYAPP";
 
     private Context mContext;
 

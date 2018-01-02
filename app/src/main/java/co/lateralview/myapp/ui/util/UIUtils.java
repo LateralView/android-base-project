@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -271,5 +272,36 @@ public abstract class UIUtils
                 break;
             }
         }
+    }
+
+    public static String getDensityString(Context context)
+    {
+        int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+
+        if (densityDpi >= DisplayMetrics.DENSITY_LOW
+                && densityDpi < DisplayMetrics.DENSITY_HIGH)
+        {
+            return "mdpi";
+        }
+
+        if (densityDpi >= DisplayMetrics.DENSITY_HIGH
+                && densityDpi < DisplayMetrics.DENSITY_XHIGH)
+        {
+            return "hdpi";
+        }
+
+        if (densityDpi >= DisplayMetrics.DENSITY_XHIGH
+                && densityDpi < DisplayMetrics.DENSITY_XXHIGH)
+        {
+            return "xhdpi";
+        }
+
+        if (densityDpi >= DisplayMetrics.DENSITY_XXHIGH
+                && densityDpi < DisplayMetrics.DENSITY_XXXHIGH)
+        {
+            return "xxhdpi";
+        }
+
+        return "xxxhdpi";
     }
 }

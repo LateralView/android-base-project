@@ -3,6 +3,7 @@ package co.lateralview.myapp.ui.activities.main;
 
 import javax.inject.Inject;
 
+import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.ui.activities.base.BasePresenter;
 import co.lateralview.myapp.ui.util.di.ActivityScoped;
@@ -11,11 +12,16 @@ import io.reactivex.disposables.CompositeDisposable;
 @ActivityScoped
 public class MainPresenter extends BasePresenter implements Main.Presenter
 {
+    public static final String TAG = "MainPresenter";
+
     protected CompositeDisposable mSubscriptions = new CompositeDisposable();
+
     @Inject
     Main.View mView;
     @Inject
     UserRepository mUserRepository;
+    @Inject
+    SessionRepository mSessionRepository;
 
     @Inject
     MainPresenter()
@@ -24,13 +30,16 @@ public class MainPresenter extends BasePresenter implements Main.Presenter
     }
 
     @Override
-    public void testRx()
+    public void login(String email, String password)
     {
-        mSubscriptions.add(mUserRepository.login("Username", "Password")
-                .subscribe(
-                        mView::showResult,
-                        error -> mView.showError()
-                )
-        );
+        mSubscriptions.add(mUserRepository.login(email, password)
+                .subscribe(user -> mSessionRepository.logIn(user, "token"),
+                        error -> mView.showError()));
+    }
+
+    @Override
+    public void destroy()
+    {
+        mSubscriptions.dispose();
     }
 }

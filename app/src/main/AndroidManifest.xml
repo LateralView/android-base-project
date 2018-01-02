@@ -14,7 +14,7 @@
 	<!-- PUSH NOTIFICATIONS -->
 	<permission android:name="co.lateralview.myapp.permission.C2D_MESSAGE"
 				android:protectionLevel="signature"/>
-	<uses-permission android:name="co.lateralview.tantan.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="co.lateralview.tantan.permission.C2D_MESSAGE"/>
 	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -30,7 +30,11 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<!-- CAMERA -->
 
-	<application
+    <!-- SYSTEM -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- SYSTEM -->
+
+    <application
 		android:name=".application.MyApp"
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_launcher"
@@ -42,14 +46,17 @@
 			android:theme="@style/CropCustomTheme"/>
 
 		<activity
-			android:name=".ui.activities.main.MainActivity"
+			android:name=".ui.activities.splash.SplashActivity"
 			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
-
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+
+        <activity android:name=".ui.activities.main.MainActivity"/>
+
+        <activity android:name=".ui.activities.webview.WebViewActivity"/>
 
 		<receiver android:name="co.lateralview.myapp.infraestructure.pushNotification.PushNotificationIntentReceiver"
 				  android:permission="com.google.android.c2dm.permission.SEND">
@@ -58,6 +65,14 @@
 				<category android:name="co.lateralview.attender"/>
 			</intent-filter>
 		</receiver>
+
+        <service
+            android:name=".services.MyAppService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </service>
 
 	</application>
 

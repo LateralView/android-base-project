@@ -12,4 +12,9 @@ public abstract class StringUtils
     {
         return string.substring(0, upperCaseChars).toUpperCase() + string.substring(upperCaseChars);
     }
+
+    public static String removeChars(String s, String c)
+    {
+        return s.replaceAll(c, "");
+    }
 }

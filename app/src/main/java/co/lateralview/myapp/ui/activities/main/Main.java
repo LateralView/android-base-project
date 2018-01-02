@@ -1,6 +1,5 @@
 package co.lateralview.myapp.ui.activities.main;
 
-import co.lateralview.myapp.domain.model.User;
 import dagger.Module;
 import dagger.Provides;
 
@@ -8,13 +7,13 @@ public interface Main
 {
     interface Presenter
     {
-        void testRx();
+        void login(String email, String password);
+
+        void destroy();
     }
 
     interface View
     {
-        void showResult(User user);
-
         void showError();
     }
 

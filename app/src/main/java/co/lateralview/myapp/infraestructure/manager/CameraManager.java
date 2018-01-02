@@ -117,11 +117,13 @@ public class CameraManager
 
                 if (mCallerFragment != null)
                 {
-                    new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(
+                    new CropManager(mCallerFragment,
+                            mRequestCodeCropImage).requestCrop(
                             mFileManager.getUri(mPhotoFile), mCroppedImage);
                 } else
                 {
-                    new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(
+                    new CropManager(mCallerActivity,
+                            mRequestCodeCropImage).requestCrop(
                             mFileManager.getUri(mPhotoFile), mCroppedImage);
                 }
 
@@ -146,22 +148,9 @@ public class CameraManager
         {
             final String path = imageCropperUri.getPath();
 
-            new PhotoDecodeTask(new PhotoDecodeTask.IPhotoDecodeTaskCallback()
-            {
-                @Override
-                public void onPhotoDecodeTaskSuccess(final Bitmap photo)
-                {
-
-                    mCallerActivity.runOnUiThread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            mCameraServiceListener.onPictureTaken(photo, new File(path));
-                        }
-                    });
-                }
-            }).execute(path);
+            new PhotoDecodeTask(
+                    photo -> mCallerActivity.runOnUiThread(
+                            () -> mCameraServiceListener.onPictureTaken(photo, new File(path)))).execute(path);
         }
     }
 

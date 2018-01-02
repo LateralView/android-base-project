@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 
+import co.lateralview.myapp.services.MyAppService;
+
 public class MyApp extends Application
 {
     public static final String TAG = MyApp.class.getSimpleName();
@@ -44,6 +46,8 @@ public class MyApp extends Application
 
         //TODO Wrapper
         Stetho.initializeWithDefaults(this);
+
+        MyAppService.startService(this);
     }
 }
 

@@ -11,6 +11,7 @@ public class SnackBarData implements Serializable
 {
     private SnackBarType mSnackBarType;
     private SnackBarHelper.ISnackBarHandler mSnackBarListener;
+
     public enum SnackBarType implements Serializable
     {
         DUMMY(-1, -1, -1, Snackbar.LENGTH_INDEFINITE),
