@@ -41,6 +41,26 @@ public class SharedPreferencesManagerImpl implements SharedPreferencesManager
         mSharedPreferences.edit().putInt(key, value).apply();
     }
 
+    @Override
+    public boolean saveBlocking(String key, boolean value)
+    {
+        return mSharedPreferences.edit().putBoolean(key, value).commit();
+
+    }
+
+    @Override
+    public boolean saveBlocking(String key, String value)
+    {
+        return mSharedPreferences.edit().putString(key, value).commit();
+    }
+
+    @Override
+    public boolean saveBlocking(String key, int value)
+    {
+        return mSharedPreferences.edit().putInt(key, value).commit();
+
+    }
+
     public boolean getBoolean(String key)
     {
         return mSharedPreferences.getBoolean(key, false);
@@ -76,6 +96,12 @@ public class SharedPreferencesManagerImpl implements SharedPreferencesManager
         mSharedPreferences.edit().putString(key, mParserManager.toJson(model)).apply();
     }
 
+    @Override
+    public <T> boolean saveBlocking(String key, T model)
+    {
+        return mSharedPreferences.edit().putString(key, mParserManager.toJson(model)).commit();
+    }
+
     public <T> T get(String key, Class<T> type)
     {
         String json = getString(key);
@@ -89,13 +115,27 @@ public class SharedPreferencesManagerImpl implements SharedPreferencesManager
         return json != "" ? (T) mParserManager.fromJson(json, type) : null;
     }
 
+    @Override
     public void clear()
     {
         mSharedPreferences.edit().clear().apply();
     }
 
+    @Override
+    public boolean clearBlocking()
+    {
+        return mSharedPreferences.edit().clear().commit();
+    }
+
+    @Override
     public void remove(String key)
     {
         mSharedPreferences.edit().remove(key).apply();
+    }
+
+    @Override
+    public boolean removeBlocking(String key)
+    {
+        return mSharedPreferences.edit().remove(key).commit();
     }
 }

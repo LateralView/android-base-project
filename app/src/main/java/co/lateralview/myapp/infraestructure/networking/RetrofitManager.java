@@ -276,7 +276,7 @@ public class RetrofitManager
         {
             Request request = chain.request();
 
-            String accessToken = mSessionRepository.getAccessToken();
+            String accessToken = mSessionRepository.getAccessToken().blockingGet();
 
             Request.Builder requestBuilder = request.newBuilder()
                     .header(RestConstants.HEADER_AUTH,

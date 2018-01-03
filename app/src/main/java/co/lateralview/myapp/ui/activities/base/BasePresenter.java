@@ -20,7 +20,7 @@ public class BasePresenter implements Base.Presenter
     private static final String TAG = "BasePresenter";
 
     @Inject
-    SessionRepository mSessionRepository;
+    protected SessionRepository mSessionRepository;
     @Inject
     InternetManager mInternetManager;
     @Inject
