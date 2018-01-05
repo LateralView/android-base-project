@@ -6,8 +6,6 @@ import co.lateralview.myapp.domain.repository.implementation.SessionRepositoryIm
 import co.lateralview.myapp.domain.repository.implementation.UserRepositoryImpl;
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
-import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferencesManager;
-import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,15 +15,15 @@ public class RepositoryModule
     @Provides
     @Singleton
     public SessionRepository provideSessionRepository(
-            SharedPreferencesManager sharedPreferencesManager)
+            SessionRepositoryImpl sessionRepository)
     {
-        return new SessionRepositoryImpl(sharedPreferencesManager);
+        return sessionRepository;
     }
 
     @Provides
     @Singleton
-    public UserRepository provideUserRepository(UserServer userServer)
+    public UserRepository provideUserRepository(UserRepositoryImpl userRepository)
     {
-        return new UserRepositoryImpl(userServer);
+        return userRepository;
     }
 }

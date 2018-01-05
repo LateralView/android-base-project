@@ -1,5 +1,7 @@
 package co.lateralview.myapp.domain.repository.implementation;
 
+import javax.inject.Inject;
+
 import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.infraestructure.manager.interfaces.SharedPreferencesManager;
@@ -10,18 +12,18 @@ import io.reactivex.Single;
 
 public class SessionRepositoryImpl implements SessionRepository
 {
-    //TODO: Make SharedPreferences I/O Async
-
     public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY =
             "SHARED_PREFERENCES_ACCESS_TOKEN_KEY";
 
-    private SharedPreferencesManager mSharedPreferencesManager;
+    @Inject
+    SharedPreferencesManager mSharedPreferencesManager;
+
     private User mCurrentUser;
     private String mAccessToken;
 
-    public SessionRepositoryImpl(SharedPreferencesManager sharedPreferencesManager)
+    @Inject
+    public SessionRepositoryImpl()
     {
-        mSharedPreferencesManager = sharedPreferencesManager;
     }
 
     @Override
