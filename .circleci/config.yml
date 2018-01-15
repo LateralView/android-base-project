@@ -24,7 +24,7 @@ jobs:
           destination: apks/
     - run:
           name: Upload to Slack
-          command: curl -F file=@app/build/outputs/apk/debug/app-debug-unsigned.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${CIRCLE_SHA1}"  https://slack.com/api/files.upload 
+          command: curl -F file=@app/build/outputs/apk/debug/app-debug.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${CIRCLE_SHA1}"  https://slack.com/api/files.upload 
   
   
 workflows:
