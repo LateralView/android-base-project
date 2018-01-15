@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  dev-build:
+    docker:
+      - image: circleci/android:api-27-alpha #SDK version
+    working_directory: ~/code
+    steps:
+    - checkout
+    - run: echo "Starting..."
+    - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+    - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    - run:
+          name: Initial build
+          command: ./gradlew clean assembleDebug --no-daemon --stacktrace
+    - store_artifacts:
+          path: app/build/outputs/apk/
+          destination: apks/
+    - run:
+          name: Upload to Slack
+          command: curl -F file=@app/build/outputs/apk/debug/app-debug-unsigned.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${CIRCLE_SHA1}"  https://slack.com/api/files.upload 
+  
+  
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - dev-build:
+          filters:
+            branches:
+              only: develop+MVP+RX

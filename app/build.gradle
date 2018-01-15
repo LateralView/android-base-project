@@ -63,7 +63,7 @@ def version_dagger = '2.8'
 def version_butterknife = '8.7.0'
 def version_rxjava = '2.1.0'
 def version_rxandroid = '2.0.1'
-def version_leakcanary = '1.5'
+//def version_leakcanary = '1.5'
 def version_retrofit = '2.3.0'
 def version_firebase = '11.6.0'
 def version_permission = '3.0.1'
@@ -99,10 +99,11 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:${version_rxjava}"
     implementation "io.reactivex.rxjava2:rxandroid:${version_rxandroid}"
 
+    //TODO: Fix Leak Canary version
     // Leak Canary - memory leak detection
-    implementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    //implementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
+    //releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    //testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
 
     // REST Client
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
