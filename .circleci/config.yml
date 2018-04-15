@@ -1,39 +1,97 @@
-version: 2
-jobs:
-  dev-build:
+version: 2.0
+
+references:
+  workspace: &workspace
+    ~/code
+
+  config_android: &config_android
+    working_directory: *workspace
     docker:
-      - image: circleci/android:api-27-alpha #SDK version
-    working_directory: ~/code
+      - image: circleci/android:api-27-alpha
+
+  cache_key: &cache_key
+    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  restore_cache: &restore_cache
+    restore_cache:
+      <<: *cache_key
+  save_cache: &save_cache
+    save_cache:
+      <<: *cache_key
+      paths:
+        - ~/.gradle
+  
+  store_artifacts: &store_artifacts
+    store_artifacts:
+      path: app/build/outputs/apk/
+      destination: apks/
+
+  persist_to_workspace: &persist_to_workspace
+    persist_to_workspace:
+      root: .
+      paths:
+        - ./*
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace
+
+jobs:
+  build:
+    <<: *config_android
+
     steps:
-    - checkout
-    - run: echo "Starting..."
-    - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-    - run:
+      - checkout
+      - run: echo "Starting..."
+      - *restore_cache
+      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
-    - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-    - run:
-          name: Initial build
-          command: ./gradlew clean assembleDebug --no-daemon --stacktrace
-    - store_artifacts:
-          path: app/build/outputs/apk/
-          destination: apks/
-    - run:
-          name: Upload to Slack
-          command: |
-            export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 | sed -E 's/^[^ ]+ (.*)$/\1/g')
-            curl -F file=@app/build/outputs/apk/debug/app-debug.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${GIT_COMMIT_DESC}"  https://slack.com/api/files.upload 
-  
-  
+      - *save_cache
+      - *persist_to_workspace
+
+  debug-build:
+    <<: *config_android
+
+    steps:
+      - *attach_workspace
+      - run:
+            name: Initial debug build
+            command: ./gradlew clean assembleDebug --no-daemon --stacktrace
+      - *store_artifacts
+      - run:
+            name: Uploading debug build to Slack
+            command: |
+              export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 | sed -E 's/^[^ ]+ (.*)$/\1/g')
+              curl -F file=@app/build/outputs/apk/debug/app-debug.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${GIT_COMMIT_DESC}"  https://slack.com/api/files.upload
+
+  release-build:
+    <<: *config_android
+
+    steps:
+      - *attach_workspace
+      - run:
+            name: Initial debug build
+            command: ./gradlew clean assembleRelease --no-daemon --stacktrace
+      - *store_artifacts
+      - run:
+            name: Upload release build to Slack
+            command: |
+              export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 | sed -E 's/^[^ ]+ (.*)$/\1/g')
+              curl -F file=@app/build/outputs/apk/release/app-release.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${GIT_COMMIT_DESC}"  https://slack.com/api/files.upload
+
 workflows:
   version: 2
-  deploy:
+  build_workflow:
     jobs:
-      - dev-build:
+      - build
+      - debug-build:
+          requires:
+            - build
           filters:
             branches:
-              only: develop+MVP+RX
+              only: circleImprovements
+      - release-build:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
