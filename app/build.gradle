@@ -58,22 +58,24 @@ android {
     }
 }
 
-def version_support = '27.0.2'
-def version_dagger = '2.8'
-def version_butterknife = '8.7.0'
-def version_rxjava = '2.1.0'
-def version_rxandroid = '2.0.1'
-//def version_leakcanary = '1.5'
-def version_retrofit = '2.3.0'
-def version_firebase = '11.6.0'
-def version_permission = '3.0.1'
+ext {
+    version_support = '27.1.1'
+    version_butterknife = "8.8.1"
+    version_rxjava = '2.1.0'
+    version_rxandroid = '2.0.1'
+    version_dagger = "2.8"
+    version_retrofit = "2.3.0"
+    version_leakcanary = "1.5.4"
+    version_permission = '3.0.1'
+    version_firebase = '11.6.0'
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:recyclerview-v7:${version_support}"
-    implementation "com.android.support:design:${version_support}"
-    implementation "com.android.support:support-v13:${version_support}"
-    implementation "com.android.support:appcompat-v7:${version_support}"
+    implementation "com.android.support:recyclerview-v7:$version_support"
+    implementation "com.android.support:design:$version_support"
+    implementation "com.android.support:support-v13:$version_support"
+    implementation "com.android.support:appcompat-v7:$version_support"
 
     // Dagger 2 - Dependency Injection
     implementation "com.google.dagger:dagger:$version_dagger"
@@ -88,21 +90,22 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
 
     //Instance State Handler
-    implementation 'frankiesardo:icepick:3.1.0'
-    compileOnly 'frankiesardo:icepick-processor:3.1.0'
+    implementation 'frankiesardo:icepick:3.2.0'
+    compileOnly 'frankiesardo:icepick-processor:3.2.0'
 
     //Image Crop
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
 
     //Reactive Programming
-    implementation "io.reactivex.rxjava2:rxjava:${version_rxjava}"
-    implementation "io.reactivex.rxjava2:rxandroid:${version_rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:$version_rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$version_rxandroid"
 
-    //TODO: Fix Leak Canary version
     // Leak Canary - memory leak detection
-    //implementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
-    //releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
-    //testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    // LeakCanary for debug builds only: notifications, analysis, etc
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leakcanary"
+    // No-Op version of LeakCanary for release builds: no notifications, no analysis, nothing
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$version_leakcanary"
 
     // REST Client
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
@@ -124,4 +127,11 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.17.0'
+
+    // Friendly Http Inspector through separate App
+    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+    // Proguard Annotations
+    implementation 'com.infstory:proguard-annotations:1.0.2'
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
+import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +67,7 @@ public class RetrofitManager
                     .addInterceptor(logging)
                     .addInterceptor(provideHeaderInterceptor())
                     .addInterceptor(provideOfflineCacheInterceptor())
+                    .addInterceptor(new ChuckInterceptor(mApplication))
                     .addNetworkInterceptor(new StethoInterceptor())
                     .addNetworkInterceptor(provideCacheInterceptor())
                     .cache(provideCache())
