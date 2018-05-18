@@ -1,20 +1,18 @@
 package co.lateralview.myapp.ui.activities.main;
 
-import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import co.lateralview.myapp.TrampolineSchedulerRule;
 import co.lateralview.myapp.domain.model.User;
 import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -26,6 +24,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MainPresenterTest {
 
+    @ClassRule public static TrampolineSchedulerRule mTrampolineSchedulerRule = new TrampolineSchedulerRule();
+
     @Mock Main.View mView;
     @Mock UserRepository mUserRepository;
     @Mock SessionRepository mSessionRepository;
@@ -35,13 +35,6 @@ public class MainPresenterTest {
     private static final String PASSWORD = "password";
     private static final String TOKEN = "token";
     private User user = new User();
-
-    @BeforeClass
-    public static void setUpClass()
-    {
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
-        RxJavaPlugins.setIoSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
-    }
 
     @Test
     public void itShouldLoginSuccessfully() {
