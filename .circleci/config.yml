@@ -69,7 +69,7 @@ jobs:
     steps:
       - *attach_workspace
       - run:
-            name: Initial debug build
+            name: Initial release build
             command: ./gradlew clean assembleRelease --no-daemon --stacktrace
       - *store_artifacts
       - run:
@@ -88,10 +88,4 @@ workflows:
             - build
           filters:
             branches:
-              only: circleImprovements
-      - release-build:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+              only: develop+MVP+RX
