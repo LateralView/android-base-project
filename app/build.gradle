@@ -56,6 +56,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 ext {
@@ -127,6 +132,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.17.0'
+    testImplementation "org.robolectric:robolectric:3.8"
 
     // Friendly Http Inspector through separate App
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
