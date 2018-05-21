@@ -48,7 +48,7 @@ jobs:
       - *save_cache
       - *persist_to_workspace
 
-  tests:
+  test:
     <<: *config_android
 
     steps:
@@ -98,10 +98,11 @@ workflows:
   build_workflow:
     jobs:
       - build
-      - tests
-      - debug-build:
+      - test:
           requires:
             - build
+      - debug-build:
+          requires:
             - test
           filters:
             branches:
