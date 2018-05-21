@@ -48,23 +48,8 @@ jobs:
       - *save_cache
       - *persist_to_workspace
 
-  tests:
-    <<: *config_android
-
-    steps:
-      - *attach_workspace
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
-      - store_test_results:
-          path: app/build/test-results
-      - *persist_to_workspace
-
   debug-build:
-  <<: *config_android
+    <<: *config_android
 
     steps:
       - *attach_workspace
