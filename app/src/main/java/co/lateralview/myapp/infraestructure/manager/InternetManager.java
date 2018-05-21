@@ -6,19 +6,21 @@ import android.net.NetworkInfo;
 
 public class InternetManager
 {
-    private Context mContext;
+    private ConnectivityManager mConnectivityManager;
 
     public InternetManager(Context context)
     {
-        mContext = context;
+        mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     public Boolean isOnline()
     {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    public boolean onWifi()
+    {
+        return !mConnectivityManager.isActiveNetworkMetered();
+    }
 }
