@@ -1,5 +1,30 @@
 version: 2
 jobs:
+  check-build:
+    docker:
+      - image: circleci/android:api-27-alpha #SDK version
+    working_directory: ~/code
+    steps:
+    - checkout
+    - run: echo "Starting..."
+    - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+    - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    - run:
+          name: Run Tests
+          command: ./gradlew lint test
+    - store_artifacts:
+          path: app/build/reports
+          destination: reports
+    - store_test_results:
+          path: app/build/test-results
+
   dev-build:
     docker:
       - image: circleci/android:api-27-alpha #SDK version
@@ -17,6 +42,14 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
     - run:
+          name: Run Tests
+          command: ./gradlew lint test
+    - store_artifacts:
+          path: app/build/reports
+          destination: reports
+    - store_test_results:
+          path: app/build/test-results
+    - run:
           name: Initial build
           command: ./gradlew clean assembleDebug --no-daemon --stacktrace
     - store_artifacts:
@@ -24,14 +57,24 @@ jobs:
           destination: apks/
     - run:
           name: Upload to Slack
-          command: curl -F file=@app/build/outputs/apk/debug/app-debug.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${CIRCLE_SHA1}"  https://slack.com/api/files.upload 
-  
-  
+          command: |
+            export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 | sed -E 's/^[^ ]+ (.*)$/\1/g')
+            curl -F file=@app/build/outputs/apk/debug/app-debug.apk -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${GIT_COMMIT_DESC}"  https://slack.com/api/files.upload
+
+
 workflows:
-  version: 2
-  deploy:
-    jobs:
-      - dev-build:
-          filters:
-            branches:
-              only: develop+MVP+RX
+ version: 2
+ deploy:
+   jobs:
+     - check-build:
+         filters:
+           branches:
+             ignore:
+               - develop+MVP+RX
+               - /^dev-build-.*/
+     - dev-build:
+         filters:
+           branches:
+             only: 
+               - develop+MVP+RX
+               - /^dev-build-.*/
