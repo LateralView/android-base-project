@@ -9,6 +9,10 @@
 ##################################
 # OkHttp3
 -dontwarn okio.**
+-dontwarn com.squareup.okhttp3.**
+-dontwarn okio.**
+-dontwarn org.conscrypt.OpenSSLProvider
+-dontwarn org.conscrypt.Conscrypt
 
 ##################################
 # Retrofit
