@@ -30,6 +30,13 @@ public class BasePresenter implements Base.Presenter
     @Inject
     TaskManager mTaskManager; //Help us to retry failed tasks
 
+    public BasePresenter() {
+    }
+
+    public BasePresenter(final SessionRepository sessionRepository) {
+        mSessionRepository = sessionRepository;
+    }
+
     public void cancelPendingTasks(String tag)
     {
         mTaskManager.removeTasks(tag);

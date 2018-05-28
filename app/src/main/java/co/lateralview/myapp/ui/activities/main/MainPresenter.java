@@ -3,8 +3,10 @@ package co.lateralview.myapp.ui.activities.main;
 
 import javax.inject.Inject;
 
+import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.domain.repository.interfaces.UserRepository;
 import co.lateralview.myapp.ui.activities.base.BasePresenter;
+import co.lateralview.myapp.ui.activities.main.Main.View;
 import co.lateralview.myapp.ui.util.di.ActivityScoped;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -19,6 +21,12 @@ public class MainPresenter extends BasePresenter implements Main.Presenter
     Main.View mView;
     @Inject
     UserRepository mUserRepository;
+
+    public MainPresenter(final View view, final UserRepository userRepository, final SessionRepository sessionRepository) {
+        super(sessionRepository);
+        mView = view;
+        mUserRepository = userRepository;
+    }
 
     @Inject
     MainPresenter()
