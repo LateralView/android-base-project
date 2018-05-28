@@ -86,6 +86,7 @@ ext {
     version_leakcanary = "1.5.4"
     version_permission = '3.2.0'
     version_firebase = '16.0.0'
+    version_glide = '4.7.1'
 }
 
 dependencies {
@@ -104,8 +105,9 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$version_butterknife"
 
     //Image Loader
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$version_glide@aar"
+    annotationProcessor "com.github.bumptech.glide:compiler:$version_glide"
 
     //Instance State Handler
     implementation 'frankiesardo:icepick:3.2.0'

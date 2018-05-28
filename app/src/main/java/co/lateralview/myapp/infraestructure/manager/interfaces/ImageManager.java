@@ -13,7 +13,7 @@ public interface ImageManager
 
     void loadImage(String url, ImageView imageView);
 
-    void loadImage(String url, SimpleTarget simpleTarget);
+    void loadImage(String url, SimpleTarget<Bitmap> simpleTarget);
 
     void loadGifFromRes(int res, ImageView imageView);
 

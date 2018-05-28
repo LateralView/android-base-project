@@ -14,7 +14,6 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 
@@ -25,7 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import co.lateralview.myapp.ui.util.GlideApp;
 
 public class ImageManagerImpl implements ImageManager
 {
@@ -38,40 +37,45 @@ public class ImageManagerImpl implements ImageManager
         mContext = context;
     }
 
+    @Override
     public void loadCircleImage(String url, ImageView imageView)
     {
-        Glide.with(mContext)
+        GlideApp.with(mContext)
                 .load(url)
                 .centerCrop()
-                .bitmapTransform(new CropCircleTransformation(mContext))
+                .circleCrop()
                 .into(imageView);
     }
 
+    @Override
     public void loadImage(String url, ImageView imageView)
     {
-        Glide.with(mContext)
+        GlideApp.with(mContext)
                 .load(url)
                 .into(imageView);
     }
 
-    public void loadImage(String url, SimpleTarget simpleTarget)
+    @Override
+    public void loadImage(String url, SimpleTarget<Bitmap> simpleTarget)
     {
-        Glide.with(mContext)
-                .load(url)
+        GlideApp.with(mContext)
                 .asBitmap()
+                .load(url)
                 .into(simpleTarget);
     }
 
+    @Override
     public void loadGifFromRes(int res, ImageView imageView)
     {
-        Glide.with(mContext)
-                .load(res)
+        GlideApp.with(mContext)
                 .asGif()
+                .load(res)
                 .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(imageView);
     }
 
+    @Override
     public Bitmap compressImage(Bitmap bitmap, File file)
     {
         OutputStream outputStream = null;
@@ -100,6 +104,7 @@ public class ImageManagerImpl implements ImageManager
         return bitmap;
     }
 
+    @Override
     public Bitmap rotateBitmap(Bitmap bitmap, int orientation)
     {
         Matrix matrix = new Matrix();
@@ -149,6 +154,7 @@ public class ImageManagerImpl implements ImageManager
         }
     }
 
+    @Override
     public Bitmap blur(Bitmap image)
     {
         Bitmap U8_4Bitmap;
@@ -179,6 +185,7 @@ public class ImageManagerImpl implements ImageManager
         return outputBitmap;
     }
 
+    @Override
     public Bitmap transformToCircle(Bitmap bitmap)
     {
         Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
