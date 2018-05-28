@@ -32,6 +32,22 @@
 -keepnames class * { @icepick.State *;}
 
 ##################################
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+
+##################################
+#Firebase Crashlytics
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
+##################################
 # Lambda
 -dontwarn java.lang.invoke**
 
