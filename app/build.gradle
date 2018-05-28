@@ -84,7 +84,7 @@ ext {
     version_dagger = "2.16"
     version_retrofit = "2.4.0"
     version_leakcanary = "1.5.4"
-    version_permission = '3.0.1'
+    version_permission = '3.2.0'
     version_firebase = '16.0.0'
 }
 
