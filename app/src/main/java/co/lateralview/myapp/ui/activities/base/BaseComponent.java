@@ -9,9 +9,8 @@ import dagger.Component;
 
 @ActivityScoped
 @Component(dependencies = AppComponent.class,
-        modules = {Base.BaseViewModule.class})
-public interface BaseComponent
-{
+    modules = {Base.BaseViewModule.class})
+public interface BaseComponent {
     void inject(BaseActivity activity);
 
     void inject(SplashActivity activity);

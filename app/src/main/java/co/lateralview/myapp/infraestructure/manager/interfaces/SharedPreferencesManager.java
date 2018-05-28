@@ -2,8 +2,7 @@ package co.lateralview.myapp.infraestructure.manager.interfaces;
 
 import java.lang.reflect.Type;
 
-public interface SharedPreferencesManager
-{
+public interface SharedPreferencesManager {
     void save(String key, boolean value);
 
     void save(String key, String value);

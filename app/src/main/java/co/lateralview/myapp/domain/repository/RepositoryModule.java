@@ -10,20 +10,17 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class RepositoryModule
-{
+public class RepositoryModule {
     @Provides
     @Singleton
     public SessionRepository provideSessionRepository(
-            SessionRepositoryImpl sessionRepository)
-    {
+        SessionRepositoryImpl sessionRepository) {
         return sessionRepository;
     }
 
     @Provides
     @Singleton
-    public UserRepository provideUserRepository(UserRepositoryImpl userRepository)
-    {
+    public UserRepository provideUserRepository(UserRepositoryImpl userRepository) {
         return userRepository;
     }
 }

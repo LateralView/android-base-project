@@ -7,8 +7,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.io.File;
 
-public interface ImageManager
-{
+public interface ImageManager {
     void loadCircleImage(String url, ImageView imageView);
 
     void loadImage(String url, ImageView imageView);

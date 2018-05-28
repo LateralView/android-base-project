@@ -6,25 +6,20 @@ import android.os.AsyncTask;
 
 import java.io.File;
 
-public class PhotoDecodeTask extends AsyncTask<String, Integer, Integer>
-{
+public class PhotoDecodeTask extends AsyncTask<String, Integer, Integer> {
     private IPhotoDecodeTaskCallback mPhotoDecodeTaskListener;
 
-    public PhotoDecodeTask(IPhotoDecodeTaskCallback photoDecodeTaskListener)
-    {
+    public PhotoDecodeTask(IPhotoDecodeTaskCallback photoDecodeTaskListener) {
         mPhotoDecodeTaskListener = photoDecodeTaskListener;
     }
 
-    protected Integer doInBackground(String... paths)
-    {
+    protected Integer doInBackground(String... paths) {
         String photoPath = paths[0];
 
-        if (!photoPath.isEmpty())
-        {
+        if (!photoPath.isEmpty()) {
             final File photo = new File(photoPath);
 
-            if (photo.exists())
-            {
+            if (photo.exists()) {
                 final Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
 
                 mPhotoDecodeTaskListener.onPhotoDecodeTaskSuccess(bitmap);
@@ -34,12 +29,10 @@ public class PhotoDecodeTask extends AsyncTask<String, Integer, Integer>
         return 0;
     }
 
-    protected void onProgressUpdate(Integer... progress)
-    {
+    protected void onProgressUpdate(Integer... progress) {
     }
 
-    public interface IPhotoDecodeTaskCallback
-    {
+    public interface IPhotoDecodeTaskCallback {
         void onPhotoDecodeTaskSuccess(Bitmap photo);
     }
 

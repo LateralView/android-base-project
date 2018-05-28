@@ -11,15 +11,16 @@ import android.widget.ImageView;
 
 import co.lateralview.myapp.R;
 
-public class ToolbarUtils
-{
+public final class ToolbarUtils {
+
+    private ToolbarUtils() {
+    }
+
     public static void initializeToolbar(AppCompatActivity activity, boolean backEnabled,
-            @Nullable String title)
-    {
+                                         @Nullable String title) {
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
 
-        if (toolbar != null)
-        {
+        if (toolbar != null) {
             activity.setSupportActionBar(toolbar);
 
             setToolbarTitle(activity, title != null && !title.isEmpty() ? title : "");
@@ -29,45 +30,35 @@ public class ToolbarUtils
         }
     }
 
-    public static void setActionBarVisibility(Activity activity, int visibility)
-    {
+    public static void setActionBarVisibility(Activity activity, int visibility) {
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
 
-        if (toolbar != null)
-        {
+        if (toolbar != null) {
             toolbar.setVisibility(visibility);
         }
     }
 
-    public static void setToolbarTitle(AppCompatActivity activity, String title)
-    {
-        if (activity.getSupportActionBar() != null)
-        {
+    public static void setToolbarTitle(AppCompatActivity activity, String title) {
+        if (activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setTitle(title);
         }
     }
 
-    public static ImageView findOverflowMenuButton(Activity activity, ViewGroup viewGroup)
-    {
-        if (viewGroup == null)
-        {
+    public static ImageView findOverflowMenuButton(Activity activity, ViewGroup viewGroup) {
+        if (viewGroup == null) {
             return null;
         }
         ImageView overflow = null;
-        for (int i = 0, count = viewGroup.getChildCount(); i < count; i++)
-        {
+        for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
             View v = viewGroup.getChildAt(i);
             if (v instanceof ImageView && (v.getClass().getSimpleName().equals("OverflowMenuButton")
-                    ||
-                    v instanceof ActionMenuView.ActionMenuChildView))
-            {
+                ||
+                v instanceof ActionMenuView.ActionMenuChildView)) {
                 overflow = (ImageView) v;
-            } else if (v instanceof ViewGroup)
-            {
+            } else if (v instanceof ViewGroup) {
                 overflow = findOverflowMenuButton(activity, (ViewGroup) v);
             }
-            if (overflow != null)
-            {
+            if (overflow != null) {
                 break;
             }
         }

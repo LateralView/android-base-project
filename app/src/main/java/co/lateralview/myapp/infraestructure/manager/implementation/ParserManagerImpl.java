@@ -6,28 +6,23 @@ import java.lang.reflect.Type;
 
 import co.lateralview.myapp.infraestructure.manager.interfaces.ParserManager;
 
-public class ParserManagerImpl implements ParserManager
-{
+public class ParserManagerImpl implements ParserManager {
     private Gson mGson;
 
-    public ParserManagerImpl(Gson gson)
-    {
+    public ParserManagerImpl(Gson gson) {
         mGson = gson;
     }
 
-    public String toJson(Object object)
-    {
+    public String toJson(Object object) {
         return mGson.toJson(object);
     }
 
-    public <T> T fromJson(String json, Class<T> type)
-    {
+    public <T> T fromJson(String json, Class<T> type) {
         return mGson.fromJson(json, type);
     }
 
     @Override
-    public <T> T fromJson(String json, Type type)
-    {
+    public <T> T fromJson(String json, Type type) {
         return mGson.fromJson(json, type);
     }
 }

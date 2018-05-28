@@ -7,15 +7,12 @@ import co.lateralview.myapp.ui.activities.base.Base;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
 
 
-public class BaseDialogFragment extends DialogFragment
-{
-    protected AppComponent getAppComponent()
-    {
+public class BaseDialogFragment extends DialogFragment {
+    protected AppComponent getAppComponent() {
         return ((BaseActivity) getActivity()).getAppComponent();
     }
 
-    protected Base.BaseViewModule getBaseActivityModule()
-    {
+    protected Base.BaseViewModule getBaseActivityModule() {
         return ((BaseActivity) getActivity()).getBaseActivityModule();
     }
 }

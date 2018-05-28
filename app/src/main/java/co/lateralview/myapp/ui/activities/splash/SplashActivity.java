@@ -9,13 +9,11 @@ import co.lateralview.myapp.ui.activities.base.DaggerBaseComponent;
 import co.lateralview.myapp.ui.activities.main.MainActivity;
 import co.lateralview.myapp.ui.util.SystemUtils;
 
-public class SplashActivity extends BaseActivity
-{
+public class SplashActivity extends BaseActivity {
     public static final String TAG = "SplashActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
@@ -23,25 +21,22 @@ public class SplashActivity extends BaseActivity
         SystemUtils.fullScreenMode(this);
 
         new Handler().postDelayed(() -> start(),
-                2000);
+            2000);
     }
 
-    public String getTAG()
-    {
+    public String getTAG() {
         return TAG;
     }
 
     @Override
-    protected void injectDependencies()
-    {
+    protected void injectDependencies() {
         DaggerBaseComponent.builder()
-                .appComponent(getAppComponent())
-                .baseViewModule(getBaseActivityModule())
-                .build().inject(this);
+            .appComponent(getAppComponent())
+            .baseViewModule(getBaseActivityModule())
+            .build().inject(this);
     }
 
-    private void start()
-    {
+    private void start() {
         startActivity(MainActivity.newInstance(SplashActivity.this, true));
     }
 }

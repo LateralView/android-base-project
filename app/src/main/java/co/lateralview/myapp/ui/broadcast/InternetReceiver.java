@@ -7,31 +7,25 @@ import android.content.IntentFilter;
 
 import co.lateralview.myapp.infraestructure.manager.InternetManager;
 
-public class InternetReceiver extends BroadcastReceiver
-{
+public class InternetReceiver extends BroadcastReceiver {
     private InternetReceiverListener mReceiverHandler;
     private InternetManager mInternetManager;
 
-    public InternetReceiver(InternetReceiverListener handler, InternetManager internetManager)
-    {
+    public InternetReceiver(InternetReceiverListener handler, InternetManager internetManager) {
         mReceiverHandler = handler;
         mInternetManager = internetManager;
     }
 
     @Override
-    public void onReceive(final Context context, final Intent intent)
-    {
-        if (mInternetManager.isOnline())
-        {
+    public void onReceive(final Context context, final Intent intent) {
+        if (mInternetManager.isOnline()) {
             mReceiverHandler.onInternetServiceEnabled();
-        } else
-        {
+        } else {
             mReceiverHandler.onInternetServiceDisabled();
         }
     }
 
-    public IntentFilter getIntentFilter()
-    {
+    public IntentFilter getIntentFilter() {
         IntentFilter locationServicesChangeFilter = new IntentFilter();
 
         locationServicesChangeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -39,8 +33,7 @@ public class InternetReceiver extends BroadcastReceiver
         return locationServicesChangeFilter;
     }
 
-    public interface InternetReceiverListener
-    {
+    public interface InternetReceiverListener {
         void onInternetServiceEnabled();
 
         void onInternetServiceDisabled();

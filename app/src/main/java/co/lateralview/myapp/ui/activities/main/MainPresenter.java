@@ -9,8 +9,7 @@ import co.lateralview.myapp.ui.util.di.ActivityScoped;
 import io.reactivex.disposables.CompositeDisposable;
 
 @ActivityScoped
-public class MainPresenter extends BasePresenter implements Main.Presenter
-{
+public class MainPresenter extends BasePresenter implements Main.Presenter {
     public static final String TAG = "MainPresenter";
 
     protected CompositeDisposable mSubscriptions = new CompositeDisposable();
@@ -21,23 +20,20 @@ public class MainPresenter extends BasePresenter implements Main.Presenter
     UserRepository mUserRepository;
 
     @Inject
-    MainPresenter()
-    {
+    MainPresenter() {
 
     }
 
     @Override
-    public void login(String email, String password)
-    {
+    public void login(String email, String password) {
         mSubscriptions.add(mUserRepository.login(email, password)
-                .flatMapCompletable(user -> mSessionRepository.logIn(user, "token"))
-                .subscribe(() -> {/*login done*/},
-                        error -> mView.showError()));
+            .flatMapCompletable(user -> mSessionRepository.logIn(user, "token"))
+            .subscribe(() -> { /*login done*/ },
+                error -> mView.showError()));
     }
 
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         mSubscriptions.dispose();
     }
 }

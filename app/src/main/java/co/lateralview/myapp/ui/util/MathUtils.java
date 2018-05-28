@@ -4,12 +4,13 @@ package co.lateralview.myapp.ui.util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class MathUtils
-{
-    public static float round(float value, int places)
-    {
-        if (places < 0)
-        {
+public final class MathUtils {
+
+    private MathUtils() {
+    }
+
+    public static float round(float value, int places) {
+        if (places < 0) {
             throw new IllegalArgumentException();
         }
 

@@ -18,19 +18,16 @@ import java.util.Date;
 
 import co.lateralview.myapp.infraestructure.manager.interfaces.FileManager;
 
-public class FileManagerImpl implements FileManager
-{
+public class FileManagerImpl implements FileManager {
     private static final String FILE_TEMP_PREFIX = "LV_MYAPP";
 
     private Context mContext;
 
-    public FileManagerImpl(Context mContext)
-    {
+    public FileManagerImpl(Context mContext) {
         this.mContext = mContext;
     }
 
-    public String savePhotoToInternalStorage(Bitmap bitmapImage)
-    {
+    public String savePhotoToInternalStorage(Bitmap bitmapImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
@@ -41,100 +38,79 @@ public class FileManagerImpl implements FileManager
         return getUri(photoFile).toString();
     }
 
-    public File createPhotoFile()
-    {
+    public File createPhotoFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = FILE_TEMP_PREFIX + "_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+            Environment.DIRECTORY_PICTURES);
         storageDir.mkdirs();
 
-        try
-        {
+        try {
             return File.createTempFile(imageFileName, ".jpg", storageDir);
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             return null;
         }
     }
 
-    public Uri getUri(File file)
-    {
+    public Uri getUri(File file) {
         return null != file ? FileProvider.getUriForFile(mContext,
-                mContext.getApplicationContext().getPackageName() + ".provider", file) : null;
+            mContext.getApplicationContext().getPackageName() + ".provider", file) : null;
     }
 
-    public Uri createPhotoUri()
-    {
+    public Uri createPhotoUri() {
         File file = createPhotoFile();
 
         return null != file ? getUri(file) : null;
     }
 
-    public void saveBitmapToFile(Bitmap croppedImage, Uri saveUri)
-    {
-        if (saveUri != null)
-        {
+    public void saveBitmapToFile(Bitmap croppedImage, Uri saveUri) {
+        if (saveUri != null) {
             FileOutputStream outputStream = null;
-            try
-            {
+            try {
                 outputStream = new FileOutputStream(saveUri.getPath());
 
-                if (outputStream != null)
-                {
+                if (outputStream != null) {
                     croppedImage.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
                 }
 
-            } catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            } finally
-            {
+            } finally {
                 closeSilently(outputStream);
                 croppedImage.recycle();
             }
         }
     }
 
-    private boolean writeFile(File f, byte[] bytes)
-    {
+    private boolean writeFile(File f, byte[] bytes) {
         return writeFile(f.getAbsolutePath(), bytes);
     }
 
-    private boolean writeFile(String path, byte[] bytes)
-    {
-        try
-        {
+    private boolean writeFile(String path, byte[] bytes) {
+        try {
             FileOutputStream stream = new FileOutputStream(path);
 
-            try
-            {
+            try {
                 stream.write(bytes);
-            } finally
-            {
+            } finally {
                 closeSilently(stream);
             }
 
             return true;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }
 
 
-    private void closeSilently(@Nullable Closeable c)
-    {
-        if (c == null)
-        {
+    private void closeSilently(@Nullable Closeable c) {
+        if (c == null) {
             return;
         }
 
-        try
-        {
+        try {
             c.close();
-        } catch (Throwable t)
-        {
+        } catch (Throwable t) {
             // Do nothing
         }
     }

@@ -26,77 +26,64 @@ import java.io.OutputStream;
 import co.lateralview.myapp.infraestructure.manager.interfaces.ImageManager;
 import co.lateralview.myapp.ui.util.GlideApp;
 
-public class ImageManagerImpl implements ImageManager
-{
+public class ImageManagerImpl implements ImageManager {
     private static final float BITMAP_SCALE = 0.4f;
     private static final float BLUR_RADIUS = 7.5f;
     private Context mContext;
 
-    public ImageManagerImpl(Context context)
-    {
+    public ImageManagerImpl(Context context) {
         mContext = context;
     }
 
     @Override
-    public void loadCircleImage(String url, ImageView imageView)
-    {
+    public void loadCircleImage(String url, ImageView imageView) {
         GlideApp.with(mContext)
-                .load(url)
-                .centerCrop()
-                .circleCrop()
-                .into(imageView);
+            .load(url)
+            .centerCrop()
+            .circleCrop()
+            .into(imageView);
     }
 
     @Override
-    public void loadImage(String url, ImageView imageView)
-    {
+    public void loadImage(String url, ImageView imageView) {
         GlideApp.with(mContext)
-                .load(url)
-                .into(imageView);
+            .load(url)
+            .into(imageView);
     }
 
     @Override
-    public void loadImage(String url, SimpleTarget<Bitmap> simpleTarget)
-    {
+    public void loadImage(String url, SimpleTarget<Bitmap> simpleTarget) {
         GlideApp.with(mContext)
-                .asBitmap()
-                .load(url)
-                .into(simpleTarget);
+            .asBitmap()
+            .load(url)
+            .into(simpleTarget);
     }
 
     @Override
-    public void loadGifFromRes(int res, ImageView imageView)
-    {
+    public void loadGifFromRes(int res, ImageView imageView) {
         GlideApp.with(mContext)
-                .asGif()
-                .load(res)
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .into(imageView);
+            .asGif()
+            .load(res)
+            .fitCenter()
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .into(imageView);
     }
 
     @Override
-    public Bitmap compressImage(Bitmap bitmap, File file)
-    {
+    public Bitmap compressImage(Bitmap bitmap, File file) {
         OutputStream outputStream = null;
 
-        try
-        {
+        try {
             outputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally
-        {
-            try
-            {
-                if (outputStream != null)
-                {
+        } finally {
+            try {
+                if (outputStream != null) {
                     outputStream.close();
                 }
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -105,11 +92,9 @@ public class ImageManagerImpl implements ImageManager
     }
 
     @Override
-    public Bitmap rotateBitmap(Bitmap bitmap, int orientation)
-    {
+    public Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
         Matrix matrix = new Matrix();
-        switch (orientation)
-        {
+        switch (orientation) {
             case ExifInterface.ORIENTATION_NORMAL:
                 return bitmap;
             case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
@@ -140,37 +125,32 @@ public class ImageManagerImpl implements ImageManager
                 return bitmap;
         }
 
-        try
-        {
+        try {
             Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                    bitmap.getHeight(), matrix, true);
+                bitmap.getHeight(), matrix, true);
             bitmap.recycle();
 
             return bmRotated;
-        } catch (OutOfMemoryError e)
-        {
+        } catch (OutOfMemoryError e) {
             e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public Bitmap blur(Bitmap image)
-    {
-        Bitmap U8_4Bitmap;
+    public Bitmap blur(Bitmap image) {
+        Bitmap u84Bitmap;
 
-        if (image.getConfig() == Bitmap.Config.ARGB_8888)
-        {
-            U8_4Bitmap = image;
-        } else
-        {
-            U8_4Bitmap = image.copy(Bitmap.Config.ARGB_8888, true);
+        if (image.getConfig() == Bitmap.Config.ARGB_8888) {
+            u84Bitmap = image;
+        } else {
+            u84Bitmap = image.copy(Bitmap.Config.ARGB_8888, true);
         }
 
-        int width = Math.round(U8_4Bitmap.getWidth() * BITMAP_SCALE);
-        int height = Math.round(U8_4Bitmap.getHeight() * BITMAP_SCALE);
+        int width = Math.round(u84Bitmap.getWidth() * BITMAP_SCALE);
+        int height = Math.round(u84Bitmap.getHeight() * BITMAP_SCALE);
 
-        Bitmap inputBitmap = Bitmap.createScaledBitmap(U8_4Bitmap, width, height, false);
+        Bitmap inputBitmap = Bitmap.createScaledBitmap(u84Bitmap, width, height, false);
         Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
 
         RenderScript rs = RenderScript.create(mContext);
@@ -186,13 +166,12 @@ public class ImageManagerImpl implements ImageManager
     }
 
     @Override
-    public Bitmap transformToCircle(Bitmap bitmap)
-    {
+    public Bitmap transformToCircle(Bitmap bitmap) {
         Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-                Bitmap.Config.ARGB_8888);
+            Bitmap.Config.ARGB_8888);
 
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
-                Shader.TileMode.CLAMP);
+            Shader.TileMode.CLAMP);
         Paint paint = new Paint();
         paint.setShader(shader);
         paint.setAntiAlias(true);

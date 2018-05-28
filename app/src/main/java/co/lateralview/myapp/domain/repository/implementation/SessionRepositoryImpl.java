@@ -10,10 +10,9 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 
-public class SessionRepositoryImpl implements SessionRepository
-{
-    public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY =
-            "SHARED_PREFERENCES_ACCESS_TOKEN_KEY";
+public class SessionRepositoryImpl implements SessionRepository {
+
+    public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY = "SHARED_PREFERENCES_ACCESS_TOKEN_KEY";
 
     @Inject
     SharedPreferencesManager mSharedPreferencesManager;
@@ -22,19 +21,15 @@ public class SessionRepositoryImpl implements SessionRepository
     private String mAccessToken;
 
     @Inject
-    public SessionRepositoryImpl()
-    {
+    public SessionRepositoryImpl() {
     }
 
     @Override
-    public Single isUserLoggedIn()
-    {
-        return Single.create(e ->
-        {
-            if (mCurrentUser == null)
-            {
+    public Single isUserLoggedIn() {
+        return Single.create(e -> {
+            if (mCurrentUser == null) {
                 mCurrentUser = mSharedPreferencesManager.get(User.SHARED_PREFERENCE_KEY,
-                        User.class);
+                    User.class);
             }
 
             e.onSuccess(mCurrentUser != null);
@@ -42,10 +37,8 @@ public class SessionRepositoryImpl implements SessionRepository
     }
 
     @Override
-    public Completable logOut()
-    {
-        return Completable.create(e ->
-        {
+    public Completable logOut() {
+        return Completable.create(e -> {
             mCurrentUser = null;
             mAccessToken = null;
             mSharedPreferencesManager.clearBlocking();
@@ -54,22 +47,18 @@ public class SessionRepositoryImpl implements SessionRepository
     }
 
     @Override
-    public Completable logIn(User user, String accessToken)
-    {
+    public Completable logIn(User user, String accessToken) {
         return save(user).toCompletable()
-                .andThen(setAccessToken(accessToken).toCompletable())
-                .compose(RxSchedulersUtils.applyCompletableSchedulers());
+            .andThen(setAccessToken(accessToken).toCompletable())
+            .compose(RxSchedulersUtils.applyCompletableSchedulers());
     }
 
     @Override
-    public Single getCurrentUser()
-    {
-        return Single.create(e ->
-        {
-            if (mCurrentUser == null)
-            {
+    public Single getCurrentUser() {
+        return Single.create(e -> {
+            if (mCurrentUser == null) {
                 mCurrentUser = mSharedPreferencesManager.get(User.SHARED_PREFERENCE_KEY,
-                        User.class);
+                    User.class);
             }
 
             e.onSuccess(mCurrentUser);
@@ -77,42 +66,34 @@ public class SessionRepositoryImpl implements SessionRepository
     }
 
     @Override
-    public Single<User> updateUser(User user)
-    {
+    public Single<User> updateUser(User user) {
         return save(user).compose(RxSchedulersUtils.applySingleSchedulers());
     }
 
     @Override
-    public Single getAccessToken()
-    {
-        return Single.create(e ->
-        {
-            if (mAccessToken == null)
-            {
+    public Single getAccessToken() {
+        return Single.create(e -> {
+            if (mAccessToken == null) {
                 mAccessToken = mSharedPreferencesManager.get(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                        String.class);
+                    String.class);
             }
 
             e.onSuccess(mAccessToken);
         }).compose(RxSchedulersUtils.applySingleSchedulers());
     }
 
-    private Single<String> setAccessToken(String accessToken)
-    {
-        return Single.create(e ->
-        {
+    private Single<String> setAccessToken(String accessToken) {
+        return Single.create(e -> {
             mSharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                    accessToken);
+                accessToken);
             mAccessToken = accessToken;
 
             e.onSuccess(mAccessToken);
         });
     }
 
-    private Single<User> save(User newUser)
-    {
-        return Single.create(e ->
-        {
+    private Single<User> save(User newUser) {
+        return Single.create(e -> {
             mSharedPreferencesManager.saveBlocking(User.SHARED_PREFERENCE_KEY, newUser);
 
             mCurrentUser = newUser;

@@ -14,20 +14,19 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class NetModule
-{
+public class NetModule {
     @Provides
     @Singleton
-    public RetrofitManager provideRetrofitManager(Application application, Gson gson,
-            SessionRepository sessionRepository, InternetManager internetManager)
-    {
+    public RetrofitManager provideRetrofitManager(Application application,
+                                                  Gson gson,
+                                                  SessionRepository sessionRepository,
+                                                  InternetManager internetManager) {
         return new RetrofitManager(application, gson, sessionRepository, internetManager);
     }
 
     @Provides
     @Singleton
-    public UserServer provideUserServer(UserServerImpl userServer)
-    {
+    public UserServer provideUserServer(UserServerImpl userServer) {
         return userServer;
     }
 }

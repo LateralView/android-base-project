@@ -10,13 +10,12 @@ import co.lateralview.myapp.domain.repository.interfaces.SessionRepository;
 import co.lateralview.myapp.infraestructure.manager.InternetManager;
 import co.lateralview.myapp.infraestructure.manager.interfaces.TaskManager;
 import co.lateralview.myapp.infraestructure.networking.MyAppServerError;
-import co.lateralview.myapp.infraestructure.networking.RestConstants;
+import co.lateralview.myapp.infraestructure.networking.RestConstants.Subcode;
 import co.lateralview.myapp.infraestructure.networking.ServerException;
 import co.lateralview.myapp.ui.util.di.ActivityScoped;
 
 @ActivityScoped
-public class BasePresenter implements Base.Presenter
-{
+public class BasePresenter implements Base.Presenter {
     private static final String TAG = "BasePresenter";
 
     @Inject
@@ -30,46 +29,34 @@ public class BasePresenter implements Base.Presenter
     @Inject
     TaskManager mTaskManager; //Help us to retry failed tasks
 
-    public void cancelPendingTasks(String tag)
-    {
+    public void cancelPendingTasks(String tag) {
         mTaskManager.removeTasks(tag);
     }
 
-    protected boolean handlerError(Throwable throwable)
-    {
-        try
-        {
-            if (!mInternetManager.isOnline())
-            {
+    protected boolean handlerError(Throwable throwable) {
+        try {
+            if (!mInternetManager.isOnline()) {
                 noInternetError();
                 return true;
             }
 
-            if (throwable instanceof ServerException)
-            {
+            if (throwable instanceof ServerException) {
                 ServerException serverException = (ServerException) throwable;
 
-                if (serverException.getKind() == ServerException.Kind.HTTP)
-                {
+                if (serverException.getKind() == ServerException.Kind.HTTP) {
                     MyAppServerError serverError = serverException.getServerError();
                     Integer errorCode = serverError.getErrorCode();
 
-                    switch (RestConstants.Subcode.fromInt(errorCode))
-                    {
-                        case INVALID_TOKEN:
-                        {
-                            mBaseView.logout();
-                            return true;
-                        }
+                    if (Subcode.INVALID_TOKEN.equals(Subcode.fromInt(errorCode))) {
+                        mBaseView.logout();
+                        return true;
                     }
-                } else
-                {
+                } else {
                     unexpectedErrorHappened();
                     return true;
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             unexpectedErrorHappened();
             return true;
         }
@@ -77,13 +64,11 @@ public class BasePresenter implements Base.Presenter
         return false;
     }
 
-    protected void noInternetError()
-    {
+    protected void noInternetError() {
         mBaseView.showInternetRequiredError();
     }
 
-    protected void unexpectedErrorHappened()
-    {
+    protected void unexpectedErrorHappened() {
         Log.e(TAG, "Unexpected Error Happened");
         mBaseView.showUnexpectedErrorHappened();
     }

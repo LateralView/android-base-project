@@ -30,12 +30,13 @@ import co.lateralview.myapp.ui.util.SnackBarHelper;
 import co.lateralview.myapp.ui.util.ToolbarUtils;
 
 
-public abstract class BaseActivity extends
-        AppCompatActivity implements InternetReceiver.InternetReceiverListener, Base.View
-{
+public abstract class BaseActivity
+    extends AppCompatActivity
+    implements InternetReceiver.InternetReceiverListener, Base.View {
+
     public static final String TAG = "BaseActivity";
 
-    public static boolean sAppVisible = false;
+    private static boolean isAppVisible = false;
 
     @Inject
     protected InternetManager mInternetManager;
@@ -45,31 +46,32 @@ public abstract class BaseActivity extends
     private IntentFilter mInternetStatusChangedFilter;
     private boolean mProcessInternetChangeReceiver = false;
 
-    private Snackbar mNoInternetSnackbar, mConnectionErrorSnackbar;
+    private Snackbar mNoInternetSnackbar;
+    private Snackbar mConnectionErrorSnackbar;
 
     private List<WeakReference<Fragment>> mFragments = new ArrayList<>();
 
     protected static Intent newActivityInstance(Context fromActivity, boolean clearStack,
-            Class toActivity)
-    {
+                                                Class toActivity) {
         Intent intent = new Intent(fromActivity, toActivity);
 
-        if (clearStack)
-        {
+        if (clearStack) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         }
 
         return intent;
     }
 
-    public static AppComponent getAppComponent()
-    {
+    public static AppComponent getAppComponent() {
         return MyApp.getAppComponent();
     }
 
+    public static boolean isAppVisible() {
+        return isAppVisible;
+    }
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         MyApp.setCurrentScreenTag(getTAG());
@@ -82,32 +84,27 @@ public abstract class BaseActivity extends
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        sAppVisible = true;
+        isAppVisible = true;
     }
 
     @Override
-    protected void onPause()
-    {
-        sAppVisible = false;
+    protected void onPause() {
+        isAppVisible = false;
         super.onPause();
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         unregisterReceiver(mInternetReceiver);
 
         super.onStop();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -117,31 +114,25 @@ public abstract class BaseActivity extends
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         registerReceiver(mInternetReceiver, mInternetStatusChangedFilter);
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment)
-    {
+    public void onAttachFragment(Fragment fragment) {
         mFragments.add(new WeakReference(fragment));
     }
 
     @Override
-    public void onInternetServiceEnabled()
-    {
-        if (mProcessInternetChangeReceiver)
-        {
-            if (mNoInternetSnackbar != null)
-            {
+    public void onInternetServiceEnabled() {
+        if (mProcessInternetChangeReceiver) {
+            if (mNoInternetSnackbar != null) {
                 mNoInternetSnackbar.dismiss();
             }
 
-        } else
-        {
+        } else {
             mProcessInternetChangeReceiver = true;
         }
 
@@ -149,15 +140,12 @@ public abstract class BaseActivity extends
     }
 
     @Override
-    public void onInternetServiceDisabled()
-    {
-        if (!mProcessInternetChangeReceiver)
-        {
+    public void onInternetServiceDisabled() {
+        if (!mProcessInternetChangeReceiver) {
             mProcessInternetChangeReceiver = true;
         }
 
-        if (canShowInternetConnectionProblemsSnackbar())
-        {
+        if (canShowInternetConnectionProblemsSnackbar()) {
             showInternetConnectionProblemsSnackbar();
         }
 
@@ -165,161 +153,131 @@ public abstract class BaseActivity extends
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         exitTransition();
     }
 
     @Override
-    public void showInternetRequiredError()
-    {
+    public void showInternetRequiredError() {
         //TODO
     }
 
     @Override
-    public void showUnexpectedErrorHappened()
-    {
+    public void showUnexpectedErrorHappened() {
         //TODO
     }
 
     @Override
-    public void logout()
-    {
+    public void logout() {
         //TODO
     }
 
-    public void initializeToolbar(boolean backEnabled)
-    {
+    public void initializeToolbar(boolean backEnabled) {
         initializeToolbar(backEnabled, null);
     }
 
-    public void initializeToolbar(boolean backEnabled, @Nullable int title)
-    {
+    public void initializeToolbar(boolean backEnabled, @Nullable int title) {
         initializeToolbar(backEnabled, getString(title));
     }
 
-    public void initializeToolbar(boolean backEnabled, @Nullable String title)
-    {
+    public void initializeToolbar(boolean backEnabled, @Nullable String title) {
         ToolbarUtils.initializeToolbar(this, backEnabled, title);
     }
 
-    public void setActionBarVisibility(int visibility)
-    {
+    public void setActionBarVisibility(int visibility) {
         ToolbarUtils.setActionBarVisibility(this, visibility);
     }
 
-    public void setToolbarTitle(String title)
-    {
+    public void setToolbarTitle(String title) {
         ToolbarUtils.setToolbarTitle(this, title);
     }
 
-    protected void injectDependencies()
-    {
+    protected void injectDependencies() {
         DaggerBaseComponent.builder()
-                .appComponent(getAppComponent())
-                .baseViewModule(getBaseActivityModule())
-                .build()
-                .inject(this);
+            .appComponent(getAppComponent())
+            .baseViewModule(getBaseActivityModule())
+            .build()
+            .inject(this);
     }
 
-    public Base.BaseViewModule getBaseActivityModule()
-    {
+    public Base.BaseViewModule getBaseActivityModule() {
         return new Base.BaseViewModule(this);
     }
 
-    private void initInternetBroadcastReceiver()
-    {
+    private void initInternetBroadcastReceiver() {
         mInternetReceiver = new InternetReceiver(this, mInternetManager);
         mInternetStatusChangedFilter = mInternetReceiver.getIntentFilter();
     }
 
-    private void notifyFragmentsConnectivityChange(boolean enabled)
-    {
-        for (WeakReference<Fragment> fragmentWeakReference : mFragments)
-        {
+    private void notifyFragmentsConnectivityChange(boolean enabled) {
+        for (WeakReference<Fragment> fragmentWeakReference : mFragments) {
             Fragment fragment = fragmentWeakReference.get();
 
-            if (fragment != null && fragment instanceof BaseFragment)
-            {
+            if (fragment != null && fragment instanceof BaseFragment) {
                 BaseFragment baseFragment = (BaseFragment) fragment;
 
-                if (enabled)
-                {
+                if (enabled) {
                     baseFragment.onInternetServiceEnabled();
-                } else
-                {
+                } else {
                     baseFragment.onInternetServiceDisabled();
                 }
             }
         }
     }
 
-    public void showProgressDialog(String message)
-    {
-        if (mProgressDialog == null)
-        {
+    public void showProgressDialog(String message) {
+        if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCancelable(false);
         }
 
-        if (!mProgressDialog.isShowing())
-        {
+        if (!mProgressDialog.isShowing()) {
             mProgressDialog.show();
             mProgressDialog.getWindow().setBackgroundDrawable(
-                    new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
             mProgressDialog.setContentView(R.layout.layout_progress_dialog);
 
-            if (message != null)
-            {
+            if (message != null) {
                 mProgressDialog.setMessage(message);
             }
         }
     }
 
-    public void showProgressDialog()
-    {
+    public void showProgressDialog() {
         showProgressDialog(null);
     }
 
-    public void hideProgressDialog()
-    {
-        if (mProgressDialog != null && mProgressDialog.isShowing())
-        {
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
 
     public abstract String getTAG();
 
-    protected void showInternetConnectionProblemsSnackbar()
-    {
-        if (mNoInternetSnackbar == null)
-        {
+    protected void showInternetConnectionProblemsSnackbar() {
+        if (mNoInternetSnackbar == null) {
             mNoInternetSnackbar = SnackBarHelper.createSnackBar(this,
-                    new SnackBarData(SnackBarData.SnackBarType.NO_INTERNET, null));
+                new SnackBarData(SnackBarData.SnackBarType.NO_INTERNET, null));
         }
 
         mNoInternetSnackbar.show();
     }
 
-    protected boolean canShowInternetConnectionProblemsSnackbar()
-    {
+    protected boolean canShowInternetConnectionProblemsSnackbar() {
         return true;
     }
 
-    public void showComingSoonMessage()
-    {
+    public void showComingSoonMessage() {
         Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
     }
 
-    protected void enterTransition()
-    {
+    protected void enterTransition() {
         /*override method on child's*/
     }
 
-    protected void exitTransition()
-    {
+    protected void exitTransition() {
         /*override method on child's*/
     }
 }

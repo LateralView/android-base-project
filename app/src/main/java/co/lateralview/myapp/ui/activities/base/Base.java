@@ -3,15 +3,12 @@ package co.lateralview.myapp.ui.activities.base;
 import dagger.Module;
 import dagger.Provides;
 
-public interface Base
-{
-    interface Presenter
-    {
+public interface Base {
+    interface Presenter {
         //TODO
     }
 
-    interface View
-    {
+    interface View {
         void showInternetRequiredError();
 
         void showUnexpectedErrorHappened();
@@ -20,18 +17,15 @@ public interface Base
     }
 
     @Module
-    class BaseViewModule
-    {
+    class BaseViewModule {
         private final View mView;
 
-        public BaseViewModule(View view)
-        {
+        public BaseViewModule(View view) {
             mView = view;
         }
 
         @Provides
-        View provideView()
-        {
+        View provideView() {
             return mView;
         }
     }

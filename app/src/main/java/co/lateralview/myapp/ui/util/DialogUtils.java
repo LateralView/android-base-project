@@ -4,23 +4,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-public class DialogUtils
-{
+public final class DialogUtils {
 
-    private DialogUtils()
-    {
+    private DialogUtils() {
 
     }
 
     public static AlertDialog createDialog(Context context,
-            DialogInterface.OnClickListener disconnectClickListener)
-    {
+                                           DialogInterface.OnClickListener disconnectClickListener) {
         return new AlertDialog.Builder(context)
-                .setTitle("Title")
-                .setMessage("Description")
-                .setPositiveButton("Ok", disconnectClickListener)
-                .setNegativeButton("cancel", null)
-                .setCancelable(false)
-                .create();
+            .setTitle("Title")
+            .setMessage("Description")
+            .setPositiveButton("Ok", disconnectClickListener)
+            .setNegativeButton("cancel", null)
+            .setCancelable(false)
+            .create();
     }
 }

@@ -8,20 +8,17 @@ import co.lateralview.myapp.infraestructure.networking.interfaces.UserServer;
 import co.lateralview.myapp.ui.util.RxSchedulersUtils;
 import io.reactivex.Single;
 
-public class UserRepositoryImpl implements UserRepository
-{
+public class UserRepositoryImpl implements UserRepository {
     @Inject
     UserServer mUserServer;
 
     @Inject
-    public UserRepositoryImpl()
-    {
+    public UserRepositoryImpl() {
     }
 
     @Override
-    public Single<User> login(final String email, final String password)
-    {
+    public Single<User> login(final String email, final String password) {
         return mUserServer.login(email, password)
-                .compose(RxSchedulersUtils.applySingleSchedulers());
+            .compose(RxSchedulersUtils.applySingleSchedulers());
     }
 }

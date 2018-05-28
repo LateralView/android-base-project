@@ -10,15 +10,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DatePickerDialogFragment extends DialogFragment implements
-        DatePickerDialog.OnDateSetListener
-{
+    DatePickerDialog.OnDateSetListener {
     public static final String TAG = "DatePickerDialogFragment";
 
     private DatePickerInterface mCallback;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -27,8 +25,7 @@ public class DatePickerDialogFragment extends DialogFragment implements
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
-    public void onDateSet(DatePicker view, int year, int month, int day)
-    {
+    public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(Calendar.DATE, day);
@@ -36,19 +33,16 @@ public class DatePickerDialogFragment extends DialogFragment implements
         calendar.set(Calendar.YEAR, year);
         Date expirationDate = calendar.getTime();
 
-        if (mCallback != null)
-        {
+        if (mCallback != null) {
             mCallback.onDateSelected(expirationDate);
         }
     }
 
-    public void setListener(DatePickerInterface datePickerInterface)
-    {
+    public void setListener(DatePickerInterface datePickerInterface) {
         mCallback = datePickerInterface;
     }
 
-    public interface DatePickerInterface
-    {
+    public interface DatePickerInterface {
         void onDateSelected(Date date);
     }
 }

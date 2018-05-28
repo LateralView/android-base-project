@@ -7,8 +7,7 @@ import io.reactivex.Single;
 /*
  To save the current user in the device. This repository doesn't make server calls.
  */
-public interface SessionRepository
-{
+public interface SessionRepository {
     //TODO Do this reactive (SharedPreferences cause I/O Block)
 
     Single<Boolean> isUserLoggedIn();

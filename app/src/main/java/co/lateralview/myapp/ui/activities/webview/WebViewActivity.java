@@ -13,8 +13,7 @@ import butterknife.ButterKnife;
 import co.lateralview.myapp.R;
 import co.lateralview.myapp.ui.activities.base.BaseActivity;
 
-public class WebViewActivity extends BaseActivity
-{
+public class WebViewActivity extends BaseActivity {
     public static final String TAG = "WebViewActivity";
 
     private static final String EXTRA_URL = "EXTRA_URL";
@@ -25,21 +24,20 @@ public class WebViewActivity extends BaseActivity
     protected WebView mWebView;
     @BindView(R.id.webViewActivity_progressBar)
     protected ProgressBar mProgressBar;
-    private String mUrl, mActionBarTitle;
+    private String mUrl;
+    private String mActionBarTitle;
     private boolean mBackEnabled = false;
 
-    public static Intent newInstance(Context fromActivity, boolean clearStack, String url)
-    {
+    public static Intent newInstance(Context fromActivity, boolean clearStack, String url) {
         Intent intent = BaseActivity.newActivityInstance(fromActivity, clearStack,
-                WebViewActivity.class);
+            WebViewActivity.class);
         intent.putExtra(EXTRA_URL, url);
 
         return intent;
     }
 
     public static Intent newInstance(Context fromActivity, boolean clearStack, String url,
-            String actionBarTitle, boolean backEnabled)
-    {
+                                     String actionBarTitle, boolean backEnabled) {
         Intent intent = newInstance(fromActivity, clearStack, url);
         intent.putExtra(EXTRA_ACTION_BAR_TITLE, actionBarTitle);
         intent.putExtra(EXTRA_BACK_ENABLED, backEnabled);
@@ -48,8 +46,7 @@ public class WebViewActivity extends BaseActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_web_view);
@@ -58,11 +55,9 @@ public class WebViewActivity extends BaseActivity
 
         getExtras();
 
-        if (mActionBarTitle != null && !mActionBarTitle.isEmpty())
-        {
+        if (mActionBarTitle != null && !mActionBarTitle.isEmpty()) {
             initializeToolbar(mBackEnabled, mActionBarTitle);
-        } else
-        {
+        } else {
             setActionBarVisibility(View.GONE);
         }
 
@@ -72,41 +67,33 @@ public class WebViewActivity extends BaseActivity
     }
 
     @Override
-    public String getTAG()
-    {
+    public String getTAG() {
         return TAG;
     }
 
-    private void getExtras()
-    {
+    private void getExtras() {
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             mUrl = extras.getString(EXTRA_URL);
             mActionBarTitle = extras.getString(EXTRA_ACTION_BAR_TITLE);
             mBackEnabled = extras.getBoolean(EXTRA_BACK_ENABLED, false);
         }
     }
 
-    private void initializeWebView()
-    {
+    private void initializeWebView() {
         mWebView.setWebViewClient(new WebViewClient());
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
 
-        mWebView.setWebViewClient(new WebViewClient()
-        {
-            public void onPageFinished(WebView view, String url)
-            {
+        mWebView.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
                 mProgressBar.setVisibility(View.GONE);
             }
         });
     }
 
-    private void startWebView()
-    {
-        if (mUrl != null && !mUrl.isEmpty())
-        {
+    private void startWebView() {
+        if (mUrl != null && !mUrl.isEmpty()) {
             mWebView.loadUrl(mUrl);
         }
     }

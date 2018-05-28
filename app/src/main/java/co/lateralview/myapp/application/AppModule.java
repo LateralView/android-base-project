@@ -24,73 +24,62 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class AppModule
-{
+public class AppModule {
     protected Application mApplication;
 
-    public AppModule(Application application)
-    {
+    public AppModule(Application application) {
         mApplication = application;
     }
 
     @Provides
     @Singleton
-    public Application providesApplication()
-    {
+    public Application providesApplication() {
         return mApplication;
     }
 
     @Provides
-    public ImageManager providesImageManager(Application application)
-    {
+    public ImageManager providesImageManager(Application application) {
         return new ImageManagerImpl(application);
     }
 
     @Provides
-    public Gson providesGson()
-    {
+    public Gson providesGson() {
         //TODO Check ISO FORMAT
         return new GsonBuilder()
-                .setDateFormat(DateUtils.ISO_8601_PATTERN)
-                .setExclusionStrategies(new AnnotationExclusionStrategy())
-                .create();
+            .setDateFormat(DateUtils.ISO_8601_PATTERN)
+            .setExclusionStrategies(new AnnotationExclusionStrategy())
+            .create();
     }
 
     @Provides
-    public ParserManager providesParserManager(Gson gson)
-    {
+    public ParserManager providesParserManager(Gson gson) {
         return new ParserManagerImpl(gson);
     }
 
     @Provides
     public SharedPreferencesManager providesSharedPreferencesManager(Application application,
-            ParserManager parserManager)
-    {
+                                                                     ParserManager parserManager) {
         return new SharedPreferencesManagerImpl(application, parserManager);
     }
 
     @Provides
-    public SystemManager providesSystemManager(Application application)
-    {
+    public SystemManager providesSystemManager(Application application) {
         return new SystemManager(application);
     }
 
     @Provides
-    public InternetManager providesInternetManager(Application application)
-    {
+    public InternetManager providesInternetManager(Application application) {
         return new InternetManager(application);
     }
 
     @Provides
     @Singleton
-    public TaskManager providesTaskManager()
-    {
+    public TaskManager providesTaskManager() {
         return new TaskManagerImpl();
     }
 
     @Provides
-    public MailManager providesMailManager()
-    {
+    public MailManager providesMailManager() {
         return new MailManager();
     }
 }
