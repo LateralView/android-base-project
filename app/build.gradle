@@ -1,4 +1,17 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
+    }
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.25.4'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'io.fabric'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
@@ -72,7 +85,7 @@ ext {
     version_retrofit = "2.4.0"
     version_leakcanary = "1.5.4"
     version_permission = '3.0.1'
-    version_firebase = '11.6.0'
+    version_firebase = '16.0.0'
 }
 
 dependencies {
@@ -124,7 +137,8 @@ dependencies {
 
     //Firebase
     implementation "com.google.firebase:firebase-core:$version_firebase"
-    releaseImplementation "com.google.firebase:firebase-crash:$version_firebase"
+    implementation "com.google.firebase:firebase-perf:$version_firebase"
+    releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
 
     //PermissionsDispatcher
     implementation("com.github.hotchemi:permissionsdispatcher:$version_permission")
@@ -141,3 +155,5 @@ dependencies {
     // Proguard Annotations
     implementation 'com.infstory:proguard-annotations:1.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

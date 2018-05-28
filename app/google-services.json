@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "934985628718",
+    "firebase_url": "https://base-project-b3d16.firebaseio.com",
+    "project_id": "base-project-b3d16",
+    "storage_bucket": "base-project-b3d16.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934985628718:android:6a296f4475a1e127",
+        "android_client_info": {
+          "package_name": "co.lateralview.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934985628718-sk43fjv71nfupnerkni8agh4tqi53u61.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "934985628718-sk43fjv71nfupnerkni8agh4tqi53u61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWlffPdZ3ClF8LmF0xNM-5akS-sQ7lLLc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
