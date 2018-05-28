@@ -69,7 +69,7 @@ ext {
     version_rxjava = '2.1.14'
     version_rxandroid = '2.0.2'
     version_dagger = "2.16"
-    version_retrofit = "2.3.0"
+    version_retrofit = "2.4.0"
     version_leakcanary = "1.5.4"
     version_permission = '3.0.1'
     version_firebase = '11.6.0'
@@ -116,7 +116,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$version_retrofit"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
