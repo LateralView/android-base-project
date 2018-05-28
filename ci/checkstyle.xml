@@ -25,6 +25,8 @@
         <!--<property name="file" value="${proj.module.dir}/ci/quality/suppressions.xml"/>-->
     </module>
 
+    <module name="SuppressWarningsFilter" />
+
     <module name="SuppressionCommentFilter">
         <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)"/>
         <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)"/>
@@ -45,6 +47,8 @@
 
     <module name="TreeWalker">
         <property name="cacheFile" value="bin/cachefile"/>
+
+        <module name="SuppressWarningsHolder" />
 
         <!-- Required for SuppressionCommentFilter below -->
         <module name="FileContentsHolder"/>
