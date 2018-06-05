@@ -140,7 +140,9 @@ dependencies {
     //Firebase
     implementation "com.google.firebase:firebase-core:$version_firebase"
     implementation "com.google.firebase:firebase-perf:$version_firebase"
-    releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
+    releaseImplementation('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
+        transitive = true
+    }
 
     //PermissionsDispatcher
     implementation("com.github.hotchemi:permissionsdispatcher:$version_permission")
