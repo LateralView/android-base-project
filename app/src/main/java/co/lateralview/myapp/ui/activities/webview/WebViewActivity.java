@@ -30,14 +30,14 @@ public class WebViewActivity extends BaseActivity {
 
     public static Intent newInstance(Context fromActivity, boolean clearStack, String url) {
         Intent intent = BaseActivity.newActivityInstance(fromActivity, clearStack,
-            WebViewActivity.class);
+                WebViewActivity.class);
         intent.putExtra(EXTRA_URL, url);
 
         return intent;
     }
 
     public static Intent newInstance(Context fromActivity, boolean clearStack, String url,
-                                     String actionBarTitle, boolean backEnabled) {
+            String actionBarTitle, boolean backEnabled) {
         Intent intent = newInstance(fromActivity, clearStack, url);
         intent.putExtra(EXTRA_ACTION_BAR_TITLE, actionBarTitle);
         intent.putExtra(EXTRA_BACK_ENABLED, backEnabled);

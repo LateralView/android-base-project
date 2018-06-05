@@ -6,12 +6,13 @@ import android.content.Intent;
 import java.io.Serializable;
 
 import co.lateralview.myapp.infraestructure.pushNotification.processor.base.NotificationType;
-import co.lateralview.myapp.infraestructure.pushNotification.processor.base.PushNotificationProcessor;
+import co.lateralview.myapp.infraestructure.pushNotification.processor.base
+        .PushNotificationProcessor;
 
 
 public class ConcretePushNotification extends PushNotificationProcessor implements Serializable {
     public ConcretePushNotification(NotificationType notificationType, String title,
-                                    String description, boolean fromActivity) {
+            String description, boolean fromActivity) {
         super(notificationType, title, description, fromActivity);
     }
 

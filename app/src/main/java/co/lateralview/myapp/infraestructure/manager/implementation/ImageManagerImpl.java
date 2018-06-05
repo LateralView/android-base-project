@@ -38,35 +38,35 @@ public class ImageManagerImpl implements ImageManager {
     @Override
     public void loadCircleImage(String url, ImageView imageView) {
         GlideApp.with(mContext)
-            .load(url)
-            .centerCrop()
-            .circleCrop()
-            .into(imageView);
+                .load(url)
+                .centerCrop()
+                .circleCrop()
+                .into(imageView);
     }
 
     @Override
     public void loadImage(String url, ImageView imageView) {
         GlideApp.with(mContext)
-            .load(url)
-            .into(imageView);
+                .load(url)
+                .into(imageView);
     }
 
     @Override
     public void loadImage(String url, SimpleTarget<Bitmap> simpleTarget) {
         GlideApp.with(mContext)
-            .asBitmap()
-            .load(url)
-            .into(simpleTarget);
+                .asBitmap()
+                .load(url)
+                .into(simpleTarget);
     }
 
     @Override
     public void loadGifFromRes(int res, ImageView imageView) {
         GlideApp.with(mContext)
-            .asGif()
-            .load(res)
-            .fitCenter()
-            .diskCacheStrategy(DiskCacheStrategy.DATA)
-            .into(imageView);
+                .asGif()
+                .load(res)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .into(imageView);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class ImageManagerImpl implements ImageManager {
 
         try {
             Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                bitmap.getHeight(), matrix, true);
+                    bitmap.getHeight(), matrix, true);
             bitmap.recycle();
 
             return bmRotated;
@@ -168,10 +168,10 @@ public class ImageManagerImpl implements ImageManager {
     @Override
     public Bitmap transformToCircle(Bitmap bitmap) {
         Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-            Bitmap.Config.ARGB_8888);
+                Bitmap.Config.ARGB_8888);
 
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
-            Shader.TileMode.CLAMP);
+                Shader.TileMode.CLAMP);
         Paint paint = new Paint();
         paint.setShader(shader);
         paint.setAntiAlias(true);

@@ -50,10 +50,10 @@ public class GalleryPhotoManager {
 
         if (mCallerFragment != null) {
             mCallerFragment.startActivityForResult(mediaChooser,
-                cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
+                    cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
         } else {
             mCallerActivity.startActivityForResult(mediaChooser,
-                cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
+                    cropIt ? mRequestCodePhotoFromGalleryCrop : mRequestCodePhotoFromGallery);
         }
     }
 
@@ -74,10 +74,10 @@ public class GalleryPhotoManager {
 
                 if (mCallerFragment != null) {
                     new CropManager(mCallerFragment, mRequestCodeCropImage).requestCrop(
-                        data.getData(), mCroppedImage);
+                            data.getData(), mCroppedImage);
                 } else {
                     new CropManager(mCallerActivity, mRequestCodeCropImage).requestCrop(
-                        data.getData(), mCroppedImage);
+                            data.getData(), mCroppedImage);
                 }
 
                 return;
@@ -88,8 +88,8 @@ public class GalleryPhotoManager {
     protected void onPhotoFromGallerySuccess(Intent data) {
         if (data != null) {
             final String path =
-                null != data.getData() ? data.getData().getPath() : data.getAction().replace(
-                    "file://", "");
+                    null != data.getData() ? data.getData().getPath() : data.getAction().replace(
+                            "file://", "");
 
             getPhotoFromPath(path);
         }
@@ -103,7 +103,7 @@ public class GalleryPhotoManager {
 
     protected void getPhotoFromPath(final String path) {
         new PhotoDecodeTask(photo -> mCallerActivity.runOnUiThread(
-            () -> mCallback.onPhotoObtained(photo, new File(path)))).execute(path);
+                () -> mCallback.onPhotoObtained(photo, new File(path)))).execute(path);
     }
 
     public interface IGalleryPhotoCallback {

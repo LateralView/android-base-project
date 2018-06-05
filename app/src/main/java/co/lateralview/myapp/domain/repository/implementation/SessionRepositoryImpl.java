@@ -12,7 +12,8 @@ import io.reactivex.Single;
 
 public class SessionRepositoryImpl implements SessionRepository {
 
-    public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY = "SHARED_PREFERENCES_ACCESS_TOKEN_KEY";
+    public static final String SHARED_PREFERENCES_ACCESS_TOKEN_KEY =
+            "SHARED_PREFERENCES_ACCESS_TOKEN_KEY";
 
     @Inject
     SharedPreferencesManager mSharedPreferencesManager;
@@ -29,7 +30,7 @@ public class SessionRepositoryImpl implements SessionRepository {
         return Single.create(e -> {
             if (mCurrentUser == null) {
                 mCurrentUser = mSharedPreferencesManager.get(User.SHARED_PREFERENCE_KEY,
-                    User.class);
+                        User.class);
             }
 
             e.onSuccess(mCurrentUser != null);
@@ -49,8 +50,8 @@ public class SessionRepositoryImpl implements SessionRepository {
     @Override
     public Completable logIn(User user, String accessToken) {
         return save(user).toCompletable()
-            .andThen(setAccessToken(accessToken).toCompletable())
-            .compose(RxSchedulersUtils.applyCompletableSchedulers());
+                .andThen(setAccessToken(accessToken).toCompletable())
+                .compose(RxSchedulersUtils.applyCompletableSchedulers());
     }
 
     @Override
@@ -58,7 +59,7 @@ public class SessionRepositoryImpl implements SessionRepository {
         return Single.create(e -> {
             if (mCurrentUser == null) {
                 mCurrentUser = mSharedPreferencesManager.get(User.SHARED_PREFERENCE_KEY,
-                    User.class);
+                        User.class);
             }
 
             e.onSuccess(mCurrentUser);
@@ -75,7 +76,7 @@ public class SessionRepositoryImpl implements SessionRepository {
         return Single.create(e -> {
             if (mAccessToken == null) {
                 mAccessToken = mSharedPreferencesManager.get(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                    String.class);
+                        String.class);
             }
 
             e.onSuccess(mAccessToken);
@@ -85,7 +86,7 @@ public class SessionRepositoryImpl implements SessionRepository {
     private Single<String> setAccessToken(String accessToken) {
         return Single.create(e -> {
             mSharedPreferencesManager.saveBlocking(SHARED_PREFERENCES_ACCESS_TOKEN_KEY,
-                accessToken);
+                    accessToken);
             mAccessToken = accessToken;
 
             e.onSuccess(mAccessToken);

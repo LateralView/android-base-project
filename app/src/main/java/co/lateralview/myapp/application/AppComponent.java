@@ -16,11 +16,11 @@ import dagger.Component;
 
 @Singleton
 @Component(
-    modules = {
-        AppModule.class,
-        NetModule.class,
-        RepositoryModule.class
-    }
+        modules = {
+                AppModule.class,
+                NetModule.class,
+                RepositoryModule.class
+        }
 )
 public interface AppComponent {
     Application application();

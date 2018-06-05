@@ -14,9 +14,9 @@ public class SnackBarData implements Serializable {
     public enum SnackBarType implements Serializable {
         DUMMY(-1, -1, -1, Snackbar.LENGTH_INDEFINITE),
         CONNECTION_ERROR(R.string.snackBarConnectionError_description,
-            R.string.snackBarConnectionError_action, R.color.red, Snackbar.LENGTH_INDEFINITE),
+                R.string.snackBarConnectionError_action, R.color.red, Snackbar.LENGTH_INDEFINITE),
         NO_INTERNET(R.string.snackBarNoInternet_description, -1, R.color.red,
-            Snackbar.LENGTH_INDEFINITE);
+                Snackbar.LENGTH_INDEFINITE);
 
         private int mDescription;
         private int mActionTitle;
@@ -52,7 +52,7 @@ public class SnackBarData implements Serializable {
     }
 
     public SnackBarData(SnackBarType mSnackBarType,
-                        SnackBarHelper.ISnackBarHandler mSnackBarListener) {
+            SnackBarHelper.ISnackBarHandler mSnackBarListener) {
         this.mSnackBarType = mSnackBarType;
         this.mSnackBarListener = mSnackBarListener;
     }

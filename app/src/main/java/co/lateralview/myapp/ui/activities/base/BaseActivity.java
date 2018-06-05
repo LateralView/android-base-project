@@ -31,8 +31,8 @@ import co.lateralview.myapp.ui.util.ToolbarUtils;
 
 
 public abstract class BaseActivity
-    extends AppCompatActivity
-    implements InternetReceiver.InternetReceiverListener, Base.View {
+        extends AppCompatActivity
+        implements InternetReceiver.InternetReceiverListener, Base.View {
 
     public static final String TAG = "BaseActivity";
 
@@ -52,7 +52,7 @@ public abstract class BaseActivity
     private List<WeakReference<Fragment>> mFragments = new ArrayList<>();
 
     protected static Intent newActivityInstance(Context fromActivity, boolean clearStack,
-                                                Class toActivity) {
+            Class toActivity) {
         Intent intent = new Intent(fromActivity, toActivity);
 
         if (clearStack) {
@@ -195,10 +195,10 @@ public abstract class BaseActivity
 
     protected void injectDependencies() {
         DaggerBaseComponent.builder()
-            .appComponent(getAppComponent())
-            .baseViewModule(getBaseActivityModule())
-            .build()
-            .inject(this);
+                .appComponent(getAppComponent())
+                .baseViewModule(getBaseActivityModule())
+                .build()
+                .inject(this);
     }
 
     public Base.BaseViewModule getBaseActivityModule() {
@@ -235,7 +235,7 @@ public abstract class BaseActivity
         if (!mProgressDialog.isShowing()) {
             mProgressDialog.show();
             mProgressDialog.getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    new ColorDrawable(android.graphics.Color.TRANSPARENT));
             mProgressDialog.setContentView(R.layout.layout_progress_dialog);
 
             if (message != null) {
@@ -259,7 +259,7 @@ public abstract class BaseActivity
     protected void showInternetConnectionProblemsSnackbar() {
         if (mNoInternetSnackbar == null) {
             mNoInternetSnackbar = SnackBarHelper.createSnackBar(this,
-                new SnackBarData(SnackBarData.SnackBarType.NO_INTERNET, null));
+                    new SnackBarData(SnackBarData.SnackBarType.NO_INTERNET, null));
         }
 
         mNoInternetSnackbar.show();

@@ -8,9 +8,6 @@ public final class RestConstants {
     //TODO Set Auth Header
     public static final String HEADER_AUTH = "auth-header";
 
-    private RestConstants() {
-    }
-
     public enum Subcode {
         INVALID_TOKEN(200002);
 
@@ -32,5 +29,8 @@ public final class RestConstants {
         public int getSubcode() {
             return mSubcode;
         }
+    }
+
+    private RestConstants() {
     }
 }

@@ -14,7 +14,7 @@ public class SharedPreferencesManagerImpl implements SharedPreferencesManager {
     private ParserManager mParserManager;
 
     public SharedPreferencesManagerImpl(Context context, ParserManager parserManager,
-                                        String fileName) {
+            String fileName) {
         mSharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         mParserManager = parserManager;
     }

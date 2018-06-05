@@ -31,13 +31,13 @@ public class CameraManager {
     private ImageManager mImageManager;
 
     public CameraManager(Fragment fragment, ICameraServiceCallback cameraServiceListener,
-                         int takePhotoRequestCode) {
+            int takePhotoRequestCode) {
         this(fragment.getActivity(), cameraServiceListener, takePhotoRequestCode);
         mCallerFragment = fragment;
     }
 
     public CameraManager(Activity callerActivity, ICameraServiceCallback cameraServiceListener,
-                         int takePhotoRequestCode) {
+            int takePhotoRequestCode) {
         mCallerActivity = callerActivity;
         mCameraServiceListener = cameraServiceListener;
         mFileManager = new FileManagerImpl(callerActivity);
@@ -72,10 +72,10 @@ public class CameraManager {
 
                 if (mCallerFragment != null) {
                     mCallerFragment.startActivityForResult(takePictureIntent,
-                        cropIt ? mRequestCodeTakePhotoCrop : mRequestCodeTakePhoto);
+                            cropIt ? mRequestCodeTakePhotoCrop : mRequestCodeTakePhoto);
                 } else {
                     mCallerActivity.startActivityForResult(takePictureIntent,
-                        cropIt ? mRequestCodeTakePhotoCrop : mRequestCodeTakePhoto);
+                            cropIt ? mRequestCodeTakePhotoCrop : mRequestCodeTakePhoto);
                 }
             }
         }
@@ -102,12 +102,12 @@ public class CameraManager {
 
                 if (mCallerFragment != null) {
                     new CropManager(mCallerFragment,
-                        mRequestCodeCropImage).requestCrop(
-                        mFileManager.getUri(mPhotoFile), mCroppedImage);
+                            mRequestCodeCropImage).requestCrop(
+                            mFileManager.getUri(mPhotoFile), mCroppedImage);
                 } else {
                     new CropManager(mCallerActivity,
-                        mRequestCodeCropImage).requestCrop(
-                        mFileManager.getUri(mPhotoFile), mCroppedImage);
+                            mRequestCodeCropImage).requestCrop(
+                            mFileManager.getUri(mPhotoFile), mCroppedImage);
                 }
 
                 return;
@@ -128,9 +128,9 @@ public class CameraManager {
             final String path = imageCropperUri.getPath();
 
             new PhotoDecodeTask(
-                photo -> mCallerActivity.runOnUiThread(
-                    () -> mCameraServiceListener.onPictureTaken(photo,
-                        new File(path)))).execute(path);
+                    photo -> mCallerActivity.runOnUiThread(
+                            () -> mCameraServiceListener.onPictureTaken(photo,
+                                    new File(path)))).execute(path);
         }
     }
 
@@ -146,7 +146,7 @@ public class CameraManager {
         try {
             ExifInterface exif = new ExifInterface(uri.getPath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
+                    ExifInterface.ORIENTATION_UNDEFINED);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             Bitmap rotatedBitmap = mImageManager.rotateBitmap(bitmap, orientation);
 

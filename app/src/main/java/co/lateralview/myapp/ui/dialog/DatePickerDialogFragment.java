@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DatePickerDialogFragment extends DialogFragment implements
-    DatePickerDialog.OnDateSetListener {
+        DatePickerDialog.OnDateSetListener {
     public static final String TAG = "DatePickerDialogFragment";
 
     private DatePickerInterface mCallback;

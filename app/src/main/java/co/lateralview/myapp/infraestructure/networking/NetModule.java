@@ -18,9 +18,9 @@ public class NetModule {
     @Provides
     @Singleton
     public RetrofitManager provideRetrofitManager(Application application,
-                                                  Gson gson,
-                                                  SessionRepository sessionRepository,
-                                                  InternetManager internetManager) {
+            Gson gson,
+            SessionRepository sessionRepository,
+            InternetManager internetManager) {
         return new RetrofitManager(application, gson, sessionRepository, internetManager);
     }
 

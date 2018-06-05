@@ -1,23 +1,23 @@
 <resources>
-	<string name="app_name">MyApp</string>
-	<string name="action_settings">Settings</string>
+    <string name="app_name">MyApp</string>
+    <string name="action_settings">Settings</string>
 
-	<!-- Date Utils -->
-	<string name="dateUtils_sec">sec</string>
-	<string name="dateUtils_min">min</string>
-	<string name="dateUtils_h">h</string>
-	<string name="dateUtils_days">days</string>
-	<string name="dateUtils_months">months</string>
-	<string name="dateUtils_years">years</string>
+    <!-- Date Utils -->
+    <string name="dateUtils_sec">sec</string>
+    <string name="dateUtils_min">min</string>
+    <string name="dateUtils_h">h</string>
+    <string name="dateUtils_days">days</string>
+    <string name="dateUtils_months">months</string>
+    <string name="dateUtils_years">years</string>
 
-	<!-- Snack Bar No Internet -->
-	<string name="snackBarNoInternet_description">No internet connection</string>
+    <!-- Snack Bar No Internet -->
+    <string name="snackBarNoInternet_description">No internet connection</string>
 
-	<!-- Snack Bar Connection Error -->
-	<string name="snackBarConnectionError_description">Connection Error</string>
-	<string name="snackBarConnectionError_action">RETRY</string>
+    <!-- Snack Bar Connection Error -->
+    <string name="snackBarConnectionError_description">Connection Error</string>
+    <string name="snackBarConnectionError_action">RETRY</string>
 
-	<!-- Common -->
-	<string name="coming_soon">Coming soon</string>
+    <!-- Common -->
+    <string name="coming_soon">Coming soon</string>
 
 </resources>

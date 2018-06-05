@@ -21,7 +21,7 @@ public class SplashActivity extends BaseActivity {
         SystemUtils.fullScreenMode(this);
 
         new Handler().postDelayed(() -> start(),
-            2000);
+                2000);
     }
 
     public String getTAG() {
@@ -31,9 +31,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void injectDependencies() {
         DaggerBaseComponent.builder()
-            .appComponent(getAppComponent())
-            .baseViewModule(getBaseActivityModule())
-            .build().inject(this);
+                .appComponent(getAppComponent())
+                .baseViewModule(getBaseActivityModule())
+                .build().inject(this);
     }
 
     private void start() {

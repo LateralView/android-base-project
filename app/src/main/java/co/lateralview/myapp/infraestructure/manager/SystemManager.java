@@ -24,8 +24,8 @@ public class SystemManager {
     public void showKeyHash() {
         try {
             PackageInfo info = mContext.getPackageManager().getPackageInfo(
-                mContext.getPackageName(),
-                PackageManager.GET_SIGNATURES);
+                    mContext.getPackageName(),
+                    PackageManager.GET_SIGNATURES);
 
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");

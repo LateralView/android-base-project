@@ -7,7 +7,8 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 
 import co.lateralview.myapp.application.MyApp;
 import co.lateralview.myapp.infraestructure.pushNotification.processor.base.NotificationType;
-import co.lateralview.myapp.infraestructure.pushNotification.processor.base.PushNotificationProcessor;
+import co.lateralview.myapp.infraestructure.pushNotification.processor.base
+        .PushNotificationProcessor;
 
 public class PushNotificationIntentReceiver extends WakefulBroadcastReceiver {
     public static final String TAG = PushNotificationIntentReceiver.class.getSimpleName();
@@ -17,9 +18,9 @@ public class PushNotificationIntentReceiver extends WakefulBroadcastReceiver {
         Bundle extras = intent.getExtras();
 
         PushNotificationProcessor concretePushNotification = PushNotificationProcessor.create(
-            NotificationType.fromString(extras.getString("type").toUpperCase()),
-            extras.getString("title"), extras.getString("message"),
-            MyApp.isApplicationRunning());
+                NotificationType.fromString(extras.getString("type").toUpperCase()),
+                extras.getString("title"), extras.getString("message"),
+                MyApp.isApplicationRunning());
 
         if (concretePushNotification != null) {
             concretePushNotification.process(context);

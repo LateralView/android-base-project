@@ -34,9 +34,9 @@ public class MyApp extends Application {
 
     private void initializeServices() {
         mAppComponent = DaggerAppComponent.builder()
-            // list of modules that are part of this component need to be created here too
-            .appModule(new AppModule(this))
-            .build();
+                // list of modules that are part of this component need to be created here too
+                .appModule(new AppModule(this))
+                .build();
 
         //TODO Wrapper
         Stetho.initializeWithDefaults(this);

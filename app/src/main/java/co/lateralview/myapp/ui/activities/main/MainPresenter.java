@@ -27,9 +27,9 @@ public class MainPresenter extends BasePresenter implements Main.Presenter {
     @Override
     public void login(String email, String password) {
         mSubscriptions.add(mUserRepository.login(email, password)
-            .flatMapCompletable(user -> mSessionRepository.logIn(user, "token"))
-            .subscribe(() -> { /*login done*/ },
-                error -> mView.showError()));
+                .flatMapCompletable(user -> mSessionRepository.logIn(user, "token"))
+                .subscribe(() -> { /*login done*/ },
+                        error -> mView.showError()));
     }
 
     @Override

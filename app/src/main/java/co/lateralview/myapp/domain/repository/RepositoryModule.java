@@ -14,7 +14,7 @@ public class RepositoryModule {
     @Provides
     @Singleton
     public SessionRepository provideSessionRepository(
-        SessionRepositoryImpl sessionRepository) {
+            SessionRepositoryImpl sessionRepository) {
         return sessionRepository;
     }
 

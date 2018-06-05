@@ -8,7 +8,8 @@ public class InternetManager {
     private ConnectivityManager mConnectivityManager;
 
     public InternetManager(Context context) {
-        mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        mConnectivityManager = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
     }
 
     public Boolean isOnline() {

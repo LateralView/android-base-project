@@ -17,7 +17,7 @@ public final class ToolbarUtils {
     }
 
     public static void initializeToolbar(AppCompatActivity activity, boolean backEnabled,
-                                         @Nullable String title) {
+            @Nullable String title) {
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
 
         if (toolbar != null) {
@@ -52,8 +52,8 @@ public final class ToolbarUtils {
         for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
             View v = viewGroup.getChildAt(i);
             if (v instanceof ImageView && (v.getClass().getSimpleName().equals("OverflowMenuButton")
-                ||
-                v instanceof ActionMenuView.ActionMenuChildView)) {
+                    ||
+                    v instanceof ActionMenuView.ActionMenuChildView)) {
                 overflow = (ImageView) v;
             } else if (v instanceof ViewGroup) {
                 overflow = findOverflowMenuButton(activity, (ViewGroup) v);

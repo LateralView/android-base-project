@@ -12,16 +12,16 @@ public final class KeyboardUtils {
     public static void hideSoftKeyboard(Activity activity) {
         if (activity.getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+                    Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
-                0);
+                    0);
         }
     }
 
     public static void showKeyboard(Activity activity) {
         if (!isKeyboardVisible(activity)) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+                    Context.INPUT_METHOD_SERVICE);
             activity.getWindow().getDecorView().requestFocus();
             inputMethodManager.showSoftInput(activity.getWindow().getDecorView(), 0);
         }
@@ -29,7 +29,7 @@ public final class KeyboardUtils {
 
     public static boolean isKeyboardVisible(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(
-            Context.INPUT_METHOD_SERVICE);
+                Context.INPUT_METHOD_SERVICE);
 
         return imm.isAcceptingText();
     }

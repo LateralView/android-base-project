@@ -17,19 +17,19 @@ public class SocialManager {
 
     public void shareData(Activity activity, String text) {
         Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
-            .setType("text/plain")
-            .setText(text)
-            .getIntent();
+                .setType("text/plain")
+                .setText(text)
+                .getIntent();
 
         activity.startActivity(shareIntent);
     }
 
     public void shareData(Activity activity, String text, Bitmap image) {
         Intent shareIntent = ShareCompat.IntentBuilder.from(activity)
-            .setType("image/jpeg")
-            .setText(text)
-            .setStream(Uri.parse(mFileManager.savePhotoToInternalStorage(image)))
-            .getIntent();
+                .setType("image/jpeg")
+                .setText(text)
+                .setStream(Uri.parse(mFileManager.savePhotoToInternalStorage(image)))
+                .getIntent();
 
         activity.startActivity(shareIntent);
     }

@@ -35,10 +35,10 @@ public class MyAppService extends Service {
         injectDependencies(this);
 
         Observable.interval(
-            2, TimeUnit.MINUTES)
-            .compose(RxSchedulersUtils.applyObservableSchedulers())
-            .subscribe(__ -> { /*do something*/ },
-                error -> Log.e(TAG, "Error executing MyAppService", error));
+                2, TimeUnit.MINUTES)
+                .compose(RxSchedulersUtils.applyObservableSchedulers())
+                .subscribe(__ -> { /*do something*/ },
+                        error -> Log.e(TAG, "Error executing MyAppService", error));
     }
 
     @Override
@@ -60,8 +60,8 @@ public class MyAppService extends Service {
 
     private void injectDependencies(Context context) {
         DaggerBaseComponent.builder()
-            .appComponent(MyApp.getAppComponent())
-            .build()
-            .inject(this);
+                .appComponent(MyApp.getAppComponent())
+                .build()
+                .inject(this);
     }
 }

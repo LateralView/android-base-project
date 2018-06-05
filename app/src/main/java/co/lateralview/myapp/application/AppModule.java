@@ -46,9 +46,9 @@ public class AppModule {
     public Gson providesGson() {
         //TODO Check ISO FORMAT
         return new GsonBuilder()
-            .setDateFormat(DateUtils.ISO_8601_PATTERN)
-            .setExclusionStrategies(new AnnotationExclusionStrategy())
-            .create();
+                .setDateFormat(DateUtils.ISO_8601_PATTERN)
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .create();
     }
 
     @Provides
@@ -58,7 +58,7 @@ public class AppModule {
 
     @Provides
     public SharedPreferencesManager providesSharedPreferencesManager(Application application,
-                                                                     ParserManager parserManager) {
+            ParserManager parserManager) {
         return new SharedPreferencesManagerImpl(application, parserManager);
     }
 

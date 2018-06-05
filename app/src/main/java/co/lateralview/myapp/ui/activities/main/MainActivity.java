@@ -40,10 +40,10 @@ public class MainActivity extends BaseActivity implements Main.View {
     @Override
     protected void injectDependencies() {
         DaggerMainComponent.builder()
-            .appComponent(getAppComponent())
-            .baseViewModule(getBaseActivityModule())
-            .viewModule(new Main.ViewModule(this))
-            .build().inject(this);
+                .appComponent(getAppComponent())
+                .baseViewModule(getBaseActivityModule())
+                .viewModule(new Main.ViewModule(this))
+                .build().inject(this);
     }
 
     public String getTAG() {

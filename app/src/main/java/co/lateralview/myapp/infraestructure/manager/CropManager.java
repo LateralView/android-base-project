@@ -31,12 +31,12 @@ public class CropManager {
         if (outPath != null) {
             if (mCallerFragment != null) {
                 Crop.of(imagePath, outPath)
-                    .withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
-                    .start(mCallerActivity, mCallerFragment, mRequestId);
+                        .withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
+                        .start(mCallerActivity, mCallerFragment, mRequestId);
             } else {
                 Crop.of(imagePath, outPath)
-                    .withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
-                    .start(mCallerActivity, mRequestId);
+                        .withMaxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
+                        .start(mCallerActivity, mRequestId);
             }
 
             return true;

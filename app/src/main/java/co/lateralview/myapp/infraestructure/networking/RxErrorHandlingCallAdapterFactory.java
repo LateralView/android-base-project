@@ -55,24 +55,24 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
 
             if (adaptedCall instanceof Completable) {
                 return ((Completable) adaptedCall).onErrorResumeNext(
-                    throwable -> Completable.error(asRetrofitException(throwable)));
+                        throwable -> Completable.error(asRetrofitException(throwable)));
             }
 
             if (adaptedCall instanceof Single) {
                 return ((Single) adaptedCall).onErrorResumeNext(
-                    throwable -> Single.error(asRetrofitException((Throwable) throwable)));
+                        throwable -> Single.error(asRetrofitException((Throwable) throwable)));
             }
 
             if (adaptedCall instanceof Observable) {
                 return ((Observable) adaptedCall).onErrorResumeNext(
-                    (ObservableSource) throwable -> Observable.error(
-                        asRetrofitException((Throwable) throwable)));
+                        (ObservableSource) throwable -> Observable.error(
+                                asRetrofitException((Throwable) throwable)));
             }
 
             if (adaptedCall instanceof Maybe) {
                 return ((Maybe) adaptedCall).onErrorResumeNext(
-                    (MaybeSource) throwable -> Maybe.error(
-                        asRetrofitException((Throwable) throwable)));
+                        (MaybeSource) throwable -> Maybe.error(
+                                asRetrofitException((Throwable) throwable)));
             }
 
             throw new RuntimeException("Observable Type not supported");
@@ -84,7 +84,7 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
                 HttpException httpException = (HttpException) throwable;
                 Response response = httpException.response();
                 return ServerException.httpError(response.raw().request().url().toString(),
-                    response, retrofit);
+                        response, retrofit);
             }
 
             // A network error happened

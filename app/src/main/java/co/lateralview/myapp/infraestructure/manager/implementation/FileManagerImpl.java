@@ -42,7 +42,7 @@ public class FileManagerImpl implements FileManager {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = FILE_TEMP_PREFIX + "_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES);
+                Environment.DIRECTORY_PICTURES);
         storageDir.mkdirs();
 
         try {
@@ -54,7 +54,7 @@ public class FileManagerImpl implements FileManager {
 
     public Uri getUri(File file) {
         return null != file ? FileProvider.getUriForFile(mContext,
-            mContext.getApplicationContext().getPackageName() + ".provider", file) : null;
+                mContext.getApplicationContext().getPackageName() + ".provider", file) : null;
     }
 
     public Uri createPhotoUri() {

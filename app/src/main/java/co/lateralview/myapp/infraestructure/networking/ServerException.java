@@ -35,7 +35,7 @@ public class ServerException extends RuntimeException {
     }
 
     ServerException(String message, String url, Response response, Kind kind, Throwable exception,
-                    Retrofit retrofit) {
+            Retrofit retrofit) {
         super(message, exception);
         this.url = url;
         this.response = response;
@@ -57,12 +57,12 @@ public class ServerException extends RuntimeException {
 
     public static ServerException networkError(IOException exception) {
         return new ServerException(exception.getMessage(), null, null, Kind.NETWORK, exception,
-            null);
+                null);
     }
 
     public static ServerException unexpectedError(Throwable exception) {
         return new ServerException(exception.getMessage(), null, null, Kind.UNEXPECTED, exception,
-            null);
+                null);
     }
 
     /**
@@ -108,7 +108,7 @@ public class ServerException extends RuntimeException {
             return null;
         }
         Converter<ResponseBody, T> converter = retrofit.responseBodyConverter(type,
-            new Annotation[0]);
+                new Annotation[0]);
         return converter.convert(response.errorBody());
     }
 }

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style tools:ignore="NewApi" name="CropCustomTheme" parent="android:Theme.DeviceDefault">
+    <style name="CropCustomTheme"
+           parent="android:Theme.DeviceDefault"
+           tools:ignore="NewApi">
         <item name="cropImageStyle">@style/Widget.CropImageView</item>
     </style>
 
-    <style name="Widget.CropImageView" parent="android:Widget">
+    <style name="Widget.CropImageView"
+           parent="android:Widget">
         <item name="showThirds">true</item>
         <item name="showCircle">false</item>
         <item name="showHandles">always</item>

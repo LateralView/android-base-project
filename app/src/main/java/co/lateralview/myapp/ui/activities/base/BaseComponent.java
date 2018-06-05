@@ -9,7 +9,7 @@ import dagger.Component;
 
 @ActivityScoped
 @Component(dependencies = AppComponent.class,
-    modules = {Base.BaseViewModule.class})
+        modules = {Base.BaseViewModule.class})
 public interface BaseComponent {
     void inject(BaseActivity activity);
 

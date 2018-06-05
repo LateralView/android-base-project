@@ -32,13 +32,13 @@ public final class DateUtils {
     public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd'T'HH:mm";
     public static final String YYYYMMDD = "yyyyMMdd";
 
-    private DateUtils() {
-    }
-
     public enum DateOrderType {
         BEFORE,
         AFTER,
         EQUALS
+    }
+
+    private DateUtils() {
     }
 
     public static Date getDateFromString(String dateString) {
@@ -112,7 +112,7 @@ public final class DateUtils {
             return String.valueOf(time / DAY) + " " + context.getString(R.string.dateUtils_days);
         } else if (time < YEAR) {
             return String.valueOf(time / MONTH) + " " + context.getString(
-                R.string.dateUtils_months);
+                    R.string.dateUtils_months);
         } else {
             return String.valueOf(time / YEAR) + " " + context.getString(R.string.dateUtils_years);
         }
@@ -194,7 +194,7 @@ public final class DateUtils {
         Calendar b = getCalendar(last);
         int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
         if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH)
-            || (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(
+                || (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(
                 Calendar.DATE))) {
             diff--;
         }
@@ -230,7 +230,7 @@ public final class DateUtils {
         Calendar b = getCalendar(date2);
 
         return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
-            && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
+                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
     }
 
     public static String getDay(Date date) {

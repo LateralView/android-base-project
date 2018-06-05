@@ -19,6 +19,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Single<User> login(final String email, final String password) {
         return mUserServer.login(email, password)
-            .compose(RxSchedulersUtils.applySingleSchedulers());
+                .compose(RxSchedulersUtils.applySingleSchedulers());
     }
 }

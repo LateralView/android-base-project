@@ -15,15 +15,15 @@ public class MailManager {
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("mailto:")
-            .append(to)
-            .append("?subject=")
-            .append(subject)
-            .append("&body=");
+                .append(to)
+                .append("?subject=")
+                .append(subject)
+                .append("&body=");
 
         String uriString = buffer.toString().replace(" ", "%20");
 
         activity.startActivity(
-            Intent.createChooser(new Intent(Intent.ACTION_SENDTO, Uri.parse(uriString)),
-                activity.getString(R.string.app_name) + " help mail"));
+                Intent.createChooser(new Intent(Intent.ACTION_SENDTO, Uri.parse(uriString)),
+                        activity.getString(R.string.app_name) + " help mail"));
     }
 }

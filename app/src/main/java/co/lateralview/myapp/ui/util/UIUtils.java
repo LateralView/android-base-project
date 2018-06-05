@@ -109,7 +109,7 @@ public abstract class UIUtils {
 
     public static int convertDipToPixels(Context context, int dip) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
-            context.getResources().getDisplayMetrics());
+                context.getResources().getDisplayMetrics());
     }
 
     public static void setBackground(View view, Context context, int id) {
@@ -128,8 +128,8 @@ public abstract class UIUtils {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static void setGradientBackground(View view, Integer color1, Integer color2) {
         GradientDrawable gd = new GradientDrawable(
-            GradientDrawable.Orientation.LEFT_RIGHT,
-            new int[]{color1, color2});
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[]{color1, color2});
 
         gd.setCornerRadius(0f);
 
@@ -149,7 +149,7 @@ public abstract class UIUtils {
     }
 
     public static SpannableString setTextWithMultipleStyles(Context context, int[] styles,
-                                                            String[] texts) {
+            String[] texts) {
         if (styles == null || texts == null || styles.length != texts.length) {
             return null;
         }
@@ -166,7 +166,7 @@ public abstract class UIUtils {
 
         for (int i = 0; i < texts.length; i++) {
             spannableString.setSpan(new TextAppearanceSpan(context, styles[i]), startIndex,
-                startIndex + texts[i].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    startIndex + texts[i].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             startIndex = startIndex + texts[i].length() + 1; // +1 for the with space
         }
 
@@ -228,22 +228,22 @@ public abstract class UIUtils {
         int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
         if (densityDpi >= DisplayMetrics.DENSITY_LOW
-            && densityDpi < DisplayMetrics.DENSITY_HIGH) {
+                && densityDpi < DisplayMetrics.DENSITY_HIGH) {
             return "mdpi";
         }
 
         if (densityDpi >= DisplayMetrics.DENSITY_HIGH
-            && densityDpi < DisplayMetrics.DENSITY_XHIGH) {
+                && densityDpi < DisplayMetrics.DENSITY_XHIGH) {
             return "hdpi";
         }
 
         if (densityDpi >= DisplayMetrics.DENSITY_XHIGH
-            && densityDpi < DisplayMetrics.DENSITY_XXHIGH) {
+                && densityDpi < DisplayMetrics.DENSITY_XXHIGH) {
             return "xhdpi";
         }
 
         if (densityDpi >= DisplayMetrics.DENSITY_XXHIGH
-            && densityDpi < DisplayMetrics.DENSITY_XXXHIGH) {
+                && densityDpi < DisplayMetrics.DENSITY_XXXHIGH) {
             return "xxhdpi";
         }
 

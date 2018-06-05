@@ -55,6 +55,6 @@ public class UserServerImpl extends BaseServerImpl implements UserServer {
         @Headers({"Accept: */*"})
         @POST("users/authenticate")
         Single<User> login(@Field(value = "email") String email,
-                           @Field(value = "password") String password);
+                @Field(value = "password") String password);
     }
 }
