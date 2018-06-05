@@ -1,0 +1,13 @@
+apply plugin: 'checkstyle'
+
+task Checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/ci/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/test/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    classpath = files()
+}
