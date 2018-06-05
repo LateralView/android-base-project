@@ -13,14 +13,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-
-// Initialize a new Properties() object called keystoreProperties.
-def keystoreProperties = new Properties()
-
-// Load your keystore.properties file into the keystoreProperties object.
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
 android {
     compileSdkVersion 27
 
@@ -43,6 +35,10 @@ android {
         }
     }
     signingConfigs {
+        // Load your keystore.properties file into the keystoreProperties object.
+        def keystoreProperties = new Properties()
+        keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
