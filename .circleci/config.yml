@@ -101,9 +101,16 @@ workflows:
       - test:
           requires:
             - build
+          filters:
+           branches:
+             ignore:
+               - develop+MVP+RX
+               - /^dev-build-.*/
       - debug-build:
           requires:
             - test
           filters:
             branches:
-              only: develop+MVP+RX
+              only: 
+               - develop+MVP+RX
+               - /^dev-build-.*/
