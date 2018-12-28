@@ -1,7 +1,7 @@
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
@@ -12,12 +12,12 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://clojars.org/repo/" } //Required to use Icepick
         maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local/" }
-        google()
     }
 }
 
