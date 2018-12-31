@@ -2,7 +2,7 @@ package co.lateralview.myapp.infraestructure.manager.bluetooth.base.model;
 
 import java.util.UUID;
 
-public class BleOperation {
+public final class BleOperation {
     private static int sTemporaryId = 0;
 
     /**

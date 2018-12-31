@@ -97,8 +97,10 @@ public class BluetoothManagerImpl implements BluetoothManager {
     };
 
     // ======== Start Bluetooth Status Related ========
+
     private Context mContext;
-    private boolean mDiscoveringReceiverRegistered = false, mPairingReceiverRegistered = false;
+    private boolean mDiscoveringReceiverRegistered = false;
+    private boolean mPairingReceiverRegistered = false;
 
     public BluetoothManagerImpl(Context context) {
         mContext = context;

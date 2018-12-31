@@ -155,13 +155,12 @@ public abstract class BluetoothDeviceManager {
         mBluetoothManager.observeBluetoothStatus()
                 .compose(RxSchedulersUtils.observeObservableOnIO())
                 .subscribe(status -> {
-                            if (status == BluetoothState.BLUETOOTH_OFF) {
-                                clearStates();
-                                Log.d(TAG, "Bluetooth Status: " + String.valueOf(status));
-                            }
-                        }
-                        , error -> {
-                        });
+                    if (status == BluetoothState.BLUETOOTH_OFF) {
+                        clearStates();
+                        Log.d(TAG, "Bluetooth Status: " + String.valueOf(status));
+                    }
+                }, error -> {
+                });
     }
 
     public Observable<Integer> observeDeviceState() {

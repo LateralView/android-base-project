@@ -4,11 +4,12 @@ import android.bluetooth.BluetoothDevice;
 import android.os.ParcelUuid;
 import android.util.Log;
 
-public class BluetoothUtils {
+public final class BluetoothUtils {
     public static final String TAG = "BluetoothUtils";
     private static final String LOG_SEPARATOR = "===========================================";
     private static final String LOG_NEW_LINE = "\n";
     private static final String LOG_ITEM_SEPARATOR = "----------";
+
     private BluetoothUtils() {
 
     }
