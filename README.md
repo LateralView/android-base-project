@@ -1,3 +1,6 @@
+### Looking for our latest Base Project in Kotlin ?
+https://github.com/LateralView/android-base-project-kotlin
+
 # Android Base Project
 
 Base project built using [Dagger2](https://google.github.io/dagger/) for Dependency Injection and MVC architecture with Repository Pattern.
