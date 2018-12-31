@@ -1,8 +1,12 @@
 package co.lateralview.myapp.infraestructure.manager;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.robolectric.Shadows.shadowOf;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo.State;
+import android.net.NetworkInfo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,16 +16,10 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowConnectivityManager;
 import org.robolectric.shadows.ShadowNetworkInfo;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.robolectric.Shadows.shadowOf;
-
 @RunWith(RobolectricTestRunner.class)
-public class InternetManagerTest
-{
-    private ShadowConnectivityManager mShadowConnectivityManager;
-    private ShadowNetworkInfo mShadowNetworkInfo;
+public class InternetManagerTest {
 
+    private ShadowConnectivityManager mShadowConnectivityManager;
     private InternetManager mInternetManager;
 
     @Before
@@ -29,38 +27,53 @@ public class InternetManagerTest
         final Context context = RuntimeEnvironment.application.getApplicationContext();
         mInternetManager = new InternetManager(context);
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
         mShadowConnectivityManager = shadowOf(connectivityManager);
-        mShadowNetworkInfo = shadowOf(mShadowConnectivityManager.getActiveNetworkInfo());
     }
 
     @Test
     public void itShouldReturnIsOnlineIfConnectedToNetwork() {
-        mShadowNetworkInfo.setConnectionStatus(State.CONNECTED);
+        NetworkInfo networkInfo = ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.CONNECTED,
+                ConnectivityManager.TYPE_WIFI, 0, true, true);
+        mShadowConnectivityManager.setActiveNetworkInfo(networkInfo);
+
         assertTrue(mInternetManager.isOnline());
     }
 
     @Test
     public void itShouldReturnIsOnlineIfIsConnectingToNetwork() {
-        mShadowNetworkInfo.setConnectionStatus(State.CONNECTING);
+        NetworkInfo networkInfo = ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.CONNECTING,
+                ConnectivityManager.TYPE_WIFI, 0, true, true);
+        mShadowConnectivityManager.setActiveNetworkInfo(networkInfo);
+
         assertTrue(mInternetManager.isOnline());
     }
 
     @Test
     public void itShouldReturnIsNotOnline() {
-        mShadowNetworkInfo.setConnectionStatus(State.DISCONNECTED);
+        NetworkInfo networkInfo = ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.DISCONNECTED,
+                ConnectivityManager.TYPE_WIFI, 0, true, false);
+        mShadowConnectivityManager.setActiveNetworkInfo(networkInfo);
+
         assertFalse(mInternetManager.isOnline());
     }
 
     @Test
     public void itShouldReturnOnWifi() {
-        mShadowConnectivityManager.setActiveNetworkInfo(mShadowConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI));
+        NetworkInfo networkInfo = ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.CONNECTED,
+                ConnectivityManager.TYPE_WIFI, 0, true, true);
+        mShadowConnectivityManager.setActiveNetworkInfo(networkInfo);
+
         assertTrue(mInternetManager.onWifi());
     }
 
     @Test
     public void itShouldReturnNotOnWifi() {
-        mShadowConnectivityManager.setActiveNetworkInfo(mShadowConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE));
+        NetworkInfo networkInfo = ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.CONNECTED,
+                ConnectivityManager.TYPE_MOBILE, 0, true, true);
+        mShadowConnectivityManager.setActiveNetworkInfo(networkInfo);
+
         assertFalse(mInternetManager.onWifi());
     }
 }

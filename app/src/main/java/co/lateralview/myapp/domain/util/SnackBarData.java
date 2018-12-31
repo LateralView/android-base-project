@@ -1,6 +1,6 @@
 package co.lateralview.myapp.domain.util;
 
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.Serializable;
 

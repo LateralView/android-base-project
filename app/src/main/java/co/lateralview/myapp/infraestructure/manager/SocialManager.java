@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v4.app.ShareCompat;
+import androidx.core.app.ShareCompat;
 
 import co.lateralview.myapp.infraestructure.manager.implementation.FileManagerImpl;
 

@@ -2,7 +2,7 @@ package co.lateralview.myapp.infraestructure.manager;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.soundcloud.android.crop.Crop;
 

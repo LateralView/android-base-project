@@ -3,11 +3,12 @@ package co.lateralview.myapp.ui.dialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.fragment.app.DialogFragment;
 
 public class DatePickerDialogFragment extends DialogFragment implements
         DatePickerDialog.OnDateSetListener {

@@ -3,7 +3,7 @@ package co.lateralview.myapp.ui.util;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -65,7 +65,7 @@ public final class SnackBarHelper {
         }
 
         TextView textView = (TextView) snackBarView.findViewById(
-                android.support.design.R.id.snackbar_text);
+                com.google.android.material.R.id.snackbar_text);
 
         textView.setOnClickListener(v -> snackbar.dismiss());
 

@@ -1,6 +1,6 @@
 package co.lateralview.myapp.ui.activities.base.fragments;
 
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import co.lateralview.myapp.application.AppComponent;
 import co.lateralview.myapp.ui.activities.base.Base;

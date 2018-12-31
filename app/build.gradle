@@ -5,7 +5,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.25.4'
+        classpath 'io.fabric.tools:gradle:1.26.1'
     }
 }
 
@@ -18,15 +18,15 @@ apply from: 'checkstyle.gradle'
 preBuild.dependsOn('Checkstyle')
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "co.lateralview.myapp"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         renderscriptTargetApi 19
@@ -77,24 +77,26 @@ android {
 }
 
 ext {
-    version_support = '27.1.1'
-    version_butterknife = "8.8.1"
+    version_appcompat_ = "1.0.2"
+    version_material_design = "1.0.0"
+    version_constraint_layout = "2.0.0-alpha3"
+    version_butterknife = "9.0.0-rc2"
     version_rxjava = '2.1.14'
-    version_rxandroid = '2.0.2'
+    version_rxandroid = '2.1.0'
     version_dagger = "2.16"
     version_retrofit = "2.4.0"
-    version_leakcanary = "1.5.4"
+    version_leakcanary = "1.6.2"
     version_permission = '3.2.0'
     version_firebase = '16.0.0'
-    version_glide = '4.7.1'
+    version_glide = '4.8.0'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:recyclerview-v7:$version_support"
-    implementation "com.android.support:design:$version_support"
-    implementation "com.android.support:support-v13:$version_support"
-    implementation "com.android.support:appcompat-v7:$version_support"
+
+    implementation "androidx.appcompat:appcompat:$version_appcompat_"
+    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+    implementation "com.google.android.material:material:$version_material_design"
 
     // Dagger 2 - Dependency Injection
     implementation "com.google.dagger:dagger:$version_dagger"
@@ -149,8 +151,8 @@ dependencies {
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$version_permission"
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.17.0'
-    testImplementation "org.robolectric:robolectric:3.8"
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation "org.robolectric:robolectric:4.0.2"
 
     // Friendly Http Inspector through separate App
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'

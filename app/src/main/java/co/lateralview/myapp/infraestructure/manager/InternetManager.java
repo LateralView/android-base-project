@@ -14,7 +14,7 @@ public class InternetManager {
 
     public Boolean isOnline() {
         NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+        return netInfo != null && netInfo.isConnected();
     }
 
     public boolean onWifi() {
